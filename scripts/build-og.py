@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generates public/og.png, the link-preview card, with the site's own fonts and tokens.
+"""Generates public/og-en.png and public/og-es.png, the link-preview cards, with the site's own fonts and tokens.
 
 Needs Pillow and node_modules; deliberately outside the npm build because the card only
 changes when the headline or the palette does.
@@ -22,15 +22,20 @@ def archivo(size, weight, width):
 
 
 mono = ImageFont.truetype(str(FS / '@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2'), 24)
-img = Image.new('RGB', (W, H), PAPER)
-d = ImageDraw.Draw(img)
-d.text((72, 64), 'MDIB', font=archivo(44, 900, 115), fill=INK)
-d.text((232, 80), 'MACHINES DO IT BETTER', font=mono, fill=MUTED)
-head = archivo(104, 850, 108)
-d.text((68, 200), 'Delega lo que te', font=head, fill=INK)
-d.text((68, 300), 'roba la semana.', font=head, fill=INK)
-d.rectangle((0, H - 120, W, H), fill=INK)
-d.rectangle((W - 120, H - 120, W, H), fill=ACCENT)
-d.text((72, H - 76), 'Agentes personales de IA · diagnóstico gratuito', font=mono, fill=PAPER)
-img.save(ROOT / 'public' / 'og.png', optimize=True)
-print('public/og.png')
+CARDS = {
+    'en': (('Hand off what', 'eats your week.'), 'Personal AI agents · free diagnosis'),
+    'es': (('Delega lo que te', 'roba la semana.'), 'Agentes personales de IA · diagnóstico gratuito'),
+}
+for lang, (lines, foot) in CARDS.items():
+    img = Image.new('RGB', (W, H), PAPER)
+    d = ImageDraw.Draw(img)
+    d.text((72, 64), 'MDIB', font=archivo(44, 900, 115), fill=INK)
+    d.text((232, 80), 'MACHINES DO IT BETTER', font=mono, fill=MUTED)
+    head = archivo(104, 850, 108)
+    d.text((68, 200), lines[0], font=head, fill=INK)
+    d.text((68, 300), lines[1], font=head, fill=INK)
+    d.rectangle((0, H - 120, W, H), fill=INK)
+    d.rectangle((W - 120, H - 120, W, H), fill=ACCENT)
+    d.text((72, H - 76), foot, font=mono, fill=PAPER)
+    img.save(ROOT / 'public' / f'og-{lang}.png', optimize=True)
+    print(f'public/og-{lang}.png')

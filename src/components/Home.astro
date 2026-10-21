@@ -1,0 +1,269 @@
+---
+import { copy, type Lang } from '../i18n';
+import { EMAIL } from '../site';
+import { formatRange } from '../lib/currency.mjs';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = copy[lang];
+const mail = (subject: string) => `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}`;
+const nowrap = (s: string) => s.replace(/(20–30 \S+)/, '<span class="nowrap">$1</span>');
+const pad = (i: number) => String(i + 1).padStart(2, '0');
+---
+<!-- HERO -->
+<section id="top" class="wrap hero">
+  <div class="eyebrow" style="margin-bottom:28px">{c.eyebrow}</div>
+
+  <div class="who">
+    <div style="font-size:15px;font-weight:500" id="seg-label">{c.who}</div>
+    <div class="seg" role="group" aria-labelledby="seg-label">
+      <button type="button" data-set-mode="personal" aria-pressed="true">{c.modes[0]}</button>
+      <button type="button" data-set-mode="business" aria-pressed="false">{c.modes[1]}</button>
+    </div>
+    <div style="font-size:14px;color:var(--muted);max-width:520px">{c.whoHint}</div>
+  </div>
+
+  <div class="hero-grid">
+    {(['personal', 'business'] as const).map((m) => (
+      <div class={`hero-copy only-${m}`}>
+        <h1 class="h1">{c[m].h1}</h1>
+        <p class="lead">{c[m].lead}</p>
+        <div class="row">
+          <a href="#contacto" class="btn btn-accent">{c[m].cta}</a>
+          <a href="#piloto" class="btn btn-ghost">{c.seePilot}</a>
+        </div>
+        <div class="mono" style="font-size:13px;color:var(--muted)">{c[m].note}</div>
+      </div>
+    ))}
+
+    <div class="ledger" aria-label={c.ledger.aria}>
+      <div class="ledger-head">
+        <span class="t only-personal">{c.ledger.personalHead}</span>
+        <span class="t only-business">{c.ledger.businessHead}</span>
+        <span>{c.ledger.example}</span>
+      </div>
+      {(['personal', 'business'] as const).map((m) => (
+        <ul class={`only-${m}`}>
+          {c.ledger[m].map(([area, text, waits]) => (
+            <li><span class="area">{area}</span><span>{text}</span>{waits ? <span class="wait">{c.ledger.wait}</span> : <span class="ok">{c.ledger.done}</span>}</li>
+          ))}
+        </ul>
+      ))}
+      <div class="ledger-foot">{c.ledger.foot}</div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADOS -->
+<section id="resultados" class="band" style="border-top:2px solid var(--ink)">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="h2" style="max-width:720px">{c.results.h2}</h2>
+      <p style="margin:0;font-size:17px;line-height:1.5;max-width:420px;color:var(--ink-2)">{c.results.p}</p>
+    </div>
+    <p class="eyebrow" style="margin:0 0 20px">{c.results.eyebrow}</p>
+    {(['personal', 'business'] as const).map((m) => (
+      <div class={`outcomes only-${m}`}>
+        {c.results[m].map(([h, p], i) => (
+          <article><span class="mono" style="font-size:13px;color:var(--muted)">{pad(i)}</span><h3>{h}</h3><p>{p}</p></article>
+        ))}
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="como" class="band" style="background:var(--paper-2)">
+  <div class="wrap">
+    <h2 class="h2" style="margin-bottom:56px">{c.how.h2}</h2>
+    <div class="steps">
+      {c.how.steps.map(([h, p], i) => <article><span class="n">{pad(i)}</span><h3>{h}</h3><p>{p}</p></article>)}
+    </div>
+  </div>
+</section>
+
+<!-- PILOTO -->
+<section id="piloto" class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="h2">{c.pilot.h2}</h2>
+      <div class="seg" role="group" aria-label={c.who}>
+        <button type="button" data-set-mode="personal" aria-pressed="true">{c.modes[0]}</button>
+        <button type="button" data-set-mode="business" aria-pressed="false">{c.modes[1]}</button>
+      </div>
+    </div>
+    <div class="plans">
+      <article class="plan dark">
+        <div class="tag"><span class="only-personal">{c.pilot.tagPersonal}</span><span class="only-business">{c.pilot.tagBusiness}</span> · {c.pilot.oneOff}</div>
+        <h3>{c.pilot.name}</h3>
+        <div class="price">
+          <b data-price data-lang={lang}>{formatRange('USD', lang)}</b>
+          <label class="cur"><span class="sr-only">{c.pilot.currency}</span>
+            <select data-currency aria-label={c.pilot.currency}>
+              <option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option>
+            </select>
+          </label>
+          <span class="price-note">{c.pilot.priceNote}</span>
+        </div>
+        <p>{c.pilot.summary}</p>
+        <ul>{c.pilot.includes.map((li) => <li>{li}</li>)}</ul>
+        <a href="#contacto" class="btn">{c.pilot.cta}</a>
+      </article>
+      <article class="plan">
+        <div class="tag">{c.pilot.notTag}</div>
+        <h3>{c.pilot.notH3}</h3>
+        <ul>{c.pilot.excludes.map((li) => <li>{li}</li>)}</ul>
+      </article>
+    </div>
+    <p class="foot-note">{c.pilot.promise} {c.pilot.foot}</p>
+  </div>
+</section>
+
+<!-- TECNOLOGIA -->
+<section id="tecnologia" class="band tech">
+  <div class="wrap">
+    <div class="eyebrow">{c.tech.eyebrow}</div>
+    <div class="tech-intro">
+      <h2 class="h2">{c.tech.h2}</h2>
+      <p>{c.tech.p}</p>
+    </div>
+    <div class="tech-grid">
+      {c.tech.items.map(([k, p]) => <div><span class="k">{k}</span><p>{p}</p></div>)}
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="band">
+  <div class="wrap faq">
+    <h2 class="h2">{c.faq.h2}</h2>
+    <dl>{c.faq.items.map(([q, a]) => <><dt>{q}</dt><dd>{a}</dd></>)}</dl>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="band contact">
+  <div class="wrap">
+    <h2 class="h2" set:html={nowrap(c.contact.h2)} />
+    {EMAIL ? (
+      <>
+        <p class="contact-lead">{c.contact.lead}</p>
+        <div class="row">
+          <a href={mail(c.contact.subjectPersonal)} class="btn btn-ink">{c.contact.personal}</a>
+          <a href={mail(c.contact.subjectBusiness)} class="btn btn-ghost" style="font-weight:600">{c.contact.business}</a>
+        </div>
+        <a class="mono contact-mail" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      </>
+    ) : (
+      <div class="soon"><b>{c.contact.soonTitle}</b> {c.contact.soon}</div>
+    )}
+  </div>
+</section>
+
+<script>
+  import { detectCurrency, formatRange } from '../lib/currency.mjs';
+
+  // Particular/negocio selector. Initial mode from the URL (campaign links): ?for=business, ?para=empresa|negocio or #empresa.
+  const body = document.body;
+  const setMode = (mode: string) => {
+    body.dataset.mode = mode;
+    document.querySelectorAll('[data-set-mode]').forEach((b) =>
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-set-mode') === mode)));
+  };
+  const q = new URLSearchParams(location.search);
+  if (q.get('for') === 'business' || ['empresa', 'negocio'].includes(q.get('para') ?? '') || location.hash === '#empresa') setMode('business');
+  document.querySelectorAll<HTMLElement>('[data-set-mode]').forEach((b) =>
+    b.addEventListener('click', () => setMode(b.dataset.setMode!)));
+
+  // Pilot price in the visitor's currency; the HTML ships USD for crawlers and no-JS.
+  const price = document.querySelector<HTMLElement>('[data-price]')!;
+  const select = document.querySelector<HTMLSelectElement>('[data-currency]')!;
+  const show = (cur: string) => { select.value = cur; price.textContent = formatRange(cur, price.dataset.lang!); };
+  show(detectCurrency(Intl.DateTimeFormat().resolvedOptions().timeZone, [...navigator.languages]));
+  select.addEventListener('change', () => show(select.value));
+</script>
+
+<style is:global>
+.seg{display:inline-flex;align-self:flex-start;border:2px solid var(--ink);padding:4px;gap:4px;max-width:100%}
+.seg button{font:inherit;font-size:16px;font-weight:600;padding:12px 20px;min-height:48px;border:0;cursor:pointer;background:transparent;color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+body[data-mode="personal"] .only-business{display:none !important}
+body[data-mode="business"] .only-personal{display:none !important}
+.who{display:flex;flex-direction:column;gap:12px;margin-bottom:40px}
+
+.hero{padding-top:72px;padding-bottom:96px}
+.hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:56px;align-items:start}
+.hero-copy{display:flex;flex-direction:column;gap:28px}
+.ledger{background:var(--ink);color:var(--paper);padding:28px;font-family:var(--mono);font-size:14px;line-height:1.5}
+.ledger-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--dark-line);margin-bottom:8px;flex-wrap:wrap;font-size:12px;color:var(--dark-muted)}
+.ledger-head .t{text-transform:uppercase;letter-spacing:.08em}
+.ledger ul{list-style:none;margin:0;padding:0}
+.ledger li{display:grid;grid-template-columns:96px minmax(0,1fr) 72px;gap:16px;padding:14px 0;border-bottom:1px solid var(--ink-2);align-items:baseline}
+.ledger .area{color:var(--dark-muted)}
+.ledger .ok{color:var(--accent);text-align:right}
+.ledger .wait{color:var(--ink);background:var(--accent);text-align:center;font-size:12px;padding:2px 4px}
+.ledger-foot{padding-top:16px;font-size:12px;color:var(--dark-muted)}
+
+section.band{padding-top:96px;padding-bottom:96px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:48px}
+.outcomes{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+.outcomes article{padding:32px 28px 40px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);display:flex;flex-direction:column;gap:16px;min-height:240px}
+.outcomes h3{margin:0;font-family:var(--display);font-weight:750;font-size:26px;line-height:1.1;letter-spacing:-.015em}
+.outcomes p{margin:0;font-size:16px;line-height:1.5;color:var(--ink-2)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:40px}
+.steps article{display:flex;flex-direction:column;gap:14px;border-top:4px solid var(--ink);padding-top:24px}
+.steps .n{font-family:var(--display);font-weight:900;font-size:64px;line-height:1;letter-spacing:-.04em}
+.steps h3{margin:0;font-size:22px;font-weight:600}
+.steps p{margin:0;font-size:16px;line-height:1.55;color:var(--ink-2)}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:24px}
+.plan{padding:36px;display:flex;flex-direction:column;gap:18px;border:2px solid var(--ink);background:var(--paper);color:var(--ink)}
+.plan.dark{background:var(--ink);color:var(--paper)}
+.plan .tag{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+.plan h3{margin:0;font-family:var(--display);font-weight:800;font-size:36px;letter-spacing:-.02em}
+.plan .price{display:flex;align-items:baseline;gap:8px 12px;flex-wrap:wrap}
+.plan .price b{font-family:var(--display);font-weight:800;font-size:28px;line-height:1.1;letter-spacing:-.015em}
+.plan.dark .price b{color:var(--accent)}
+.price-note{flex-basis:100%;font-size:15px}
+.cur select{font:inherit;font-family:var(--mono);font-size:13px;min-height:36px;padding:4px 8px;background:transparent;color:inherit;border:1px solid var(--dark-line);cursor:pointer}
+.cur select option{color:var(--ink)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.soon{font-size:20px;line-height:1.5;max-width:620px;padding:20px 24px;border:2px solid var(--ink)}
+.plan p{margin:0;font-size:16px;line-height:1.5}
+.plan ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-size:16px;line-height:1.45}
+.plan li{display:flex;gap:10px}
+.plan li::before{content:"—";font-family:var(--mono)}
+.plan .btn{margin-top:auto;min-height:48px;font-size:16px;padding:14px 20px}
+.plan.dark .btn{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.foot-note{margin:24px 0 0;font-size:14px;line-height:1.55;color:var(--muted);max-width:860px}
+.tech{background:var(--ink);color:var(--paper)}
+.tech .eyebrow{color:var(--dark-muted);margin-bottom:20px}
+.tech-intro{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:56px;margin-bottom:56px}
+.tech-intro p{margin:0;font-size:18px;line-height:1.55;color:var(--dark-text)}
+.tech-grid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:32px;border-top:1px solid var(--dark-line)}
+.tech-grid div{padding:28px 0 32px;border-bottom:1px solid var(--dark-line);display:flex;flex-direction:column;gap:10px}
+.tech-grid .k{font-family:var(--mono);font-size:13px;color:var(--accent)}
+.tech-grid p{margin:0;font-size:16px;line-height:1.55}
+.faq{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:56px}
+.faq dl{margin:0}
+.faq dt{padding-top:24px;border-top:1px solid var(--ink);margin:0 0 8px;font-size:19px;font-weight:600}
+.faq dd{margin:0 0 24px;font-size:16px;line-height:1.55;color:var(--ink-2)}
+.faq dl::after{content:"";display:block;border-top:1px solid var(--ink)}
+.contact{background:var(--accent);border-top:2px solid var(--ink)}
+.contact .wrap{display:flex;flex-direction:column;gap:32px}
+.contact h2{font-size:clamp(40px,5.6vw,80px);font-weight:850;font-stretch:108%;line-height:.95;letter-spacing:-.035em;max-width:960px}
+.contact-lead{margin:0;font-size:20px;line-height:1.5;max-width:620px}
+.contact-mail{font-size:15px;align-self:flex-start}
+@media (max-width:1000px){.outcomes,.tech-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){
+  .outcomes,.tech-grid{grid-template-columns:1fr}
+  .outcomes article{min-height:0}
+  .hero{padding-top:48px;padding-bottom:72px}
+  section.band{padding-top:72px;padding-bottom:72px}
+  .seg{display:flex;align-self:stretch}
+  .seg button{flex:1;padding:12px 10px;font-size:15px}
+  .plan{padding:28px 24px}
+  .sec-head .seg{flex-basis:100%}
+  .row .btn{flex:1 1 100%}
+}
+@media (max-width:420px){.ledger{padding:22px 18px;font-size:13px}.ledger li{grid-template-columns:78px minmax(0,1fr) 60px;gap:10px}}
+</style>

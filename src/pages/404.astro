@@ -1,10 +1,12 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { copy } from '../i18n';
+const c = copy.en.notFound;
 ---
-<Layout title="Página no encontrada — Machines Do It Better" description="Esta página no existe." noindex>
+<Layout lang="en" page="" title={c.title} description={c.h1} noindex>
 <section class="wrap" style="padding-top:96px;padding-bottom:120px;display:flex;flex-direction:column;gap:28px;align-items:flex-start">
   <p class="eyebrow" style="margin:0">Error 404</p>
-  <h1 class="h1">Aquí no hay nada.</h1>
-  <a href="/" class="btn btn-accent">Volver al inicio</a>
+  <h1 class="h1">{c.h1}</h1>
+  <div class="row"><a href="/" class="btn btn-accent">{c.back}</a><a href="/es/" class="btn btn-ghost" lang="es">{copy.es.notFound.back}</a></div>
 </section>
 </Layout>
