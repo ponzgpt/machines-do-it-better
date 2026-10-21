@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Machines Do It Better — Agentes personales de IA</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F3F2EE;color:#121211;font-family:'IBM Plex Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#121211}a:hover{color:#55544F}
+*{box-sizing:border-box}
+</style>
+</helmet>
+
+<div style="width: 100%; background: #F3F2EE; color: #121211; font-family: 'IBM Plex Sans', system-ui, sans-serif">
+
+<!-- NAV -->
+<header style="border-bottom: 1px solid #D9D7D0">
+<div style="max-width: 1240px; margin: 0 auto; padding: 18px 24px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap">
+<a href="#top" style="display: flex; align-items: baseline; gap: 12px; text-decoration: none; color: #121211">
+<span style="font-family: 'Archivo', sans-serif; font-weight: 900; font-stretch: 115%; font-size: 24px; letter-spacing: -0.02em">MDIB</span>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: #55544F">Machines Do It Better</span>
+</a>
+<nav style="display: flex; align-items: center; gap: 28px; flex-wrap: wrap; font-size: 15px">
+<a href="#resultados" style="text-decoration: none">Resultados</a>
+<a href="#como" style="text-decoration: none">Cómo funciona</a>
+<a href="#planes" style="text-decoration: none">Planes</a>
+<a href="#tecnologia" style="text-decoration: none">Tecnología</a>
+<a href="#contacto" style="text-decoration: none; background: #121211; color: #F3F2EE; padding: 12px 18px; min-height: 44px; display: inline-flex; align-items: center; font-weight: 500">Hablar con nosotros</a>
+</nav>
+</div>
+</header>
+
+<!-- HERO -->
+<section id="top" style="max-width: 1240px; margin: 0 auto; padding: 72px 24px 96px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: #55544F; margin-bottom: 28px">Agentes personales de IA · servicio llave en mano</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 40px">
+<div style="font-size: 15px; font-weight: 500">¿Para quién es?</div>
+<div role="group" aria-label="Elige tipo de cliente" style="display: inline-flex; align-self: flex-start; border: 2px solid #121211; padding: 4px; gap: 4px; background: #F3F2EE">
+<button type="button" onClick="{{ pickPersonal }}" aria-pressed="{{ personalPressed }}" style="{{ personalBtnStyle }}">Para mí</button>
+<button type="button" onClick="{{ pickBusiness }}" aria-pressed="{{ businessPressed }}" style="{{ businessBtnStyle }}">Para mi empresa</button>
+</div>
+<div style="font-size: 14px; color: #55544F; max-width: 520px">¿Facturas a nombre de una sociedad o lo va a usar más de una persona? Elige «Para mi empresa».</div>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 56px; align-items: start">
+
+<div style="display: flex; flex-direction: column; gap: 28px">
+<sc-if value="{{ isPersonal }}" hint-placeholder-val="{{ true }}">
+<h1 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 850; font-stretch: 108%; font-size: clamp(44px, 6.4vw, 92px); line-height: 0.95; letter-spacing: -0.035em">Delega lo que te roba la semana.</h1>
+<p style="margin: 0; font-size: 20px; line-height: 1.5; max-width: 560px; color: #2A2A28">Configuramos y mantenemos un agente de IA que se ocupa de tu correo, tu agenda, tu papeleo y tus recados digitales. Tú decides qué hace solo y qué necesita tu visto bueno.</p>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+<a href="#contacto" style="background: {{accent}}; color: #121211; text-decoration: none; font-weight: 600; font-size: 17px; padding: 16px 24px; min-height: 52px; display: inline-flex; align-items: center; border: 2px solid #121211">Reservar diagnóstico gratuito</a>
+<a href="#planes" style="color: #121211; text-decoration: none; font-weight: 500; font-size: 17px; padding: 16px 24px; min-height: 52px; display: inline-flex; align-items: center; border: 2px solid #121211">Ver planes personales</a>
+</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #55544F">Sin instalar nada. Sin aprender a escribir prompts.</div>
+</sc-if>
+<sc-if value="{{ isBusiness }}" hint-placeholder-val="{{ false }}">
+<h1 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 850; font-stretch: 108%; font-size: clamp(44px, 6.4vw, 92px); line-height: 0.95; letter-spacing: -0.035em">Tu equipo, sin el trabajo de copiar y pegar.</h1>
+<p style="margin: 0; font-size: 20px; line-height: 1.5; max-width: 560px; color: #2A2A28">Desplegamos agentes que atienden consultas, ordenan la bandeja compartida, preparan informes y mueven datos entre tus herramientas. Con permisos, registro de cada acción y una persona responsable al otro lado.</p>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+<a href="#contacto" style="background: {{accent}}; color: #121211; text-decoration: none; font-weight: 600; font-size: 17px; padding: 16px 24px; min-height: 52px; display: inline-flex; align-items: center; border: 2px solid #121211">Solicitar propuesta</a>
+<a href="#planes" style="color: #121211; text-decoration: none; font-weight: 500; font-size: 17px; padding: 16px 24px; min-height: 52px; display: inline-flex; align-items: center; border: 2px solid #121211">Ver planes para empresas</a>
+</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #55544F">Pensado para equipos de [N]–[N] personas. Factura con IVA.</div>
+</sc-if>
+</div>
+
+<div style="background: #121211; color: #F3F2EE; padding: 28px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; line-height: 1.5">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 1px solid #3A3A37; margin-bottom: 8px; flex-wrap: wrap">
+<span style="text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; color: #B8B6AE">{{ ledgerTitle }}</span>
+<span style="font-size: 12px; color: #B8B6AE">Ejemplo ilustrativo</span>
+</div>
+<sc-for list="{{ ledger }}" as="row" hint-placeholder-count="5">
+<div style="display: grid; grid-template-columns: 96px minmax(0, 1fr) 64px; gap: 16px; padding: 14px 0; border-bottom: 1px solid #2A2A28; align-items: baseline">
+<span style="color: #B8B6AE">{{ row.area }}</span>
+<span>{{ row.text }}</span>
+<span style="{{ row.statusStyle }}">{{ row.status }}</span>
+</div>
+</sc-for>
+<div style="padding-top: 16px; font-size: 12px; color: #B8B6AE">Lo marcado «TU OK» espera tu aprobación antes de ejecutarse.</div>
+</div>
+
+</div>
+</section>
+
+<!-- RESULTADOS -->
+<section id="resultados" style="border-top: 2px solid #121211">
+<div style="max-width: 1240px; margin: 0 auto; padding: 96px 24px">
+<div style="display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 48px">
+<h2 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 105%; font-size: clamp(36px, 4.2vw, 60px); line-height: 1; letter-spacing: -0.03em; max-width: 720px">Vendemos resultados, no tecnología.</h2>
+<p style="margin: 0; font-size: 17px; line-height: 1.5; max-width: 420px; color: #2A2A28">No te entregamos una herramienta para que la configures tú. Te entregamos el trabajo hecho, y nos encargamos de que siga funcionando.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: 1px solid #121211; border-left: 1px solid #121211">
+<sc-for list="{{ outcomes }}" as="o" hint-placeholder-count="4">
+<div style="padding: 32px 28px 40px; border-right: 1px solid #121211; border-bottom: 1px solid #121211; display: flex; flex-direction: column; gap: 16px; min-height: 260px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: #55544F">{{ o.n }}</span>
+<h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 750; font-size: 26px; line-height: 1.1; letter-spacing: -0.015em">{{ o.title }}</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.5; color: #2A2A28">{{ o.body }}</p>
+</div>
+</sc-for>
+</div>
+</div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="como" style="background: #E8E6DF">
+<div style="max-width: 1240px; margin: 0 auto; padding: 96px 24px">
+<h2 style="margin: 0 0 56px; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 105%; font-size: clamp(36px, 4.2vw, 60px); line-height: 1; letter-spacing: -0.03em">Tres pasos. Precio cerrado.</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px">
+<div style="display: flex; flex-direction: column; gap: 14px; border-top: 4px solid #121211; padding-top: 24px">
+<span style="font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 64px; line-height: 1; letter-spacing: -0.04em">01</span>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600">Diagnóstico</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #2A2A28">Una llamada de 30 minutos para ver qué tareas te quitan más tiempo y cuáles tiene sentido delegar. Si no vemos encaje, te lo decimos.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; border-top: 4px solid #121211; padding-top: 24px">
+<span style="font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 64px; line-height: 1; letter-spacing: -0.04em">02</span>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600">Puesta en marcha</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #2A2A28">Conectamos tus cuentas, configuramos el agente y fijamos contigo qué puede hacer solo y qué requiere tu aprobación. Listo en [N] días.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 14px; border-top: 4px solid #121211; padding-top: 24px">
+<span style="font-family: 'Archivo', sans-serif; font-weight: 900; font-size: 64px; line-height: 1; letter-spacing: -0.04em">03</span>
+<h3 style="margin: 0; font-size: 22px; font-weight: 600">Operación y mejora</h3>
+<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #2A2A28">Lo vigilamos, lo ajustamos y lo actualizamos cada mes. Recibes un resumen de lo que ha hecho y de lo que ha escalado a ti.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- PLANES -->
+<section id="planes">
+<div style="max-width: 1240px; margin: 0 auto; padding: 96px 24px">
+<div style="display: flex; justify-content: space-between; align-items: end; gap: 24px; flex-wrap: wrap; margin-bottom: 48px">
+<h2 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 105%; font-size: clamp(36px, 4.2vw, 60px); line-height: 1; letter-spacing: -0.03em">{{ plansTitle }}</h2>
+<div role="group" aria-label="Cambiar tipo de cliente" style="display: inline-flex; border: 2px solid #121211; padding: 4px; gap: 4px">
+<button type="button" onClick="{{ pickPersonal }}" aria-pressed="{{ personalPressed }}" style="{{ personalBtnStyle }}">Para mí</button>
+<button type="button" onClick="{{ pickBusiness }}" aria-pressed="{{ businessPressed }}" style="{{ businessBtnStyle }}">Para mi empresa</button>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px">
+<sc-for list="{{ plans }}" as="p" hint-placeholder-count="2">
+<div style="{{ p.cardStyle }}">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em">{{ p.tag }}</div>
+<h3 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 36px; letter-spacing: -0.02em">{{ p.name }}</h3>
+<div style="display: flex; align-items: baseline; gap: 8px"><span style="font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 44px">{{ p.price }}</span><span style="font-size: 16px">{{ p.unit }}</span></div>
+<p style="margin: 0; font-size: 16px; line-height: 1.5">{{ p.desc }}</p>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 16px">
+<sc-for list="{{ p.items }}" as="it" hint-placeholder-count="4">
+<li style="display: flex; gap: 10px"><span aria-hidden="true" style="font-family: 'IBM Plex Mono', monospace">—</span><span>{{ it }}</span></li>
+</sc-for>
+</ul>
+<a href="#contacto" style="{{ p.ctaStyle }}">{{ p.cta }}</a>
+</div>
+</sc-for>
+</div>
+<p style="margin: 24px 0 0; font-size: 14px; color: #55544F">{{ plansFoot }}</p>
+</div>
+</section>
+
+<!-- TECNOLOGIA -->
+<section id="tecnologia" style="background: #121211; color: #F3F2EE">
+<div style="max-width: 1240px; margin: 0 auto; padding: 96px 24px">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-transform: uppercase; letter-spacing: 0.1em; color: #B8B6AE; margin-bottom: 20px">Debajo del capó</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 56px; margin-bottom: 56px">
+<h2 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 105%; font-size: clamp(36px, 4.2vw, 60px); line-height: 1; letter-spacing: -0.03em">La mejor herramienta para cada caso. Y la cambiamos cuando sale una mejor.</h2>
+<p style="margin: 0; font-size: 18px; line-height: 1.55; color: #D6D4CC">No estamos casados con ningún proveedor. Elegimos modelos y frameworks según la tarea, el coste y el nivel de privacidad que necesitas, y los actualizamos sin que tengas que hacer nada.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0; border-top: 1px solid #3A3A37">
+<div style="padding: 28px 24px 32px 0; border-bottom: 1px solid #3A3A37; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{accent}}">MODELOS</span>
+<p style="margin: 0; font-size: 16px; line-height: 1.55">Los modelos de lenguaje más capaces del momento para razonar y redactar; modelos abiertos ejecutados en infraestructura propia cuando los datos no deben salir.</p>
+</div>
+<div style="padding: 28px 24px 32px 0; border-bottom: 1px solid #3A3A37; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{accent}}">AGENTES</span>
+<p style="margin: 0; font-size: 16px; line-height: 1.55">Frameworks de agentes como Hermes Agent, con memoria persistente, herramientas y tareas programadas que trabajan aunque no estés delante.</p>
+</div>
+<div style="padding: 28px 24px 32px 0; border-bottom: 1px solid #3A3A37; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{accent}}">INTEGRACIONES</span>
+<p style="margin: 0; font-size: 16px; line-height: 1.55">Correo, calendario, almacenamiento, CRM y facturación mediante conectores estándar como MCP. Sin migrar a herramientas nuevas.</p>
+</div>
+<div style="padding: 28px 24px 32px 0; border-bottom: 1px solid #3A3A37; display: flex; flex-direction: column; gap: 10px">
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: {{accent}}">CONTROL Y DATOS</span>
+<p style="margin: 0; font-size: 16px; line-height: 1.55">Permisos mínimos, aprobación humana en acciones sensibles y registro de todo lo que hace el agente. Alojamiento en [UE / infraestructura propia — CONFIRMAR].</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+<div style="max-width: 1240px; margin: 0 auto; padding: 96px 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 56px">
+<h2 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 800; font-stretch: 105%; font-size: clamp(36px, 4.2vw, 60px); line-height: 1; letter-spacing: -0.03em">Preguntas directas.</h2>
+<div style="display: flex; flex-direction: column">
+<div style="padding: 24px 0; border-top: 1px solid #121211"><h3 style="margin: 0 0 8px; font-size: 19px; font-weight: 600">¿Necesito saber de IA?</h3><p style="margin: 0; font-size: 16px; line-height: 1.55; color: #2A2A28">No. Hablas con tu agente por correo o mensajería, como con un asistente. La parte técnica es nuestra.</p></div>
+<div style="padding: 24px 0; border-top: 1px solid #121211"><h3 style="margin: 0 0 8px; font-size: 19px; font-weight: 600">¿Se puede equivocar?</h3><p style="margin: 0; font-size: 16px; line-height: 1.55; color: #2A2A28">Sí. Por eso todo lo que implique pagar, enviar en tu nombre o borrar pasa antes por tu aprobación, y cada acción queda registrada.</p></div>
+<div style="padding: 24px 0; border-top: 1px solid #121211"><h3 style="margin: 0 0 8px; font-size: 19px; font-weight: 600">¿Qué pasa con mis datos?</h3><p style="margin: 0; font-size: 16px; line-height: 1.55; color: #2A2A28">Accedemos solo a lo que autorizas y puedes revocar el acceso cuando quieras. [Detalle de alojamiento y tratamiento de datos — CONFIRMAR].</p></div>
+<div style="padding: 24px 0; border-top: 1px solid #121211; border-bottom: 1px solid #121211"><h3 style="margin: 0 0 8px; font-size: 19px; font-weight: 600">¿Hay permanencia?</h3><p style="margin: 0; font-size: 16px; line-height: 1.55; color: #2A2A28">[CONDICIONES DE CANCELACIÓN].</p></div>
+</div>
+</div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="contacto" style="background: {{accent}}; border-top: 2px solid #121211">
+<div style="max-width: 1240px; margin: 0 auto; padding: 96px 24px; display: flex; flex-direction: column; gap: 32px">
+<h2 style="margin: 0; font-family: 'Archivo', sans-serif; font-weight: 850; font-stretch: 108%; font-size: clamp(40px, 5.6vw, 80px); line-height: 0.95; letter-spacing: -0.035em; max-width: 960px">Empieza por una llamada de 30 minutos.</h2>
+<div style="display: flex; gap: 12px; flex-wrap: wrap">
+<a href="mailto:[EMAIL]?subject=Diagn%C3%B3stico%20personal" style="background: #121211; color: #F3F2EE; text-decoration: none; font-weight: 600; font-size: 17px; padding: 16px 24px; min-height: 52px; display: inline-flex; align-items: center">Soy particular</a>
+<a href="mailto:[EMAIL]?subject=Propuesta%20empresa" style="color: #121211; text-decoration: none; font-weight: 600; font-size: 17px; padding: 16px 24px; min-height: 52px; display: inline-flex; align-items: center; border: 2px solid #121211">Represento a una empresa</a>
+</div>
+</div>
+</section>
+
+<footer style="background: #121211; color: #B8B6AE">
+<div style="max-width: 1240px; margin: 0 auto; padding: 32px 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-family: 'IBM Plex Mono', monospace; font-size: 13px">
+<span>© 2026 Machines Do It Better</span>
+<span>[EMAIL] · [AVISO LEGAL] · [PRIVACIDAD]</span>
+</div>
+</footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#FF5A1F","options":["#FF5A1F","#C6F432","#7BA7FF","#F3C623"]},"startMode":{"editor":"enum","options":["personal","business"],"default":"personal"},"$preview":{"width":1440,"height":4700}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accent ?? '#FF5A1F';
+    const mode = (this.state && this.state.mode) || this.props.startMode || 'personal';
+    const isPersonal = mode === 'personal';
+    const base = 'font-family: inherit; font-size: 16px; font-weight: 600; padding: 12px 20px; min-height: 48px; border: 0; cursor: pointer; ';
+    const on = base + 'background: #121211; color: #F3F2EE;';
+    const off = base + 'background: transparent; color: #121211;';
+
+    const ok = 'color: ' + accent + '; text-align: right;';
+    const wait = 'color: #121211; background: ' + accent + '; text-align: center; font-size: 12px; padding: 2px 4px;';
+    const ledgerP = [
+      { area: 'Correo', text: 'Bandeja ordenada; 6 borradores listos para revisar', status: 'HECHO', statusStyle: ok },
+      { area: 'Agenda', text: 'Cita del dentista movida al jueves', status: 'HECHO', statusStyle: ok },
+      { area: 'Papeleo', text: 'Factura de la luz archivada en su carpeta', status: 'HECHO', statusStyle: ok },
+      { area: 'Viajes', text: 'Tres opciones de tren a Madrid comparadas', status: 'HECHO', statusStyle: ok },
+      { area: 'Seguro', text: 'Renovación del seguro del coche', status: 'TU OK', statusStyle: wait }
+    ];
+    const ledgerB = [
+      { area: 'Soporte', text: 'Consultas frecuentes respondidas; 2 escaladas', status: 'HECHO', statusStyle: ok },
+      { area: 'CRM', text: 'Contactos nuevos del correo dados de alta', status: 'HECHO', statusStyle: ok },
+      { area: 'Informe', text: 'Resumen semanal enviado al equipo, lunes 08:00', status: 'HECHO', statusStyle: ok },
+      { area: 'Compras', text: 'Facturas de proveedores codificadas', status: 'HECHO', statusStyle: ok },
+      { area: 'Pagos', text: 'Remesa de pagos a proveedores', status: 'TU OK', statusStyle: wait }
+    ];
+
+    const outcomesP = [
+      { n: '01', title: 'Bandeja de entrada bajo control', body: 'Clasifica, resume y te deja respuestas redactadas. Tú solo apruebas o corriges.' },
+      { n: '02', title: 'Agenda que se organiza sola', body: 'Propone huecos, confirma citas y te avisa de los conflictos antes de que ocurran.' },
+      { n: '03', title: 'Papeleo y facturas al día', body: 'Recibos archivados, vencimientos vigilados y trámites preparados para firmar.' },
+      { n: '04', title: 'Investigación y compras resueltas', body: 'Compara opciones, resume lo que importa y te trae una recomendación concreta.' }
+    ];
+    const outcomesB = [
+      { n: '01', title: 'Clientes atendidos sin esperas', body: 'Responde lo repetitivo al momento y pasa a tu equipo solo lo que necesita criterio.' },
+      { n: '02', title: 'Bandeja compartida ordenada', body: 'Cada correo clasificado, asignado y con seguimiento. Nada se queda sin dueño.' },
+      { n: '03', title: 'Informes que llegan solos', body: 'Ventas, operaciones o caja: el resumen que necesitas, cuando lo necesitas.' },
+      { n: '04', title: 'Datos que se mueven solos', body: 'Del correo al CRM, de la factura a la contabilidad. Sin copiar y pegar.' }
+    ];
+
+    const cardDark = 'background: #121211; color: #F3F2EE; padding: 36px; display: flex; flex-direction: column; gap: 18px; border: 2px solid #121211;';
+    const cardLight = 'background: #F3F2EE; color: #121211; padding: 36px; display: flex; flex-direction: column; gap: 18px; border: 2px solid #121211;';
+    const ctaAccent = 'margin-top: auto; background: ' + accent + '; color: #121211; text-decoration: none; font-weight: 600; font-size: 16px; padding: 14px 20px; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; border: 2px solid #121211;';
+    const ctaInk = 'margin-top: auto; background: #121211; color: #F3F2EE; text-decoration: none; font-weight: 600; font-size: 16px; padding: 14px 20px; min-height: 48px; display: inline-flex; align-items: center; justify-content: center;';
+
+    const plansP = [
+      { tag: 'Particulares', name: 'Esencial', price: '[PRECIO]', unit: '€/mes', desc: 'Para recuperar las horas que se van en correo y agenda.', items: ['Un agente personal', 'Correo y calendario', 'Aprobación de acciones sensibles', 'Revisión mensual'], cta: 'Empezar con Esencial', cardStyle: cardLight, ctaStyle: ctaInk },
+      { tag: 'Particulares · recomendado', name: 'Completo', price: '[PRECIO]', unit: '€/mes', desc: 'Para delegar también el papeleo, las finanzas del hogar y los viajes.', items: ['Todo lo de Esencial', 'Papeleo, recibos y vencimientos', 'Investigación, compras y viajes', 'Soporte prioritario'], cta: 'Empezar con Completo', cardStyle: cardDark, ctaStyle: ctaAccent }
+    ];
+    const plansB = [
+      { tag: 'Empresas', name: 'Equipo', price: '[PRECIO]', unit: '€/mes', desc: 'Un agente para un proceso concreto que hoy os come horas.', items: ['Hasta [N] usuarios', 'Un flujo automatizado', 'Registro de acciones y permisos', 'Informe mensual'], cta: 'Solicitar propuesta', cardStyle: cardLight, ctaStyle: ctaInk },
+      { tag: 'Empresas', name: 'A medida', price: 'Desde [PRECIO]', unit: '€/mes', desc: 'Varios agentes coordinados sobre vuestras herramientas.', items: ['Usuarios y flujos a medida', 'Integraciones con CRM, ERP y contabilidad', 'Despliegue en vuestra infraestructura', 'Acuerdo de nivel de servicio'], cta: 'Hablar con nosotros', cardStyle: cardDark, ctaStyle: ctaAccent }
+    ];
+
+    return {
+      accent,
+      isPersonal,
+      isBusiness: !isPersonal,
+      personalPressed: isPersonal ? 'true' : 'false',
+      businessPressed: isPersonal ? 'false' : 'true',
+      personalBtnStyle: isPersonal ? on : off,
+      businessBtnStyle: isPersonal ? off : on,
+      pickPersonal: () => this.setState({ mode: 'personal' }),
+      pickBusiness: () => this.setState({ mode: 'business' }),
+      ledgerTitle: isPersonal ? 'Tu agente esta semana' : 'Agente de operaciones · esta semana',
+      ledger: isPersonal ? ledgerP : ledgerB,
+      outcomes: isPersonal ? outcomesP : outcomesB,
+      plansTitle: isPersonal ? 'Planes para ti.' : 'Planes para tu empresa.',
+      plans: isPersonal ? plansP : plansB,
+      plansFoot: isPersonal ? 'Alta única: [PRECIO] €. IVA incluido. [CONDICIONES].' : 'Alta y configuración: [PRECIO] €. Precios sin IVA. [CONDICIONES].'
+    };
+  }
+}
+</script>
+</body>
+</html>

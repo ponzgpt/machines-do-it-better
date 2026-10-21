@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Machines Do It Better — Agentes personales de IA</title>
+<meta name="description" content="Agentes personales de IA llave en mano para particulares y empresas. Vendemos el trabajo hecho, no la tecnología.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#F3F2EE; --paper-2:#E8E6DF; --ink:#121211; --ink-2:#2A2A28; --muted:#55544F;
+  --line:#D9D7D0; --dark-line:#3A3A37; --dark-muted:#B8B6AE; --dark-text:#D6D4CC;
+  --accent:#FF5A1F;
+  --display:'Archivo',sans-serif; --sans:'IBM Plex Sans',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--ink)} a:hover{color:var(--muted)}
+.wrap{max-width:1240px;margin:0 auto;padding-left:24px;padding-right:24px}
+.mono{font-family:var(--mono)}
+.eyebrow{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.h1{margin:0;font-family:var(--display);font-weight:850;font-stretch:108%;font-size:clamp(44px,6.4vw,92px);line-height:.95;letter-spacing:-.035em}
+.h2{margin:0;font-family:var(--display);font-weight:800;font-stretch:105%;font-size:clamp(36px,4.2vw,60px);line-height:1;letter-spacing:-.03em}
+.lead{margin:0;font-size:20px;line-height:1.5;max-width:560px;color:var(--ink-2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:16px 24px;font-weight:600;font-size:17px;text-decoration:none;border:2px solid var(--ink)}
+.btn-accent{background:var(--accent);color:var(--ink)}
+.btn-ghost{background:transparent;color:var(--ink);font-weight:500}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{color:var(--paper);opacity:.9}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+
+/* Selector particular / empresa */
+.seg{display:inline-flex;align-self:flex-start;border:2px solid var(--ink);padding:4px;gap:4px}
+.seg button{font:inherit;font-size:16px;font-weight:600;padding:12px 20px;min-height:48px;border:0;cursor:pointer;background:transparent;color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.seg button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+body[data-mode="personal"] .only-business{display:none !important}
+body[data-mode="business"] .only-personal{display:none !important}
+
+/* Nav */
+header.top{border-bottom:1px solid var(--line)}
+header.top .wrap{padding-top:18px;padding-bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.brand{display:flex;align-items:baseline;gap:12px;text-decoration:none}
+.brand b{font-family:var(--display);font-weight:900;font-stretch:115%;font-size:24px;letter-spacing:-.02em}
+.brand span{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+nav{display:flex;align-items:center;gap:28px;flex-wrap:wrap;font-size:15px}
+nav a{text-decoration:none}
+nav .cta{background:var(--ink);color:var(--paper);padding:12px 18px;min-height:44px;display:inline-flex;align-items:center;font-weight:500}
+
+/* Hero */
+.hero{padding-top:72px;padding-bottom:96px}
+.hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:56px;align-items:start}
+.hero-copy{display:flex;flex-direction:column;gap:28px}
+.ledger{background:var(--ink);color:var(--paper);padding:28px;font-family:var(--mono);font-size:14px;line-height:1.5}
+.ledger-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--dark-line);margin-bottom:8px;flex-wrap:wrap;font-size:12px;color:var(--dark-muted)}
+.ledger-head .t{text-transform:uppercase;letter-spacing:.08em}
+.ledger ul{list-style:none;margin:0;padding:0}
+.ledger li{display:grid;grid-template-columns:96px minmax(0,1fr) 64px;gap:16px;padding:14px 0;border-bottom:1px solid var(--ink-2);align-items:baseline}
+.ledger .area{color:var(--dark-muted)}
+.ledger .ok{color:var(--accent);text-align:right}
+.ledger .wait{color:var(--ink);background:var(--accent);text-align:center;font-size:12px;padding:2px 4px}
+.ledger-foot{padding-top:16px;font-size:12px;color:var(--dark-muted)}
+
+/* Secciones */
+section.band{padding-top:96px;padding-bottom:96px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:48px}
+.outcomes{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+.outcomes article{padding:32px 28px 40px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);display:flex;flex-direction:column;gap:16px;min-height:260px}
+.outcomes h3{margin:0;font-family:var(--display);font-weight:750;font-size:26px;line-height:1.1;letter-spacing:-.015em}
+.outcomes p{margin:0;font-size:16px;line-height:1.5;color:var(--ink-2)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px}
+.steps article{display:flex;flex-direction:column;gap:14px;border-top:4px solid var(--ink);padding-top:24px}
+.steps .n{font-family:var(--display);font-weight:900;font-size:64px;line-height:1;letter-spacing:-.04em}
+.steps h3{margin:0;font-size:22px;font-weight:600}
+.steps p{margin:0;font-size:16px;line-height:1.55;color:var(--ink-2)}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.plan{padding:36px;display:flex;flex-direction:column;gap:18px;border:2px solid var(--ink);background:var(--paper);color:var(--ink)}
+.plan.dark{background:var(--ink);color:var(--paper)}
+.plan .tag{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+.plan h3{margin:0;font-family:var(--display);font-weight:800;font-size:36px;letter-spacing:-.02em}
+.plan .price{display:flex;align-items:baseline;gap:8px}
+.plan .price b{font-family:var(--display);font-weight:800;font-size:44px}
+.plan p{margin:0;font-size:16px;line-height:1.5}
+.plan ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-size:16px}
+.plan li{display:flex;gap:10px}
+.plan li::before{content:"—";font-family:var(--mono)}
+.plan .btn{margin-top:auto;min-height:48px;font-size:16px;padding:14px 20px}
+.plan.dark .btn{background:var(--accent);color:var(--ink)}
+.plan:not(.dark) .btn{background:var(--ink);color:var(--paper)}
+.foot-note{margin:24px 0 0;font-size:14px;color:var(--muted)}
+.tech{background:var(--ink);color:var(--paper)}
+.tech .eyebrow{color:var(--dark-muted);margin-bottom:20px}
+.tech-intro{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:56px;margin-bottom:56px}
+.tech-intro p{margin:0;font-size:18px;line-height:1.55;color:var(--dark-text)}
+.tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));border-top:1px solid var(--dark-line)}
+.tech-grid div{padding:28px 24px 32px 0;border-bottom:1px solid var(--dark-line);display:flex;flex-direction:column;gap:10px}
+.tech-grid .k{font-family:var(--mono);font-size:13px;color:var(--accent)}
+.tech-grid p{margin:0;font-size:16px;line-height:1.55}
+.faq{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:56px}
+.faq dl{margin:0}
+.faq dt{padding-top:24px;border-top:1px solid var(--ink);margin:0 0 8px;font-size:19px;font-weight:600}
+.faq dd{margin:0 0 24px;font-size:16px;line-height:1.55;color:var(--ink-2)}
+.faq dl::after{content:"";display:block;border-top:1px solid var(--ink)}
+.contact{background:var(--accent);border-top:2px solid var(--ink)}
+.contact .wrap{display:flex;flex-direction:column;gap:32px}
+.contact h2{font-size:clamp(40px,5.6vw,80px);font-weight:850;font-stretch:108%;line-height:.95;letter-spacing:-.035em;max-width:960px}
+footer{background:var(--ink);color:var(--dark-muted)}
+footer .wrap{padding-top:32px;padding-bottom:32px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:13px}
+@media (max-width:420px){.ledger li{grid-template-columns:72px minmax(0,1fr) 56px;gap:10px}}
+</style>
+</head>
+<body data-mode="personal">
+
+<header class="top">
+  <div class="wrap">
+    <a href="#top" class="brand"><b>MDIB</b><span>Machines Do It Better</span></a>
+    <nav aria-label="Principal">
+      <a href="#resultados">Resultados</a>
+      <a href="#como">Cómo funciona</a>
+      <a href="#planes">Planes</a>
+      <a href="#tecnologia">Tecnología</a>
+      <a href="#contacto" class="cta">Hablar con nosotros</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- HERO -->
+<section id="top" class="wrap hero">
+  <div class="eyebrow" style="margin-bottom:28px">Agentes personales de IA · servicio llave en mano</div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:40px">
+    <div style="font-size:15px;font-weight:500" id="seg-label">¿Para quién es?</div>
+    <div class="seg" role="group" aria-labelledby="seg-label">
+      <button type="button" data-set-mode="personal" aria-pressed="true">Para mí</button>
+      <button type="button" data-set-mode="business" aria-pressed="false">Para mi empresa</button>
+    </div>
+    <div style="font-size:14px;color:var(--muted);max-width:520px">¿Facturas a nombre de una sociedad o lo va a usar más de una persona? Elige «Para mi empresa».</div>
+  </div>
+
+  <div class="hero-grid">
+    <div class="hero-copy only-personal">
+      <h1 class="h1">Delega lo que te roba la semana.</h1>
+      <p class="lead">Configuramos y mantenemos un agente de IA que se ocupa de tu correo, tu agenda, tu papeleo y tus recados digitales. Tú decides qué hace solo y qué necesita tu visto bueno.</p>
+      <div class="row">
+        <a href="#contacto" class="btn btn-accent">Reservar diagnóstico gratuito</a>
+        <a href="#planes" class="btn btn-ghost">Ver planes personales</a>
+      </div>
+      <div class="mono" style="font-size:13px;color:var(--muted)">Sin instalar nada. Sin aprender a escribir prompts.</div>
+    </div>
+    <div class="hero-copy only-business">
+      <h1 class="h1">Tu equipo, sin el trabajo de copiar y pegar.</h1>
+      <p class="lead">Desplegamos agentes que atienden consultas, ordenan la bandeja compartida, preparan informes y mueven datos entre tus herramientas. Con permisos, registro de cada acción y una persona responsable al otro lado.</p>
+      <div class="row">
+        <a href="#contacto" class="btn btn-accent">Solicitar propuesta</a>
+        <a href="#planes" class="btn btn-ghost">Ver planes para empresas</a>
+      </div>
+      <div class="mono" style="font-size:13px;color:var(--muted)">Pensado para equipos de [N]–[N] personas. Factura con IVA.</div>
+    </div>
+
+    <div class="ledger" aria-label="Ejemplo ilustrativo de la actividad semanal de un agente">
+      <div class="ledger-head">
+        <span class="t only-personal">Tu agente esta semana</span>
+        <span class="t only-business">Agente de operaciones · esta semana</span>
+        <span>Ejemplo ilustrativo</span>
+      </div>
+      <ul class="only-personal">
+        <li><span class="area">Correo</span><span>Bandeja ordenada; 6 borradores listos para revisar</span><span class="ok">HECHO</span></li>
+        <li><span class="area">Agenda</span><span>Cita del dentista movida al jueves</span><span class="ok">HECHO</span></li>
+        <li><span class="area">Papeleo</span><span>Factura de la luz archivada en su carpeta</span><span class="ok">HECHO</span></li>
+        <li><span class="area">Viajes</span><span>Tres opciones de tren a Madrid comparadas</span><span class="ok">HECHO</span></li>
+        <li><span class="area">Seguro</span><span>Renovación del seguro del coche</span><span class="wait">TU OK</span></li>
+      </ul>
+      <ul class="only-business">
+        <li><span class="area">Soporte</span><span>Consultas frecuentes respondidas; 2 escaladas</span><span class="ok">HECHO</span></li>
+        <li><span class="area">CRM</span><span>Contactos nuevos del correo dados de alta</span><span class="ok">HECHO</span></li>
+        <li><span class="area">Informe</span><span>Resumen semanal enviado al equipo, lunes 08:00</span><span class="ok">HECHO</span></li>
+        <li><span class="area">Compras</span><span>Facturas de proveedores codificadas</span><span class="ok">HECHO</span></li>
+        <li><span class="area">Pagos</span><span>Remesa de pagos a proveedores</span><span class="wait">TU OK</span></li>
+      </ul>
+      <div class="ledger-foot">Lo marcado «TU OK» espera tu aprobación antes de ejecutarse.</div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADOS -->
+<section id="resultados" class="band" style="border-top:2px solid var(--ink)">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="h2" style="max-width:720px">Vendemos resultados, no tecnología.</h2>
+      <p style="margin:0;font-size:17px;line-height:1.5;max-width:420px;color:var(--ink-2)">No te entregamos una herramienta para que la configures tú. Te entregamos el trabajo hecho, y nos encargamos de que siga funcionando.</p>
+    </div>
+    <div class="outcomes only-personal">
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">01</span><h3>Bandeja de entrada bajo control</h3><p>Clasifica, resume y te deja respuestas redactadas. Tú solo apruebas o corriges.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">02</span><h3>Agenda que se organiza sola</h3><p>Propone huecos, confirma citas y te avisa de los conflictos antes de que ocurran.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">03</span><h3>Papeleo y facturas al día</h3><p>Recibos archivados, vencimientos vigilados y trámites preparados para firmar.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">04</span><h3>Investigación y compras resueltas</h3><p>Compara opciones, resume lo que importa y te trae una recomendación concreta.</p></article>
+    </div>
+    <div class="outcomes only-business">
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">01</span><h3>Clientes atendidos sin esperas</h3><p>Responde lo repetitivo al momento y pasa a tu equipo solo lo que necesita criterio.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">02</span><h3>Bandeja compartida ordenada</h3><p>Cada correo clasificado, asignado y con seguimiento. Nada se queda sin dueño.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">03</span><h3>Informes que llegan solos</h3><p>Ventas, operaciones o caja: el resumen que necesitas, cuando lo necesitas.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">04</span><h3>Datos que se mueven solos</h3><p>Del correo al CRM, de la factura a la contabilidad. Sin copiar y pegar.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="como" class="band" style="background:var(--paper-2)">
+  <div class="wrap">
+    <h2 class="h2" style="margin-bottom:56px">Tres pasos. Precio cerrado.</h2>
+    <div class="steps">
+      <article><span class="n">01</span><h3>Diagnóstico</h3><p>Una llamada de 30 minutos para ver qué tareas te quitan más tiempo y cuáles tiene sentido delegar. Si no vemos encaje, te lo decimos.</p></article>
+      <article><span class="n">02</span><h3>Puesta en marcha</h3><p>Conectamos tus cuentas, configuramos el agente y fijamos contigo qué puede hacer solo y qué requiere tu aprobación. Listo en [N] días.</p></article>
+      <article><span class="n">03</span><h3>Operación y mejora</h3><p>Lo vigilamos, lo ajustamos y lo actualizamos cada mes. Recibes un resumen de lo que ha hecho y de lo que ha escalado a ti.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- PLANES -->
+<section id="planes" class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="h2"><span class="only-personal">Planes para ti.</span><span class="only-business">Planes para tu empresa.</span></h2>
+      <div class="seg" role="group" aria-label="Cambiar tipo de cliente">
+        <button type="button" data-set-mode="personal" aria-pressed="true">Para mí</button>
+        <button type="button" data-set-mode="business" aria-pressed="false">Para mi empresa</button>
+      </div>
+    </div>
+    <div class="plans only-personal">
+      <article class="plan">
+        <div class="tag">Particulares</div><h3>Esencial</h3>
+        <div class="price"><b>[PRECIO]</b><span>€/mes</span></div>
+        <p>Para recuperar las horas que se van en correo y agenda.</p>
+        <ul><li>Un agente personal</li><li>Correo y calendario</li><li>Aprobación de acciones sensibles</li><li>Revisión mensual</li></ul>
+        <a href="#contacto" class="btn">Empezar con Esencial</a>
+      </article>
+      <article class="plan dark">
+        <div class="tag">Particulares · recomendado</div><h3>Completo</h3>
+        <div class="price"><b>[PRECIO]</b><span>€/mes</span></div>
+        <p>Para delegar también el papeleo, las finanzas del hogar y los viajes.</p>
+        <ul><li>Todo lo de Esencial</li><li>Papeleo, recibos y vencimientos</li><li>Investigación, compras y viajes</li><li>Soporte prioritario</li></ul>
+        <a href="#contacto" class="btn">Empezar con Completo</a>
+      </article>
+    </div>
+    <div class="plans only-business">
+      <article class="plan">
+        <div class="tag">Empresas</div><h3>Equipo</h3>
+        <div class="price"><b>[PRECIO]</b><span>€/mes</span></div>
+        <p>Un agente para un proceso concreto que hoy os come horas.</p>
+        <ul><li>Hasta [N] usuarios</li><li>Un flujo automatizado</li><li>Registro de acciones y permisos</li><li>Informe mensual</li></ul>
+        <a href="#contacto" class="btn">Solicitar propuesta</a>
+      </article>
+      <article class="plan dark">
+        <div class="tag">Empresas</div><h3>A medida</h3>
+        <div class="price"><b>Desde [PRECIO]</b><span>€/mes</span></div>
+        <p>Varios agentes coordinados sobre vuestras herramientas.</p>
+        <ul><li>Usuarios y flujos a medida</li><li>Integraciones con CRM, ERP y contabilidad</li><li>Despliegue en vuestra infraestructura</li><li>Acuerdo de nivel de servicio</li></ul>
+        <a href="#contacto" class="btn">Hablar con nosotros</a>
+      </article>
+    </div>
+    <p class="foot-note only-personal">Alta única: [PRECIO] €. IVA incluido. [CONDICIONES].</p>
+    <p class="foot-note only-business">Alta y configuración: [PRECIO] €. Precios sin IVA. [CONDICIONES].</p>
+  </div>
+</section>
+
+<!-- TECNOLOGIA -->
+<section id="tecnologia" class="band tech">
+  <div class="wrap">
+    <div class="eyebrow">Debajo del capó</div>
+    <div class="tech-intro">
+      <h2 class="h2">La mejor herramienta para cada caso. Y la cambiamos cuando sale una mejor.</h2>
+      <p>No estamos casados con ningún proveedor. Elegimos modelos y frameworks según la tarea, el coste y el nivel de privacidad que necesitas, y los actualizamos sin que tengas que hacer nada.</p>
+    </div>
+    <div class="tech-grid">
+      <div><span class="k">MODELOS</span><p>Los modelos de lenguaje más capaces del momento para razonar y redactar; modelos abiertos ejecutados en infraestructura propia cuando los datos no deben salir.</p></div>
+      <div><span class="k">AGENTES</span><p>Frameworks de agentes como Hermes Agent, con memoria persistente, herramientas y tareas programadas que trabajan aunque no estés delante.</p></div>
+      <div><span class="k">INTEGRACIONES</span><p>Correo, calendario, almacenamiento, CRM y facturación mediante conectores estándar como MCP. Sin migrar a herramientas nuevas.</p></div>
+      <div><span class="k">CONTROL Y DATOS</span><p>Permisos mínimos, aprobación humana en acciones sensibles y registro de todo lo que hace el agente. Alojamiento en [UE / infraestructura propia — CONFIRMAR].</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="band">
+  <div class="wrap faq">
+    <h2 class="h2">Preguntas directas.</h2>
+    <dl>
+      <dt>¿Necesito saber de IA?</dt><dd>No. Hablas con tu agente por correo o mensajería, como con un asistente. La parte técnica es nuestra.</dd>
+      <dt>¿Se puede equivocar?</dt><dd>Sí. Por eso todo lo que implique pagar, enviar en tu nombre o borrar pasa antes por tu aprobación, y cada acción queda registrada.</dd>
+      <dt>¿Qué pasa con mis datos?</dt><dd>Accedemos solo a lo que autorizas y puedes revocar el acceso cuando quieras. [Detalle de alojamiento y tratamiento de datos — CONFIRMAR].</dd>
+      <dt>¿Hay permanencia?</dt><dd>[CONDICIONES DE CANCELACIÓN].</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="band contact">
+  <div class="wrap">
+    <h2 class="h2">Empieza por una llamada de 30 minutos.</h2>
+    <div class="row">
+      <a href="mailto:[EMAIL]?subject=Diagn%C3%B3stico%20personal" class="btn btn-ink">Soy particular</a>
+      <a href="mailto:[EMAIL]?subject=Propuesta%20empresa" class="btn btn-ghost" style="font-weight:600">Represento a una empresa</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Machines Do It Better</span>
+    <span>[EMAIL] · [AVISO LEGAL] · [PRIVACIDAD]</span>
+  </div>
+</footer>
+
+<script>
+// Selector particular/empresa. Modo inicial por URL: ?para=empresa o #empresa (para enlazar campañas B2B).
+(function () {
+  var body = document.body;
+  function setMode(mode) {
+    body.setAttribute('data-mode', mode);
+    document.querySelectorAll('[data-set-mode]').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-set-mode') === mode));
+    });
+  }
+  var q = new URLSearchParams(location.search).get('para');
+  if (q === 'empresa' || location.hash === '#empresa') setMode('business');
+  document.querySelectorAll('[data-set-mode]').forEach(function (b) {
+    b.addEventListener('click', function () { setMode(b.getAttribute('data-set-mode')); });
+  });
+})();
+</script>
+</body>
+</html>

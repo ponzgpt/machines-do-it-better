@@ -1,0 +1,284 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { EMAIL } from '../site';
+
+const mail = (subject: string) => `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}`;
+const PROMISE = 'Incluye entrega guiada, documentación y 14 días de garantía sobre el alcance acordado.';
+---
+<Layout
+  title="Machines Do It Better — Agentes personales de IA"
+  description="Un agente personal de IA que resuelve una tarea concreta por Telegram, para ti o para tu pequeño equipo. Diagnóstico gratuito y precio cerrado."
+>
+<!-- HERO -->
+<section id="top" class="wrap hero">
+  <div class="eyebrow" style="margin-bottom:28px">Agentes personales de IA · servicio llave en mano</div>
+
+  <div class="who">
+    <div style="font-size:15px;font-weight:500" id="seg-label">¿Para quién es?</div>
+    <div class="seg" role="group" aria-labelledby="seg-label">
+      <button type="button" data-set-mode="personal" aria-pressed="true">Para mí</button>
+      <button type="button" data-set-mode="business" aria-pressed="false">Para mi negocio o equipo</button>
+    </div>
+    <div style="font-size:14px;color:var(--muted);max-width:520px">¿Lo vas a usar en tu trabajo como autónomo o con un equipo pequeño? Elige «Para mi negocio o equipo».</div>
+  </div>
+
+  <div class="hero-grid">
+    <div class="hero-copy only-personal">
+      <h1 class="h1">Delega lo que te roba la semana.</h1>
+      <p class="lead">Elegimos contigo una tarea frecuente y molesta, y te dejamos un agente de IA que la resuelve cada día por Telegram. Tú decides qué hace solo y qué necesita tu visto bueno.</p>
+      <div class="row">
+        <a href="#contacto" class="btn btn-accent">Reservar diagnóstico gratuito</a>
+        <a href="#piloto" class="btn btn-ghost">Ver el piloto</a>
+      </div>
+      <div class="mono" style="font-size:13px;color:var(--muted)">Sin aprender a escribir prompts. La cuenta y los datos, a tu nombre.</div>
+    </div>
+    <div class="hero-copy only-business">
+      <h1 class="h1">Una tarea repetida menos para tu equipo.</h1>
+      <p class="lead">Elegimos la tarea que hoy os quita más horas y la dejamos resuelta con un agente de IA en Telegram. Con aprobación humana en lo sensible y la cuenta a nombre de tu negocio.</p>
+      <div class="row">
+        <a href="#contacto" class="btn btn-accent">Solicitar diagnóstico gratuito</a>
+        <a href="#piloto" class="btn btn-ghost">Ver el piloto</a>
+      </div>
+      <div class="mono" style="font-size:13px;color:var(--muted)">Para autónomos y equipos pequeños, sin perfil técnico.</div>
+    </div>
+
+    <div class="ledger" aria-label="Ejemplo ilustrativo de un briefing diario">
+      <div class="ledger-head">
+        <span class="t only-personal">Tu briefing · hoy 07:30</span>
+        <span class="t only-business">Briefing del equipo · lunes 08:00</span>
+        <span>Ejemplo ilustrativo</span>
+      </div>
+      <ul class="only-personal">
+        <li><span class="area">Agenda</span><span>3 citas; la de las 17:00 choca con la recogida del cole</span><span class="ok">LISTO</span></li>
+        <li><span class="area">Prioridad</span><span>Lo que no puede esperar: enviar el presupuesto de la reforma</span><span class="ok">LISTO</span></li>
+        <li><span class="area">Intereses</span><span>4 noticias de los temas que sigues, con fuente y fecha</span><span class="ok">LISTO</span></li>
+        <li><span class="area">Hábitos</span><span>20 minutos de paseo antes de comer</span><span class="ok">LISTO</span></li>
+        <li><span class="area">Borrador</span><span>Mensaje para mover el café con Marta al viernes</span><span class="wait">TU OK</span></li>
+      </ul>
+      <ul class="only-business">
+        <li><span class="area">Semana</span><span>12 tareas abiertas; 3 vencen antes del miércoles</span><span class="ok">LISTO</span></li>
+        <li><span class="area">Clientes</span><span>2 presupuestos sin respuesta desde hace 7 días</span><span class="ok">LISTO</span></li>
+        <li><span class="area">Sector</span><span>3 noticias del sector, con fuente y fecha</span><span class="ok">LISTO</span></li>
+        <li><span class="area">Prioridad</span><span>Lo primero hoy: cerrar el pedido pendiente</span><span class="ok">LISTO</span></li>
+        <li><span class="area">Envío</span><span>Publicar el resumen en el grupo del equipo</span><span class="wait">TU OK</span></li>
+      </ul>
+      <div class="ledger-foot">Un solo caso de uso: un briefing diario por Telegram. Lo marcado «TU OK» espera tu aprobación.</div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTADOS -->
+<section id="resultados" class="band" style="border-top:2px solid var(--ink)">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="h2" style="max-width:720px">Vendemos resultados, no tecnología.</h2>
+      <p style="margin:0;font-size:17px;line-height:1.5;max-width:420px;color:var(--ink-2)">No te damos una herramienta para que la configures tú. Elegimos contigo un caso de uso, lo dejamos funcionando y te enseñamos a usarlo sin depender de nosotros.</p>
+    </div>
+    <p class="eyebrow" style="margin:0 0 20px">Ejemplos de caso de uso · empezamos por uno</p>
+    <div class="outcomes only-personal">
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">01</span><h3>Briefing de cada mañana</h3><p>Tu agenda, lo que te interesa y lo único que no puede esperar, en un mensaje a la hora que elijas.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">02</span><h3>Hábitos que se cumplen</h3><p>Recordatorios y seguimiento de hábitos de bienestar general. Sin diagnósticos ni consejos médicos.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">03</span><h3>Noticias sin ruido</h3><p>Un resumen de los temas que sigues, siempre con fuente y fecha.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">04</span><h3>Mercados de un vistazo</h3><p>Cómo se han movido los índices y activos que sigues. Información, nunca órdenes ni asesoramiento.</p></article>
+    </div>
+    <div class="outcomes only-business">
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">01</span><h3>Briefing diario del equipo</h3><p>Lo que toca hoy, lo pendiente y lo urgente, en el grupo del equipo antes de empezar.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">02</span><h3>Revisión de la semana</h3><p>Qué se hizo, qué se atascó y qué conviene ajustar, cada viernes.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">03</span><h3>Vigilancia del sector</h3><p>Noticias de tu sector y tu competencia, resumidas y siempre con fuente y fecha.</p></article>
+      <article><span class="mono" style="font-size:13px;color:var(--muted)">04</span><h3>Mercados y precios</h3><p>Los índices o activos que afectan a tu negocio, de un vistazo. Información, no asesoramiento.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="como" class="band" style="background:var(--paper-2)">
+  <div class="wrap">
+    <h2 class="h2" style="margin-bottom:56px">Tres pasos. Precio cerrado.</h2>
+    <div class="steps">
+      <article><span class="n">01</span><h3>Diagnóstico gratuito</h3><p>Una llamada de 20–30 minutos para elegir la tarea que más te molesta y ver si tiene sentido delegarla. Si no vemos encaje, te lo decimos. Si lo vemos, recibes una propuesta con precio cerrado.</p></article>
+      <article><span class="n">02</span><h3>Puesta en marcha</h3><p>Creamos contigo tu agente, con la cuenta a tu nombre. Configuramos hasta dos flujos para tu caso de uso y fijamos qué hace solo y qué necesita tu aprobación.</p></article>
+      <article><span class="n">03</span><h3>Entrega</h3><p>Una sesión de 45 minutos para enseñarte a usarlo, una guía breve hecha para ti y 14 días de garantía para corregir fallos del alcance acordado.</p></article>
+    </div>
+  </div>
+</section>
+
+<!-- PILOTO -->
+<section id="piloto" class="band">
+  <div class="wrap">
+    <div class="sec-head">
+      <h2 class="h2">Una sola oferta: el Piloto Fundador.</h2>
+      <div class="seg" role="group" aria-label="Cambiar tipo de cliente">
+        <button type="button" data-set-mode="personal" aria-pressed="true">Para mí</button>
+        <button type="button" data-set-mode="business" aria-pressed="false">Para mi negocio o equipo</button>
+      </div>
+    </div>
+    <div class="plans">
+      <article class="plan dark">
+        <div class="tag"><span class="only-personal">Para ti</span><span class="only-business">Para tu negocio o equipo</span> · pago único</div>
+        <h3>Piloto Fundador</h3>
+        <div class="price"><b>Precio cerrado</b><span>tras el diagnóstico</span></div>
+        <p>Un caso de uso resuelto, con un agente que puedes usar sin depender de nosotros.</p>
+        <ul>
+          <li>Diagnóstico gratuito de 20–30 minutos</li>
+          <li>Un caso de uso prioritario</li>
+          <li>Tu propia instancia, aislada y a tu nombre</li>
+          <li>Hasta dos flujos configurados</li>
+          <li>Sesión de entrega de 45 minutos y guía breve</li>
+          <li>14 días de garantía sobre el alcance acordado</li>
+        </ul>
+        <a href="#contacto" class="btn">Reservar diagnóstico gratuito</a>
+      </article>
+      <article class="plan">
+        <div class="tag">Para que no haya sorpresas</div>
+        <h3>Qué no incluye</h3>
+        <ul>
+          <li>Desarrollo ilimitado ni integraciones no pactadas</li>
+          <li>Disponibilidad 24/7 ni soporte indefinido</li>
+          <li>Datos clínicos ni credenciales de empresa sin autorización</li>
+          <li>Respuestas perfectas: los modelos de IA se equivocan</li>
+          <li>Cambios de alcance una vez aceptada la propuesta: van con nueva propuesta y precio</li>
+          <li>Mantenimiento: si lo quieres después, te lo ofrecemos con precio y límites claros</li>
+        </ul>
+      </article>
+    </div>
+    <p class="foot-note">{PROMISE} Los costes recurrentes (la suscripción de tu instancia y el consumo de modelos) los pagas directamente al proveedor; te los detallamos antes de empezar. Es un precio de piloto: el proceso todavía se está validando.</p>
+  </div>
+</section>
+
+<!-- TECNOLOGIA -->
+<section id="tecnologia" class="band tech">
+  <div class="wrap">
+    <div class="eyebrow">Debajo del capó</div>
+    <div class="tech-intro">
+      <h2 class="h2">La herramienta adecuada para cada caso. Hoy, Hermes.</h2>
+      <p>No estamos casados con ningún proveedor. Hoy montamos cada agente sobre Hermes Agent, de Nous Research, porque encaja con lo que prometemos: memoria, tareas programadas y una instancia separada por cliente. Si deja de ser la herramienta adecuada para tu caso, usamos otra.</p>
+    </div>
+    <div class="tech-grid">
+      <div><span class="k">AGENTE</span><p>Una instancia Hermes Cloud solo para ti, con su propia memoria, sesiones, tareas programadas y credenciales. Nada se comparte con otros clientes.</p></div>
+      <div><span class="k">CUENTA Y PAGO</span><p>La cuenta de Nous Portal y la suscripción están a tu nombre. Pagas la infraestructura y el consumo directamente, sin que revendamos capacidad.</p></div>
+      <div><span class="k">CANAL</span><p>Telegram, con un bot propio cuyas credenciales son tuyas. Hablas con tu agente como con cualquier contacto.</p></div>
+      <div><span class="k">CONTROL Y DATOS</span><p>Aprobación humana en las acciones sensibles, permisos mínimos y exportación y borrado de tus datos cuando quieras.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="band">
+  <div class="wrap faq">
+    <h2 class="h2">Preguntas directas.</h2>
+    <dl>
+      <dt>¿Necesito saber de IA?</dt><dd>No. Hablas con tu agente por Telegram, como con un asistente. La configuración es cosa nuestra, y en la entrega te enseñamos lo que necesitas.</dd>
+      <dt>¿Se puede equivocar?</dt><dd>Sí. Los modelos de IA cometen errores. Por eso lo que implique enviar algo en tu nombre pasa antes por tu aprobación, y durante 14 días corregimos los fallos del alcance acordado.</dd>
+      <dt>¿Qué pasa con mis datos?</dt><dd>La cuenta, la instancia y los datos están a tu nombre, separados de los de cualquier otro cliente. El agente solo accede a lo que autorizas, y puedes exportarlo o borrarlo. No trabajamos con datos clínicos.</dd>
+      <dt>¿Hay permanencia?</dt><dd>No hay cuota con nosotros: el piloto se paga una vez. La suscripción de tu instancia es tuya con el proveedor y la gestionas tú.</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto" class="band contact">
+  <div class="wrap">
+    <h2 class="h2">Empieza por un diagnóstico gratuito de <span class="nowrap">20–30 minutos</span>.</h2>
+    <p class="contact-lead">Escríbenos qué tarea te gustaría quitarte de encima y te proponemos un hueco para hablar.</p>
+    <div class="row">
+      <a href={mail('Diagnóstico personal')} class="btn btn-ink">Soy particular</a>
+      <a href={mail('Diagnóstico para mi negocio o equipo')} class="btn btn-ghost" style="font-weight:600">Tengo un negocio o un equipo</a>
+    </div>
+    <a class="mono contact-mail" href={`mailto:${EMAIL}`}>{EMAIL}</a>
+  </div>
+</section>
+</Layout>
+
+<script>
+  // Particular/negocio selector. Initial mode from the URL: ?para=empresa or #empresa (B2B campaign links).
+  const body = document.body;
+  const setMode = (mode: string) => {
+    body.dataset.mode = mode;
+    document.querySelectorAll('[data-set-mode]').forEach((b) =>
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-set-mode') === mode)));
+  };
+  const para = new URLSearchParams(location.search).get('para');
+  if (para === 'empresa' || para === 'negocio' || location.hash === '#empresa') setMode('business');
+  document.querySelectorAll<HTMLElement>('[data-set-mode]').forEach((b) =>
+    b.addEventListener('click', () => setMode(b.dataset.setMode!)));
+</script>
+
+<style is:global>
+.seg{display:inline-flex;align-self:flex-start;border:2px solid var(--ink);padding:4px;gap:4px;max-width:100%}
+.seg button{font:inherit;font-size:16px;font-weight:600;padding:12px 20px;min-height:48px;border:0;cursor:pointer;background:transparent;color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+body[data-mode="personal"] .only-business{display:none !important}
+body[data-mode="business"] .only-personal{display:none !important}
+.who{display:flex;flex-direction:column;gap:12px;margin-bottom:40px}
+
+.hero{padding-top:72px;padding-bottom:96px}
+.hero-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:56px;align-items:start}
+.hero-copy{display:flex;flex-direction:column;gap:28px}
+.ledger{background:var(--ink);color:var(--paper);padding:28px;font-family:var(--mono);font-size:14px;line-height:1.5}
+.ledger-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--dark-line);margin-bottom:8px;flex-wrap:wrap;font-size:12px;color:var(--dark-muted)}
+.ledger-head .t{text-transform:uppercase;letter-spacing:.08em}
+.ledger ul{list-style:none;margin:0;padding:0}
+.ledger li{display:grid;grid-template-columns:96px minmax(0,1fr) 64px;gap:16px;padding:14px 0;border-bottom:1px solid var(--ink-2);align-items:baseline}
+.ledger .area{color:var(--dark-muted)}
+.ledger .ok{color:var(--accent);text-align:right}
+.ledger .wait{color:var(--ink);background:var(--accent);text-align:center;font-size:12px;padding:2px 4px}
+.ledger-foot{padding-top:16px;font-size:12px;color:var(--dark-muted)}
+
+section.band{padding-top:96px;padding-bottom:96px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:48px}
+.outcomes{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--ink);border-left:1px solid var(--ink)}
+.outcomes article{padding:32px 28px 40px;border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);display:flex;flex-direction:column;gap:16px;min-height:240px}
+.outcomes h3{margin:0;font-family:var(--display);font-weight:750;font-size:26px;line-height:1.1;letter-spacing:-.015em}
+.outcomes p{margin:0;font-size:16px;line-height:1.5;color:var(--ink-2)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr));gap:40px}
+.steps article{display:flex;flex-direction:column;gap:14px;border-top:4px solid var(--ink);padding-top:24px}
+.steps .n{font-family:var(--display);font-weight:900;font-size:64px;line-height:1;letter-spacing:-.04em}
+.steps h3{margin:0;font-size:22px;font-weight:600}
+.steps p{margin:0;font-size:16px;line-height:1.55;color:var(--ink-2)}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:24px}
+.plan{padding:36px;display:flex;flex-direction:column;gap:18px;border:2px solid var(--ink);background:var(--paper);color:var(--ink)}
+.plan.dark{background:var(--ink);color:var(--paper)}
+.plan .tag{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.08em}
+.plan h3{margin:0;font-family:var(--display);font-weight:800;font-size:36px;letter-spacing:-.02em}
+.plan .price{display:flex;align-items:baseline;gap:8px 12px;flex-wrap:wrap}
+.plan .price b{font-family:var(--display);font-weight:800;font-size:28px;line-height:1.1;letter-spacing:-.015em}
+.plan.dark .price b{color:var(--accent)}
+.plan p{margin:0;font-size:16px;line-height:1.5}
+.plan ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-size:16px;line-height:1.45}
+.plan li{display:flex;gap:10px}
+.plan li::before{content:"—";font-family:var(--mono)}
+.plan .btn{margin-top:auto;min-height:48px;font-size:16px;padding:14px 20px}
+.plan.dark .btn{background:var(--accent);color:var(--ink);border-color:var(--accent)}
+.foot-note{margin:24px 0 0;font-size:14px;line-height:1.55;color:var(--muted);max-width:860px}
+.tech{background:var(--ink);color:var(--paper)}
+.tech .eyebrow{color:var(--dark-muted);margin-bottom:20px}
+.tech-intro{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:56px;margin-bottom:56px}
+.tech-intro p{margin:0;font-size:18px;line-height:1.55;color:var(--dark-text)}
+.tech-grid{display:grid;grid-template-columns:repeat(4,1fr);column-gap:32px;border-top:1px solid var(--dark-line)}
+.tech-grid div{padding:28px 0 32px;border-bottom:1px solid var(--dark-line);display:flex;flex-direction:column;gap:10px}
+.tech-grid .k{font-family:var(--mono);font-size:13px;color:var(--accent)}
+.tech-grid p{margin:0;font-size:16px;line-height:1.55}
+.faq{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:56px}
+.faq dl{margin:0}
+.faq dt{padding-top:24px;border-top:1px solid var(--ink);margin:0 0 8px;font-size:19px;font-weight:600}
+.faq dd{margin:0 0 24px;font-size:16px;line-height:1.55;color:var(--ink-2)}
+.faq dl::after{content:"";display:block;border-top:1px solid var(--ink)}
+.contact{background:var(--accent);border-top:2px solid var(--ink)}
+.contact .wrap{display:flex;flex-direction:column;gap:32px}
+.contact h2{font-size:clamp(40px,5.6vw,80px);font-weight:850;font-stretch:108%;line-height:.95;letter-spacing:-.035em;max-width:960px}
+.contact-lead{margin:0;font-size:20px;line-height:1.5;max-width:620px}
+.contact-mail{font-size:15px;align-self:flex-start}
+@media (max-width:1000px){.outcomes,.tech-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:600px){
+  .outcomes,.tech-grid{grid-template-columns:1fr}
+  .outcomes article{min-height:0}
+  .hero{padding-top:48px;padding-bottom:72px}
+  section.band{padding-top:72px;padding-bottom:72px}
+  .seg{display:flex;align-self:stretch}
+  .seg button{flex:1;padding:12px 10px;font-size:15px}
+  .plan{padding:28px 24px}
+  .sec-head .seg{flex-basis:100%}
+  .row .btn{flex:1 1 100%}
+}
+@media (max-width:420px){.ledger{padding:22px 18px;font-size:13px}.ledger li{grid-template-columns:80px minmax(0,1fr) 52px;gap:10px}}
+</style>
