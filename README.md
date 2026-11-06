@@ -3,8 +3,8 @@
 **MDIB** is my main project: I set up personal and business AI agents, built on open models and open agent
 harnesses such as [Hermes Agent](https://github.com/NousResearch/hermes-agent), so that the person or team using
 them owns them: their account, their data, their choice of model. Consulting plus semi-automated deployment, for
-individuals (B2C) and small businesses (B2B). The ethos comes from the open-source AI world: the people using an
-AI system should control it.
+individuals (B2C) and small businesses (B2B). Open by default: nothing is locked to us, everything can be inspected,
+moved or reshaped by whoever runs it.
 
 **Live:** https://mdib.technoir.cloud · **Status:** pre-launch. The offer (one Founder Pilot) and the site are live;
 the first pilots are friends and family, so there are no paying clients yet.
