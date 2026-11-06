@@ -1,5 +1,5 @@
 // Runs after the build: fails if a built page shows a [PLACEHOLDER], a personal email, or a promise that
-// operations/support-boundaries.md (machines-do-it-better) forbids, in either language.
+// operations/support-boundaries.md (ponzgpt/mdib-ops) forbids, in either language.
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 

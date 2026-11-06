@@ -1,5 +1,5 @@
-# mdib-site
-Public landing of MDIB (Machines Do It Better): productized personal AI agents. English at `/`, Spanish (Spain) at `/es/`. Live: https://mdib.technoir.cloud
+# machines-do-it-better
+Machines Do It Better (MDIB), Javier's main project: personal and business AI agents set up for you, open-source and sovereign by default. This repo is its public face (the site); the private `ponzgpt/mdib-ops` holds pilots, sales and legal. English at `/`, Spanish (Spain) at `/es/`. Live: https://mdib.technoir.cloud
 
 ## Commands
 - Check (before every commit and deploy): `npm run check && npm run build` (build also scans the built HTML)
@@ -8,7 +8,7 @@ Public landing of MDIB (Machines Do It Better): productized personal AI agents. 
 - OG card (after changing headline or palette): `python3 scripts/build-og.py`
 
 ## Non-negotiables
-1. Copy follows the private business repo `ponzgpt/machines-do-it-better` (`strategy/offer-v0.md`, `operations/support-boundaries.md`, `strategy/product-architecture.md`); when they disagree, the business repo wins.
+1. Copy follows the private business repo `ponzgpt/mdib-ops` (`strategy/offer-v0.md`, `operations/support-boundaries.md`, `strategy/product-architecture.md`); when they disagree, the business repo wins.
 2. One offer only: Founder Pilot / Piloto Fundador, one use case and up to two flows. Its price range lives only in `src/lib/currency.mjs` (GBP is the source; EUR/USD are rounded conversions, USD for unknown visitors); the binding price is the one in the proposal.
 3. The only public support promise is the literal sentence in `support-boundaries.md`; `scripts/check-content.mjs` blocks forbidden promises and `[PLACEHOLDERS]`.
 4. No analytics, cookies or third-party requests (fonts are self-hosted): that is what lets the site skip a cookie banner. Adding any of them means rewriting `/legal` first.
