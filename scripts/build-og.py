@@ -11,7 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FS = ROOT / 'node_modules'
-PAPER, INK, MUTED, ACCENT = '#FFFFFF', '#0B0B0B', '#5A5A55', '#D63A0A'
+PAPER, INK, MUTED, ACCENT = '#FFFFFF', '#0B0B0B', '#5A5A55', '#c83a00'
 W, H = 1200, 630
 
 

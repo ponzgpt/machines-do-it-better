@@ -43,7 +43,7 @@ h1{font-family:Archivo;font-weight:900;font-stretch:112%;font-size:40pt;line-hei
 h2{font-family:Archivo;font-weight:850;font-stretch:106%;font-size:20pt;letter-spacing:-.02em;margin:9mm 0 3mm;break-after:avoid}
 h3{font-family:Archivo;font-weight:800;font-size:13.5pt;margin:6mm 0 2mm;break-after:avoid}
 .brand{font-family:PlexMono;font-size:8pt;letter-spacing:.1em;text-transform:uppercase;color:#5a5a55}
-.rule{width:28mm;height:2.4mm;background:#d63a0a;margin:5mm 0}
+.rule{width:28mm;height:2.4mm;background:#c83a00;margin:5mm 0}
 .sub{font-size:13pt;line-height:1.4;margin:0 0 4mm;max-width:150mm}
 .facts,.mono{font-family:PlexMono;font-size:8.5pt}
 code{font-family:PlexMono;font-size:8.6pt;background:#f4f4f1;padding:0 2px}
@@ -54,7 +54,7 @@ code{font-family:PlexMono;font-size:8.6pt;background:#f4f4f1;padding:0 2px}
 .step{border-top:1.5pt solid #0b0b0b;padding-top:1mm;margin-top:5mm;break-inside:avoid-page}
 .step p{margin:0 0 2mm}
 .k{font-family:PlexMono;font-size:7.5pt;text-transform:uppercase;letter-spacing:.06em;color:#5a5a55}
-.ex{border:1pt solid #0b0b0b;border-left:3mm solid #d63a0a;padding:2.5mm 3.5mm;margin:2mm 0}
+.ex{border:1pt solid #0b0b0b;border-left:3mm solid #c83a00;padding:2.5mm 3.5mm;margin:2mm 0}
 .src{font-size:8pt;color:#5a5a55}.src a{color:#5a5a55}
 .tool{border-bottom:.5pt solid #dcdcd6;padding:2mm 0;break-inside:avoid}
 .tool p{margin:0 0 1mm}
