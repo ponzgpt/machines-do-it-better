@@ -166,7 +166,7 @@ export default {
       do:
         'Actualiza con `hermes update`; si después falta algo en la configuración, `hermes config check` y `hermes config migrate`. Tus datos, tu memoria y tus claves viven en `~/.hermes/`. La documentación consultada no describe un procedimiento de copia de seguridad (sin verificar), así que lo prudente es copiar esa carpeta, que incluye tus claves, a un disco cifrado. Cuando algo falle: primero `hermes doctor`; si el bot no contesta, `hermes gateway status`; si las respuestas salen vacías o rotas, vuelve a ejecutar `hermes model`.',
       why:
-        'Un agente sin mantenimiento deja de funcionar en silencio: cambian los modelos, caducan las claves, el ordenador se reinicia.',
+        'Un agente que nadie mantiene deja de funcionar en silencio: cambian los modelos, caducan las claves, el ordenador se reinicia.',
       exercise: {
         minutes: 10,
         text:

@@ -1,286 +1,158 @@
-// All visible copy, per language. English is the default (/), Spanish lives under /es/.
-// Copy rules come from the private business repo: see AGENTS.md.
-export type Lang = 'en' | 'es';
-export const LANGS: Lang[] = ['en', 'es'];
+// Site chrome and page copy, per language. Spanish (Spain) is the default at /, English lives under /en/.
+// The guide itself lives in src/guide/ (es.mjs, en.mjs); this file holds only what surrounds it.
+export type Lang = 'es' | 'en';
+export const LANGS: Lang[] = ['es', 'en'];
+export type Page = '' | 'legal/';
 
-/** Same page in the other language: '/' ↔ '/es/', '/legal/' ↔ '/es/legal/'. */
-export const pathFor = (lang: Lang, page: '' | 'legal/') => (lang === 'en' ? `/${page}` : `/es/${page}`);
+/** Same page in either language: '/' ↔ '/en/', '/legal/' ↔ '/en/legal/'. */
+export const pathFor = (lang: Lang, page: Page) => (lang === 'es' ? `/${page}` : `/en/${page}`);
 
-type Row = [area: string, text: string, waits?: boolean];
-type Card = [title: string, text: string];
+type Line = [who: 'you' | 'agent' | 'meta', text: string];
 
-const en = {
-  htmlLang: 'en',
-  ogLocale: 'en_GB',
-  og: '/og-en.png',
-  title: 'Machines Do It Better — Personal AI agents',
-  description: 'A personal AI agent that handles one concrete task on Telegram, for you or your small team. Free diagnosis, fixed price.',
-  nav: { results: 'Results', how: 'How it works', pilot: 'Pilot', tech: 'Technology', cta: 'Book a diagnosis', menu: 'Menu', main: 'Main', lang: 'Language' },
-  footer: { legal: 'Legal & privacy' },
-  eyebrow: 'Personal AI agents · done-for-you service',
-  who: 'Who is it for?',
-  modes: ['For me', 'For my business or team'],
-  whoHint: 'Using it for your freelance work or with a small team? Choose “For my business or team”.',
-  personal: {
-    h1: 'Hand off what eats your week.',
-    lead: 'We pick one frequent, annoying task with you and leave you an AI agent that handles it every day on Telegram. You decide what it does on its own and what needs your OK.',
-    cta: 'Book a free diagnosis',
-    note: 'No prompt writing to learn. The account and the data are in your name.',
-  },
-  business: {
-    h1: 'One less repetitive task for your team.',
-    lead: 'We pick the task that costs your team the most hours and leave it solved with an AI agent on Telegram. Human approval on anything sensitive, and the account in your business’s name.',
-    cta: 'Request a free diagnosis',
-    note: 'For freelancers and small teams with no technical staff.',
-  },
-  seePilot: 'See the pilot',
-  ledger: {
-    aria: 'Illustrative example of a daily briefing',
-    personalHead: 'Your briefing · today 07:30',
-    businessHead: 'Team briefing · Monday 08:00',
-    example: 'Illustrative example',
-    done: 'DONE',
-    wait: 'YOUR OK',
-    personal: [
-      ['Calendar', '3 meetings; the 17:00 one clashes with school pickup'],
-      ['Priority', 'The one thing that can’t wait: send the renovation quote'],
-      ['Interests', '4 stories on topics you follow, with source and date'],
-      ['Habits', 'A 20-minute walk before lunch'],
-      ['Draft', 'Message to move coffee with Marta to Friday', true],
-    ] as Row[],
-    business: [
-      ['Week', '12 open tasks; 3 due before Wednesday'],
-      ['Clients', '2 quotes with no reply for 7 days'],
-      ['Industry', '3 industry stories, with source and date'],
-      ['Priority', 'First thing today: close the pending order'],
-      ['Send', 'Post the summary to the team group', true],
-    ] as Row[],
-    foot: 'One use case: a daily briefing on Telegram. Anything marked “YOUR OK” waits for your approval.',
-  },
-  results: {
-    h2: 'We sell outcomes, not technology.',
-    p: 'We don’t hand you a tool to set up yourself. We pick one use case with you, get it working and teach you to use it without depending on us.',
-    eyebrow: 'Example use cases · we start with one',
-    personal: [
-      ['Morning briefing', 'Your calendar, what you care about and the one thing that can’t wait, in a single message at the time you choose.'],
-      ['Habits that stick', 'Reminders and tracking for general wellbeing habits. No diagnoses or medical advice.'],
-      ['News without noise', 'A summary of the topics you follow, always with source and date.'],
-      ['Markets at a glance', 'How the indices and assets you follow have moved. Information, never orders or advice.'],
-    ] as Card[],
-    business: [
-      ['Daily team briefing', 'What’s on today, what’s pending and what’s urgent, in the team group before work starts.'],
-      ['Weekly review', 'What got done, what got stuck and what to adjust, every Friday.'],
-      ['Industry watch', 'News about your industry and competitors, summarised, always with source and date.'],
-      ['Markets and prices', 'The indices or assets that affect your business, at a glance. Information, not advice.'],
-    ] as Card[],
-  },
-  how: {
-    h2: 'Three steps. A fixed price.',
-    steps: [
-      ['Free diagnosis', 'A 20–30 minute call to choose the task that bothers you most and see whether it makes sense to hand it off. If it isn’t a fit, we say so. If it is, you get a proposal with a fixed price.'],
-      ['Setup', 'We create your agent with you, with the account in your name. We configure up to two flows for your use case and agree what it does on its own and what needs your approval.'],
-      ['Handover', 'A 45-minute session to teach you how to use it, a short guide written for you and a 14-day guarantee to fix faults within the agreed scope.'],
-    ] as Card[],
-  },
-  pilot: {
-    h2: 'One offer: the Founder Pilot.',
-    tagPersonal: 'For you',
-    tagBusiness: 'For your business or team',
-    oneOff: 'one-off payment',
-    name: 'Founder Pilot',
-    priceNote: 'final price fixed in your proposal after the diagnosis',
-    currency: 'Currency',
-    summary: 'One use case solved, with an agent you can use without depending on us.',
-    includes: [
-      'Free 20–30 minute diagnosis',
-      'One priority use case',
-      'Your own instance, isolated and in your name',
-      'Up to two flows configured',
-      '45-minute handover session and a short guide',
-      '14-day guarantee on the agreed scope',
-    ],
-    cta: 'Book a free diagnosis',
-    notTag: 'So there are no surprises',
-    notH3: 'Not included',
-    excludes: [
-      'Unlimited development or integrations not agreed',
-      '24/7 availability or indefinite support',
-      'Health data or company credentials without authorisation',
-      'Perfect answers: AI models make mistakes',
-      'Scope changes once the proposal is accepted: they get a new proposal and price',
-      'Maintenance: if you want it later, we offer it with a clear price and limits',
-    ],
-    promise: 'Includes guided handover, documentation and a 14-day guarantee on the agreed scope.',
-    foot: 'Prices are shown in your local currency (pounds, euros or US dollars; dollars anywhere else). Recurring costs (your instance subscription and model usage) are paid directly to the provider; we itemise them before you start. This is pilot pricing: the process is still being validated.',
-  },
-  tech: {
-    eyebrow: 'Under the hood',
-    h2: 'The right tool for each case. Today, Hermes.',
-    p: 'We aren’t tied to any vendor. Today we build each agent on Hermes Agent, by Nous Research, because it fits what we promise: memory, scheduled tasks and a separate instance per client. If it stops being the right tool for your case, we use another.',
-    items: [
-      ['AGENT', 'A Hermes Cloud instance just for you, with its own memory, sessions, scheduled tasks and credentials. Nothing is shared with other clients.'],
-      ['ACCOUNT & BILLING', 'The Nous Portal account and the subscription are in your name. You pay for infrastructure and usage directly; we don’t resell capacity.'],
-      ['CHANNEL', 'Telegram, with a dedicated bot whose credentials are yours. You talk to your agent like any other contact.'],
-      ['CONTROL & DATA', 'Human approval on sensitive actions, minimal permissions, and export or deletion of your data whenever you want.'],
-    ] as Card[],
-  },
-  faq: {
-    h2: 'Straight answers.',
-    items: [
-      ['Do I need to know about AI?', 'No. You talk to your agent on Telegram, like an assistant. Setup is on us, and at handover we teach you what you need.'],
-      ['Can it get things wrong?', 'Yes. AI models make mistakes. That’s why anything that sends something on your behalf needs your approval first, and for 14 days we fix faults within the agreed scope.'],
-      ['What happens to my data?', 'The account, the instance and the data are in your name, separate from any other client. The agent only accesses what you authorise, and you can export or delete it. We don’t work with health data.'],
-      ['Is there a minimum term?', 'There’s no subscription with us: the pilot is a one-off payment. Your instance subscription is yours, with the provider, and you manage it. Consumers can cancel within 14 days; see the terms on the legal page.'],
-    ] as Card[],
-  },
-  contact: {
-    h2: 'Start with a free 20–30 minute diagnosis.',
-    lead: 'Tell us which task you’d like off your plate and we’ll suggest a time to talk.',
-    personal: 'I’m an individual',
-    business: 'I have a business or a team',
-    subjectPersonal: 'Personal diagnosis',
-    subjectBusiness: 'Diagnosis for my business or team',
-    soonTitle: 'Bookings open soon.',
-    soon: 'The contact address will be published here shortly.',
-  },
-  notFound: { title: 'Page not found — Machines Do It Better', h1: 'Nothing here.', back: 'Back to home' },
-};
-
-const es: typeof en = {
+const es = {
   htmlLang: 'es',
   ogLocale: 'es_ES',
   og: '/og-es.png',
-  title: 'Machines Do It Better — Agentes personales de IA',
-  description: 'Un agente personal de IA que resuelve una tarea concreta por Telegram, para ti o para tu pequeño equipo. Diagnóstico gratuito y precio cerrado.',
-  nav: { results: 'Resultados', how: 'Cómo funciona', pilot: 'Piloto', tech: 'Tecnología', cta: 'Reservar diagnóstico', menu: 'Menú', main: 'Principal', lang: 'Idioma' },
-  footer: { legal: 'Aviso legal y privacidad' },
-  eyebrow: 'Agentes personales de IA · servicio llave en mano',
-  who: '¿Para quién es?',
-  modes: ['Para mí', 'Para mi negocio o equipo'],
-  whoHint: '¿Lo vas a usar en tu trabajo como autónomo o con un equipo pequeño? Elige «Para mi negocio o equipo».',
-  personal: {
-    h1: 'Delega lo que te roba la semana.',
-    lead: 'Elegimos contigo una tarea frecuente y molesta, y te dejamos un agente de IA que la resuelve cada día por Telegram. Tú decides qué hace solo y qué necesita tu visto bueno.',
-    cta: 'Reservar diagnóstico gratuito',
-    note: 'Sin aprender a escribir prompts. La cuenta y los datos, a tu nombre.',
+  title: 'No necesitas saber programar — guía gratuita para tener tu propio agente de IA · MDIB',
+  description:
+    'Guía gratuita en {steps} pasos para montar tu propio agente de IA en una máquina que controlas, conectado a Telegram y haciendo una tarea real. En la web, en PDF y en Markdown para tu asistente.',
+  nav: {
+    main: 'Secciones de la guía',
+    lang: 'Idioma',
+    tabs: [
+      ['#resultado', 'Resultado'],
+      ['#uso', 'Cómo usarla'],
+      ['#metodo', 'Método'],
+      ['#herramientas', 'Herramientas'],
+      ['#despues', 'Después'],
+      ['#capo', 'Capó'],
+      ['#fuentes', 'Fuentes'],
+    ] as [string, string][],
   },
-  business: {
-    h1: 'Una tarea repetida menos para tu equipo.',
-    lead: 'Elegimos la tarea que hoy os quita más horas y la dejamos resuelta con un agente de IA en Telegram. Con aprobación humana en lo sensible y la cuenta a nombre de tu negocio.',
-    cta: 'Solicitar diagnóstico gratuito',
-    note: 'Para autónomos y equipos pequeños, sin perfil técnico.',
+  eyebrow: 'Guía gratuita · Machines Do It Better',
+  download: {
+    pdf: 'Descargar PDF',
+    md: 'Descargar para tu agente (.md)',
+    mdHint: 'Dáselo a ChatGPT, Claude o tu asistente: te guiará paso a paso.',
   },
-  seePilot: 'Ver el piloto',
-  ledger: {
-    aria: 'Ejemplo ilustrativo de un briefing diario',
-    personalHead: 'Tu briefing · hoy 07:30',
-    businessHead: 'Briefing del equipo · lunes 08:00',
-    example: 'Ejemplo ilustrativo',
-    done: 'LISTO',
-    wait: 'TU OK',
-    personal: [
-      ['Agenda', '3 citas; la de las 17:00 choca con la recogida del cole'],
-      ['Prioridad', 'Lo que no puede esperar: enviar el presupuesto de la reforma'],
-      ['Intereses', '4 noticias de los temas que sigues, con fuente y fecha'],
-      ['Hábitos', '20 minutos de paseo antes de comer'],
-      ['Borrador', 'Mensaje para mover el café con Marta al viernes', true],
-    ],
-    business: [
-      ['Semana', '12 tareas abiertas; 3 vencen antes del miércoles'],
-      ['Clientes', '2 presupuestos sin respuesta desde hace 7 días'],
-      ['Sector', '3 noticias del sector, con fuente y fecha'],
-      ['Prioridad', 'Lo primero hoy: cerrar el pedido pendiente'],
-      ['Envío', 'Publicar el resumen en el grupo del equipo', true],
-    ],
-    foot: 'Un solo caso de uso: un briefing diario por Telegram. Lo marcado «TU OK» espera tu aprobación.',
+  newsletter: {
+    link: 'Recibe la próxima edición y las actualizaciones',
+    newTab: '(se abre en una pestaña nueva)',
+    bandTitle: 'La guía es gratis. Te pido una cosa a cambio: tu interés.',
+    bandText:
+      'Si te ha servido, suscríbete a la newsletter: te llega la próxima edición, las correcciones cuando cambie una herramienta y el aviso cuando exista lo que viene después. Las descargas son libres y no piden nada.',
+    bandCta: 'Suscribirme en Beehiiv',
   },
-  results: {
-    h2: 'Vendemos resultados, no tecnología.',
-    p: 'No te damos una herramienta para que la configures tú. Elegimos contigo un caso de uso, lo dejamos funcionando y te enseñamos a usarlo sin depender de nosotros.',
-    eyebrow: 'Ejemplos de caso de uso · empezamos por uno',
-    personal: [
-      ['Briefing de cada mañana', 'Tu agenda, lo que te interesa y lo único que no puede esperar, en un mensaje a la hora que elijas.'],
-      ['Hábitos que se cumplen', 'Recordatorios y seguimiento de hábitos de bienestar general. Sin diagnósticos ni consejos médicos.'],
-      ['Noticias sin ruido', 'Un resumen de los temas que sigues, siempre con fuente y fecha.'],
-      ['Mercados de un vistazo', 'Cómo se han movido los índices y activos que sigues. Información, nunca órdenes ni asesoramiento.'],
-    ],
-    business: [
-      ['Briefing diario del equipo', 'Lo que toca hoy, lo pendiente y lo urgente, en el grupo del equipo antes de empezar.'],
-      ['Revisión de la semana', 'Qué se hizo, qué se atascó y qué conviene ajustar, cada viernes.'],
-      ['Vigilancia del sector', 'Noticias de tu sector y tu competencia, resumidas y siempre con fuente y fecha.'],
-      ['Mercados y precios', 'Los índices o activos que afectan a tu negocio, de un vistazo. Información, no asesoramiento.'],
-    ],
+  numbersTitle: 'En cifras',
+  session: {
+    eyebrow: 'Así se ve al terminar',
+    h2: 'Una mañana cualquiera.',
+    label: 'Ejemplo ilustrativo, escrito a mano',
+    aria: 'Ejemplo ilustrativo de una conversación con un agente por Telegram',
+    head: 'Telegram · tu agente',
+    replay: 'Repetir',
+    you: 'tú',
+    agent: 'agente',
+    note: 'No es una grabación ni un cliente: es un ejemplo escrito a mano de lo que monta esta guía (pasos 5 y 6).',
+    lines: [
+      ['you', 'Cada día laborable a las 7:30, mándame aquí: el tiempo en Valencia, tres noticias de diseño gráfico con fuente y fecha, y mis pendientes.'],
+      ['agent', 'Hecho. Tarea programada: de lunes a viernes, 07:30, a este chat. ¿La pruebo ahora?'],
+      ['you', 'Sí.'],
+      ['meta', 'jueves · 07:30'],
+      ['agent', 'Buenos días. Valencia: 17 °C, sin lluvia hasta la tarde.'],
+      ['agent', 'Noticias: 1) Una fundición publica una tipografía libre para señalética (su blog, 12 nov). 2) Cambios en el formato de los anuncios de una red social (nota oficial, 12 nov). 3) Un estudio sobre legibilidad en pantallas pequeñas (revista del sector, 11 nov).'],
+      ['agent', 'Pendientes: enviar el presupuesto a la imprenta; revisar las pruebas del catálogo.'],
+      ['you', 'Quita lo del catálogo, ya está.'],
+      ['agent', 'Quitado. Te queda un pendiente. Mañana a las 7:30, lo mismo.'],
+    ] as Line[],
   },
-  how: {
-    h2: 'Tres pasos. Precio cerrado.',
-    steps: [
-      ['Diagnóstico gratuito', 'Una llamada de 20–30 minutos para elegir la tarea que más te molesta y ver si tiene sentido delegarla. Si no vemos encaje, te lo decimos. Si lo vemos, recibes una propuesta con precio cerrado.'],
-      ['Puesta en marcha', 'Creamos contigo tu agente, con la cuenta a tu nombre. Configuramos hasta dos flujos para tu caso de uso y fijamos qué hace solo y qué necesita tu aprobación.'],
-      ['Entrega', 'Una sesión de 45 minutos para enseñarte a usarlo, una guía breve hecha para ti y 14 días de garantía para corregir fallos del alcance acordado.'],
-    ],
+  owns: {
+    eyebrow: 'Lo que es tuyo',
+    h2: 'Tu cuenta, tus datos, tu modelo.',
+    p: 'Montarlo tú tiene una ventaja que no da ningún servicio cerrado: sabes dónde está cada pieza y puedes cambiarla. Si mañana cambias de modelo o de máquina, el agente sigue siendo tuyo.',
+    aria: 'Diagrama: tu agente en el centro, rodeado de tres piezas que son tuyas: la cuenta, los datos y el modelo.',
+    center: 'tu agente',
+    parts: [
+      ['la cuenta', 'a tu nombre, en el proveedor que eliges'],
+      ['los datos', 'en una carpeta de tu máquina: ~/.hermes'],
+      ['el modelo', 'el que eliges, y lo cambias cuando quieras'],
+    ] as [string, string][],
   },
-  pilot: {
-    h2: 'Una sola oferta: el Piloto Fundador.',
-    tagPersonal: 'Para ti',
-    tagBusiness: 'Para tu negocio o equipo',
-    oneOff: 'pago único',
-    name: 'Piloto Fundador',
-    priceNote: 'precio final cerrado en tu propuesta tras el diagnóstico',
-    currency: 'Moneda',
-    summary: 'Un caso de uso resuelto, con un agente que puedes usar sin depender de nosotros.',
-    includes: [
-      'Diagnóstico gratuito de 20–30 minutos',
-      'Un caso de uso prioritario',
-      'Tu propia instancia, aislada y a tu nombre',
-      'Hasta dos flujos configurados',
-      'Sesión de entrega de 45 minutos y guía breve',
-      '14 días de garantía sobre el alcance acordado',
-    ],
-    cta: 'Reservar diagnóstico gratuito',
-    notTag: 'Para que no haya sorpresas',
-    notH3: 'Qué no incluye',
-    excludes: [
-      'Desarrollo ilimitado ni integraciones no pactadas',
-      'Disponibilidad 24/7 ni soporte indefinido',
-      'Datos de salud ni credenciales de empresa sin autorización',
-      'Respuestas perfectas: los modelos de IA se equivocan',
-      'Cambios de alcance una vez aceptada la propuesta: van con nueva propuesta y precio',
-      'Mantenimiento: si lo quieres después, te lo ofrecemos con precio y límites claros',
-    ],
-    promise: 'Incluye entrega guiada, documentación y 14 días de garantía sobre el alcance acordado.',
-    foot: 'Los precios se muestran en tu moneda local (libras, euros o dólares estadounidenses; dólares en el resto del mundo). Los costes recurrentes (la suscripción de tu instancia y el consumo de modelos) los pagas directamente al proveedor; te los detallamos antes de empezar. Es un precio de piloto: el proceso todavía se está validando.',
-  },
-  tech: {
-    eyebrow: 'Debajo del capó',
-    h2: 'La herramienta adecuada para cada caso. Hoy, Hermes.',
-    p: 'No estamos casados con ningún proveedor. Hoy montamos cada agente sobre Hermes Agent, de Nous Research, porque encaja con lo que prometemos: memoria, tareas programadas y una instancia separada por cliente. Si deja de ser la herramienta adecuada para tu caso, usamos otra.',
-    items: [
-      ['AGENTE', 'Una instancia Hermes Cloud solo para ti, con su propia memoria, sesiones, tareas programadas y credenciales. Nada se comparte con otros clientes.'],
-      ['CUENTA Y PAGO', 'La cuenta de Nous Portal y la suscripción están a tu nombre. Pagas la infraestructura y el consumo directamente, sin que revendamos capacidad.'],
-      ['CANAL', 'Telegram, con un bot propio cuyas credenciales son tuyas. Hablas con tu agente como con cualquier contacto.'],
-      ['CONTROL Y DATOS', 'Aprobación humana en las acciones sensibles, permisos mínimos y exportación y borrado de tus datos cuando quieras.'],
-    ],
-  },
-  faq: {
-    h2: 'Preguntas directas.',
-    items: [
-      ['¿Necesito saber de IA?', 'No. Hablas con tu agente por Telegram, como con un asistente. La configuración es cosa nuestra, y en la entrega te enseñamos lo que necesitas.'],
-      ['¿Se puede equivocar?', 'Sí. Los modelos de IA cometen errores. Por eso lo que implique enviar algo en tu nombre pasa antes por tu aprobación, y durante 14 días corregimos los fallos del alcance acordado.'],
-      ['¿Qué pasa con mis datos?', 'La cuenta, la instancia y los datos están a tu nombre, separados de los de cualquier otro cliente. El agente solo accede a lo que autorizas, y puedes exportarlo o borrarlo. No trabajamos con datos de salud.'],
-      ['¿Hay permanencia?', 'No hay cuota con nosotros: el piloto se paga una vez. La suscripción de tu instancia es tuya con el proveedor y la gestionas tú. Si eres consumidor, puedes desistir en 14 días; mira las condiciones en el aviso legal.'],
-    ],
-  },
-  contact: {
-    h2: 'Empieza por un diagnóstico gratuito de 20–30 minutos.',
-    lead: 'Escríbenos qué tarea te gustaría quitarte de encima y te proponemos un hueco para hablar.',
-    personal: 'Soy particular',
-    business: 'Tengo un negocio o un equipo',
-    subjectPersonal: 'Diagnóstico personal',
-    subjectBusiness: 'Diagnóstico para mi negocio o equipo',
-    soonTitle: 'Muy pronto abrimos reservas.',
-    soon: 'Publicaremos aquí la dirección de contacto en breve.',
-  },
-  notFound: { title: 'Página no encontrada — Machines Do It Better', h1: 'Aquí no hay nada.', back: 'Volver al inicio' },
+  footer: { legal: 'Aviso legal y privacidad', guide: 'La guía' },
+  notFound: { title: 'Página no encontrada · MDIB', h1: 'Aquí no hay nada.', back: 'Volver a la guía' },
 };
 
-export const copy = { en, es };
+const en: typeof es = {
+  htmlLang: 'en',
+  ogLocale: 'en_GB',
+  og: '/og-en.png',
+  title: 'You don’t need to code — a free guide to your own AI agent · MDIB',
+  description:
+    'A free {steps}-step guide to setting up your own AI agent on a machine you control, connected to Telegram and doing one real task. On the web, as a PDF and as Markdown for your assistant.',
+  nav: {
+    main: 'Guide sections',
+    lang: 'Language',
+    tabs: [
+      ['#outcome', 'Outcome'],
+      ['#use', 'How to use'],
+      ['#method', 'Method'],
+      ['#tools', 'Tools'],
+      ['#next', 'Next'],
+      ['#hood', 'Under the hood'],
+      ['#sources', 'Sources'],
+    ],
+  },
+  eyebrow: 'Free guide · Machines Do It Better',
+  download: {
+    pdf: 'Download PDF',
+    md: 'Download for your agent (.md)',
+    mdHint: 'Give it to ChatGPT, Claude or your assistant: it will walk you through it.',
+  },
+  newsletter: {
+    link: 'Get the next edition and the updates',
+    newTab: '(opens in a new tab)',
+    bandTitle: 'The guide is free. I ask for one thing in return: your interest.',
+    bandText:
+      'If it helped, subscribe to the newsletter: you get the next edition, corrections when a tool changes, and word when what comes next exists. The downloads are open and ask for nothing.',
+    bandCta: 'Subscribe on Beehiiv',
+  },
+  numbersTitle: 'In numbers',
+  session: {
+    eyebrow: 'What it looks like at the end',
+    h2: 'An ordinary morning.',
+    label: 'Illustrative example, hand-authored',
+    aria: 'Illustrative example of a conversation with an agent on Telegram',
+    head: 'Telegram · your agent',
+    replay: 'Replay',
+    you: 'you',
+    agent: 'agent',
+    note: 'Not a recording and not a client: a hand-written example of what this guide sets up (steps 5 and 6).',
+    lines: [
+      ['you', 'Every weekday at 7:30, send me here: the weather in Valencia, three graphic design stories with source and date, and my to-dos.'],
+      ['agent', 'Done. Scheduled task: Monday to Friday, 07:30, to this chat. Shall I test it now?'],
+      ['you', 'Yes.'],
+      ['meta', 'Thursday · 07:30'],
+      ['agent', 'Good morning. Valencia: 17 °C, no rain until the afternoon.'],
+      ['agent', 'News: 1) A type foundry releases a free typeface for signage (its blog, 12 Nov). 2) Changes to a social network’s ad formats (official note, 12 Nov). 3) A study on legibility on small screens (trade journal, 11 Nov).'],
+      ['agent', 'To-dos: send the quote to the printer; review the catalogue proofs.'],
+      ['you', 'Drop the catalogue, it’s done.'],
+      ['agent', 'Dropped. One to-do left. Tomorrow at 7:30, same again.'],
+    ],
+  },
+  owns: {
+    eyebrow: 'What is yours',
+    h2: 'Your account, your data, your model.',
+    p: 'Setting it up yourself has an advantage no closed service gives you: you know where every piece is and you can change it. If tomorrow you switch model or machine, the agent is still yours.',
+    aria: 'Diagram: your agent in the middle, surrounded by three pieces that are yours: the account, the data and the model.',
+    center: 'your agent',
+    parts: [
+      ['the account', 'in your name, with the provider you choose'],
+      ['the data', 'in a folder on your machine: ~/.hermes'],
+      ['the model', 'the one you choose, and you change it when you like'],
+    ],
+  },
+  footer: { legal: 'Legal notice and privacy', guide: 'The guide' },
+  notFound: { title: 'Page not found · MDIB', h1: 'Nothing here.', back: 'Back to the guide' },
+};
+
+export const copy = { es, en };

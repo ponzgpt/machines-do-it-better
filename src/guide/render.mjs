@@ -23,7 +23,7 @@ export function facts(g) {
   return { steps: g.steps.length, tools: g.tools.length, handsOn, reading: Math.ceil(words(readable(g)) / WPM) };
 }
 
-export const duration = (min, lang) => {
+export const duration = (min) => {
   const h = Math.floor(min / 60), m = min % 60;
   return h ? `${h} h${m ? ` ${m} min` : ''}` : `${m} min`;
 };
@@ -36,13 +36,13 @@ export const editionLabel = (g) =>
 export function fill(s, g) {
   const f = facts(g);
   return s.replace(/\{steps\}/g, String(f.steps)).replace(/\{tools\}/g, String(f.tools))
-    .replace(/\{reading\}/g, duration(f.reading, g.lang)).replace(/\{handsOn\}/g, duration(f.handsOn, g.lang))
+    .replace(/\{reading\}/g, duration(f.reading)).replace(/\{handsOn\}/g, duration(f.handsOn))
     .replace(/\{edition\}/g, editionLabel(g));
 }
 
 export function factsLine(g) {
   const f = facts(g), L = g.labels;
-  return [`${L.edition} ${editionLabel(g)}`, `${duration(f.reading, g.lang)} ${L.reading}`, `${duration(f.handsOn, g.lang)} ${L.handsOn}`,
+  return [`${L.edition} ${editionLabel(g)}`, `${duration(f.reading)} ${L.reading}`, `${duration(f.handsOn)} ${L.handsOn}`,
     `${f.steps} ${L.steps}`, `${f.tools} ${L.tools}`];
 }
 

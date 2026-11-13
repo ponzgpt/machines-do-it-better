@@ -1,114 +1,96 @@
 ---
-import { ADDRESS, BRAND, EMAIL, OWNER } from '../site';
+import { ADDRESS, BRAND, EMAIL, NEWSLETTER, OWNER, OWNER_SITE } from '../site';
 import { pathFor, type Lang } from '../i18n';
-// ponytail: provisional text, not reviewed by a professional; review in machines-do-it-better
-// legal/web-legal-review.md lists what must change before the first paid pilot.
+// ponytail: provisional text for a free information site with no sales, not reviewed by a professional.
+// The open points for a lawyer are listed in the 2026-11-13 handoff log (contact address, rights requests,
+// newsletter controller/processor roles, reuse of the guide's text).
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const en = lang === 'en';
-const soon = en ? 'to be published before the first sale' : 'se publicará antes de la primera venta';
-const email = EMAIL ?? soon;
-const address = ADDRESS ?? soon;
-const UPDATED = en ? '21 October 2026' : '21 de octubre de 2026';
+const UPDATED = en ? '13 November 2026' : '13 de noviembre de 2026';
+const site = OWNER_SITE.replace(/^https:\/\//, '');
+const beehiivPrivacy = 'https://www.beehiiv.com/privacy';
 ---
 <article class="wrap legal">
 {en ? (
   <>
   <p class="eyebrow">Provisional version · {UPDATED}</p>
-  <h1 class="h2">Legal notice, terms and privacy</h1>
-  <p class="note">This text is provisional while the business is being set up. It will be reviewed by a professional before the first paid pilot.</p>
+  <h1 class="h2">Legal notice and privacy</h1>
+  <p class="note">This text is provisional and has not yet been reviewed by a professional.</p>
 
-  <h2>Who we are</h2>
+  <h2>Who is behind this site</h2>
   <p><b>{BRAND}</b> (MDIB) is the trading name of {OWNER}, a sole trader based in the United Kingdom.</p>
   <ul>
-    <li>Trader: {OWNER}, trading as {BRAND}</li>
+    <li>Owner: {OWNER}, trading as {BRAND}</li>
     <li>Based in: United Kingdom</li>
-    <li>Geographic address: {address}</li>
-    <li>Email: {email}</li>
-    <li>VAT: not VAT-registered, so no VAT is charged</li>
+    {ADDRESS && <li>Geographic address: {ADDRESS}</li>}
+    <li>Contact: {EMAIL ? EMAIL : <>through the public profiles linked from <a href={OWNER_SITE}>{site}</a></>}</li>
   </ul>
 
-  <h2>Prices and payment</h2>
-  <p>The pilot price is shown in pounds sterling, euros or US dollars depending on where you visit from, and in US dollars everywhere else. It is an indicative range. The price you pay is the fixed one in your written proposal, in the currency stated there, and nothing is charged until you accept it.</p>
-  <p>Invoices are issued by {OWNER} trading as {BRAND}. Recurring third-party costs (your Hermes Cloud subscription and model usage) are billed to you directly by those providers, not by us.</p>
-
-  <h2>Terms of the Founder Pilot</h2>
-  <ul>
-    <li><b>Scope:</b> one use case and up to two flows, exactly as described in your proposal. Changes after acceptance need a new proposal and price.</li>
-    <li><b>Guarantee:</b> for 14 days from handover we fix reproducible faults within the agreed scope. This does not affect your statutory rights.</li>
-    <li><b>Cancellation (consumers in the UK and the EU):</b> you can cancel within 14 days of accepting the proposal without giving a reason, under the UK Consumer Contracts Regulations 2013 or the equivalent EU rules. If you ask us to start within those 14 days and then cancel, you pay a proportionate amount for the work already done. Once the service is fully delivered at your request, the right to cancel ends.</li>
-    <li><b>Business customers</b> have no statutory cancellation right; cancellation terms are set in the proposal.</li>
-    <li><b>Third-party services:</b> Hermes Cloud (Nous Research) and Telegram are provided under their own terms, which you accept when you create your accounts. We are not responsible for their outages or changes.</li>
-    <li><b>Liability:</b> nothing in these terms limits liability for death or personal injury caused by negligence, for fraud, or any other liability that cannot be limited by law. Otherwise, our total liability is limited to the price you paid for the pilot. AI models can make mistakes: the agent assists you, and decisions remain yours.</li>
-    <li><b>Law:</b> these terms are governed by the law of England and Wales. If you are a consumer, you keep the mandatory protections of the country where you live and can bring a claim in its courts.</li>
-  </ul>
+  <h2>What this site is</h2>
+  <p>A free information site. It offers a guide to setting up your own AI agent, readable on the page and downloadable as PDF and Markdown. Nothing is sold here: there are no prices, payments, bookings or contracts.</p>
+  <p>The guide is training material, not professional, technical or legal advice. It is provided free and as it is. What you install on your machines and do with your accounts is your decision and your responsibility. Nothing here limits any liability that cannot be limited by law.</p>
+  <p>The guide names third-party tools (for example Hermes Agent, Telegram, Nous Portal, OpenRouter, the Gemini API, Ollama and Hetzner). MDIB is not affiliated with any of them and uses no affiliate links; their terms, prices and privacy policies are their own and can change.</p>
+  <p>The site’s code is MIT-licensed. You may download and use the guide for your own use, including giving it to your AI assistant; the text, the name and the brand are not licensed for republication.</p>
 
   <h2>This site doesn’t track you</h2>
-  <p>We use no cookies, analytics, pixels or third-party services, and the fonts are served from this server, so there is no cookie banner (UK PECR and the EU ePrivacy rules only require consent for non-essential cookies).</p>
-  <p>Like any web server, ours records technical data about each request (IP address, date, page requested and browser) to run the site and keep it secure. We don’t use it to identify you or combine it with other data, and it is deleted periodically.</p>
+  <p>No cookies, analytics, pixels or third-party services, and the fonts are served from this server, so there is no cookie banner (UK PECR and the EU ePrivacy rules only require consent for non-essential cookies).</p>
+  <p>Like any web server, ours records technical data about each request (IP address, date, page requested and browser) to run the site and keep it secure. It is not used to identify you or combined with other data, and it is deleted periodically.</p>
+
+  <h2>The newsletter</h2>
+  <p>The “subscribe” links take you to <a href={NEWSLETTER} target="_blank" rel="noopener">{NEWSLETTER.replace(/^https:\/\//, '')}</a>, outside this site. The newsletter is run on Beehiiv: if you subscribe, you give your email address on Beehiiv’s site, and what happens there (including any cookies) is subject to <a href={beehiivPrivacy} target="_blank" rel="noopener">Beehiiv’s privacy policy</a>. You can unsubscribe at any time from any edition.</p>
 
   <h2>Privacy</h2>
   <ul>
-    <li><b>Controller:</b> {OWNER}, trading as {BRAND}, United Kingdom. Contact: {email}.</li>
-    <li><b>What data:</b> whatever you send us when you get in touch, usually your name, email and the task you want to hand off; and the server logs described above.</li>
-    <li><b>Why and on what basis (UK GDPR and EU GDPR, Art. 6):</b> to reply, run the diagnosis and prepare a proposal, as steps you ask for before a contract (Art. 6(1)(b)); to deliver and invoice the pilot (contract and legal obligation, Art. 6(1)(b) and (c)); and server logs for security (legitimate interests, Art. 6(1)(f)).</li>
-    <li><b>How long:</b> if we don’t end up working together, at most 12 months after our last contact. If you become a client, invoices and accounting records are kept for as long as UK tax law (HMRC) requires.</li>
-    <li><b>Who we share it with:</b> no one for marketing. Only service providers that act on our behalf (hosting, email), under contract. If any of them processes data outside the UK or the EEA, we rely on adequacy decisions or standard contractual clauses.</li>
-    <li><b>Please don’t send</b> health data, passwords or confidential company information through this channel.</li>
-    <li><b>During a pilot:</b> your agent runs on a Hermes Cloud instance contracted in your name. Nous Research processes that data under its own privacy policy. We only access what you authorise to configure it, and you can export or delete your data at the end.</li>
-    <li><b>Your rights:</b> access, rectification, erasure, restriction, objection and portability, by writing to {email}. You can complain to the ICO in the UK (ico.org.uk) or to the data protection authority of your EU country (in Spain, the AEPD, aepd.es).</li>
+    <li><b>Controller:</b> {OWNER}, trading as {BRAND}, United Kingdom.</li>
+    <li><b>What data:</b> the server logs described above; and, only if you subscribe to the newsletter, your email address, held on Beehiiv.</li>
+    <li><b>Why and on what basis (UK GDPR and EU GDPR, Art. 6):</b> server logs for security (legitimate interests, Art. 6(1)(f)); the newsletter, because you ask for it (consent, Art. 6(1)(a)), which you can withdraw by unsubscribing.</li>
+    <li><b>How long:</b> server logs, briefly and deleted periodically; your newsletter address, until you unsubscribe.</li>
+    <li><b>Who we share it with:</b> no one for marketing. Only the providers that run the site and the newsletter on our behalf (hosting, Beehiiv). Where they process data outside the UK or the EEA, they rely on adequacy decisions or standard contractual clauses.</li>
+    <li><b>Your rights:</b> access, rectification, erasure, restriction, objection and portability, through the contact above. You can complain to the ICO in the UK (ico.org.uk) or to the data protection authority of your EU country (in Spain, the AEPD, aepd.es).</li>
     <li><b>US residents:</b> we don’t sell or share personal information, and we don’t use it for targeted advertising.</li>
   </ul>
-  <p><a href={pathFor(lang, '')}>← Back to home</a></p>
+  <p><a href={pathFor(lang, '')}>← Back to the guide</a></p>
   </>
 ) : (
   <>
   <p class="eyebrow">Versión provisional · {UPDATED}</p>
-  <h1 class="h2">Aviso legal, condiciones y privacidad</h1>
-  <p class="note">Este texto es provisional mientras se completa el alta del negocio. Se revisará con un profesional antes del primer piloto de pago.</p>
+  <h1 class="h2">Aviso legal y privacidad</h1>
+  <p class="note">Este texto es provisional y todavía no lo ha revisado un profesional.</p>
 
-  <h2>Quiénes somos</h2>
+  <h2>Quién está detrás de esta web</h2>
   <p><b>{BRAND}</b> (MDIB) es el nombre comercial de {OWNER}, profesional independiente (<i>sole trader</i>) establecido en el Reino Unido.</p>
   <ul>
     <li>Titular: {OWNER}, con el nombre comercial {BRAND}</li>
     <li>Establecido en: Reino Unido</li>
-    <li>Dirección física: {address}</li>
-    <li>Correo electrónico: {email}</li>
-    <li>IVA: no registrado a efectos de IVA (VAT) en el Reino Unido, por lo que no se cobra IVA</li>
+    {ADDRESS && <li>Dirección física: {ADDRESS}</li>}
+    <li>Contacto: {EMAIL ? EMAIL : <>a través de los perfiles públicos enlazados desde <a href={OWNER_SITE}>{site}</a></>}</li>
   </ul>
 
-  <h2>Precios y pago</h2>
-  <p>El precio del piloto se muestra en libras, euros o dólares estadounidenses según desde dónde nos visites, y en dólares en el resto del mundo. Es un rango orientativo. El precio que pagas es el cerrado en tu propuesta por escrito, en la moneda que figure en ella, y no se cobra nada hasta que la aceptas.</p>
-  <p>Las facturas las emite {OWNER} con el nombre comercial {BRAND}. Los costes recurrentes de terceros (la suscripción de Hermes Cloud y el consumo de modelos) te los cobran directamente esos proveedores, no nosotros.</p>
-
-  <h2>Condiciones del Piloto Fundador</h2>
-  <ul>
-    <li><b>Alcance:</b> un caso de uso y hasta dos flujos, tal como se describen en tu propuesta. Los cambios posteriores a la aceptación requieren nueva propuesta y precio.</li>
-    <li><b>Garantía:</b> durante 14 días desde la entrega corregimos los fallos reproducibles del alcance acordado. No afecta a tus derechos legales.</li>
-    <li><b>Desistimiento (consumidores del Reino Unido y la UE):</b> puedes desistir en los 14 días siguientes a aceptar la propuesta sin dar explicaciones, según las Consumer Contracts Regulations 2013 del Reino Unido o la normativa equivalente de la UE. Si nos pides empezar dentro de esos 14 días y después desistes, pagas la parte proporcional del trabajo hecho. Una vez prestado el servicio por completo a petición tuya, el derecho de desistimiento se pierde.</li>
-    <li><b>Clientes empresa:</b> no tienen derecho legal de desistimiento; las condiciones de cancelación se fijan en la propuesta.</li>
-    <li><b>Servicios de terceros:</b> Hermes Cloud (Nous Research) y Telegram se rigen por sus propias condiciones, que aceptas al crear tus cuentas. No respondemos de sus caídas o cambios.</li>
-    <li><b>Responsabilidad:</b> nada en estas condiciones limita la responsabilidad por muerte o lesiones causadas por negligencia, por fraude ni ninguna otra que la ley no permita limitar. En lo demás, nuestra responsabilidad total se limita al precio pagado por el piloto. Los modelos de IA pueden equivocarse: el agente te ayuda, y las decisiones siguen siendo tuyas.</li>
-    <li><b>Ley aplicable:</b> estas condiciones se rigen por la ley de Inglaterra y Gales. Si eres consumidor, conservas las protecciones obligatorias del país donde vives y puedes reclamar ante sus tribunales.</li>
-  </ul>
+  <h2>Qué es esta web</h2>
+  <p>Una web informativa y gratuita. Ofrece una guía para montar tu propio agente de IA, que se lee en la página y se descarga en PDF y en Markdown. Aquí no se vende nada: no hay precios, pagos, reservas ni contratos.</p>
+  <p>La guía es material formativo, no asesoramiento profesional, técnico ni legal. Se ofrece gratis y tal cual. Lo que instales en tus máquinas y hagas con tus cuentas es decisión y responsabilidad tuya. Nada de esto limita la responsabilidad que la ley no permite limitar.</p>
+  <p>La guía cita herramientas de terceros (por ejemplo Hermes Agent, Telegram, Nous Portal, OpenRouter, la API de Gemini, Ollama y Hetzner). MDIB no está afiliado a ninguna y no usa enlaces de afiliado; sus condiciones, precios y políticas de privacidad son suyos y pueden cambiar.</p>
+  <p>El código de la web tiene licencia MIT. Puedes descargar y usar la guía para tu propio uso, incluido dársela a tu asistente de IA; el texto, el nombre y la marca no tienen licencia para volver a publicarse.</p>
 
   <h2>Esta web no te rastrea</h2>
   <p>No usamos cookies, analítica, píxeles ni servicios de terceros, y las tipografías se sirven desde este mismo servidor, así que no hay banner de cookies (la PECR británica y la normativa ePrivacy de la UE solo exigen consentimiento para cookies no esenciales).</p>
-  <p>Como cualquier servidor web, el nuestro registra datos técnicos de cada petición (dirección IP, fecha, página pedida y navegador) para su funcionamiento y seguridad. No los usamos para identificarte ni los cruzamos con otros datos, y se borran de forma periódica.</p>
+  <p>Como cualquier servidor web, el nuestro registra datos técnicos de cada petición (dirección IP, fecha, página pedida y navegador) para su funcionamiento y seguridad. No se usan para identificarte ni se cruzan con otros datos, y se borran de forma periódica.</p>
+
+  <h2>La newsletter</h2>
+  <p>Los enlaces para suscribirte llevan a <a href={NEWSLETTER} target="_blank" rel="noopener">{NEWSLETTER.replace(/^https:\/\//, '')}</a>, fuera de esta web. La newsletter funciona en Beehiiv: si te suscribes, das tu correo en la web de Beehiiv, y lo que ocurre allí (cookies incluidas) está sujeto a la <a href={beehiivPrivacy} target="_blank" rel="noopener">política de privacidad de Beehiiv</a>. Puedes darte de baja cuando quieras desde cualquier edición.</p>
 
   <h2>Privacidad</h2>
   <ul>
-    <li><b>Responsable:</b> {OWNER}, con el nombre comercial {BRAND}, Reino Unido. Contacto: {email}.</li>
-    <li><b>Qué datos:</b> los que nos envíes al contactar, normalmente tu nombre, tu email y la tarea que quieres delegar; y los registros del servidor descritos arriba.</li>
-    <li><b>Para qué y con qué base (RGPD del Reino Unido y de la UE, art. 6):</b> responderte, hacer el diagnóstico y preparar una propuesta, como medidas precontractuales que pides tú (art. 6.1.b); prestar y facturar el piloto (contrato y obligación legal, art. 6.1.b y c); y los registros del servidor por seguridad (interés legítimo, art. 6.1.f).</li>
-    <li><b>Cuánto tiempo:</b> si no llegamos a trabajar juntos, como máximo 12 meses desde el último contacto. Si eres cliente, las facturas y registros contables se guardan lo que exija la normativa fiscal británica (HMRC).</li>
-    <li><b>Con quién se comparte:</b> con nadie para fines comerciales. Solo con proveedores que actúan por cuenta nuestra (alojamiento, correo), con contrato. Si alguno trata datos fuera del Reino Unido o del EEE, nos apoyamos en decisiones de adecuación o cláusulas contractuales tipo.</li>
-    <li><b>No nos envíes</b> datos de salud, contraseñas ni información confidencial de tu empresa por este canal.</li>
-    <li><b>Durante un piloto:</b> tu agente funciona en una instancia de Hermes Cloud contratada a tu nombre. Nous Research trata esos datos según su propia política de privacidad. Nosotros accedemos solo a lo que autorizas para configurarlo, y al terminar puedes exportar o borrar tus datos.</li>
-    <li><b>Tus derechos:</b> acceso, rectificación, supresión, limitación, oposición y portabilidad, escribiendo a {email}. Puedes reclamar ante la ICO en el Reino Unido (ico.org.uk) o ante la autoridad de protección de datos de tu país de la UE (en España, la AEPD, aepd.es).</li>
+    <li><b>Responsable:</b> {OWNER}, con el nombre comercial {BRAND}, Reino Unido.</li>
+    <li><b>Qué datos:</b> los registros del servidor descritos arriba; y, solo si te suscribes a la newsletter, tu dirección de correo, guardada en Beehiiv.</li>
+    <li><b>Para qué y con qué base (RGPD del Reino Unido y de la UE, art. 6):</b> los registros del servidor, por seguridad (interés legítimo, art. 6.1.f); la newsletter, porque la pides tú (consentimiento, art. 6.1.a), que retiras al darte de baja.</li>
+    <li><b>Cuánto tiempo:</b> los registros del servidor, poco tiempo y se borran de forma periódica; tu correo de la newsletter, hasta que te des de baja.</li>
+    <li><b>Con quién se comparte:</b> con nadie para fines comerciales. Solo con los proveedores que hacen funcionar la web y la newsletter por cuenta nuestra (alojamiento, Beehiiv). Si tratan datos fuera del Reino Unido o del EEE, se apoyan en decisiones de adecuación o cláusulas contractuales tipo.</li>
+    <li><b>Tus derechos:</b> acceso, rectificación, supresión, limitación, oposición y portabilidad, a través del contacto indicado arriba. Puedes reclamar ante la ICO en el Reino Unido (ico.org.uk) o ante la autoridad de protección de datos de tu país de la UE (en España, la AEPD, aepd.es).</li>
     <li><b>Residentes en EE. UU.:</b> no vendemos ni compartimos datos personales ni los usamos para publicidad dirigida.</li>
   </ul>
-  <p><a href={pathFor(lang, '')}>← Volver al inicio</a></p>
+  <p><a href={pathFor(lang, '')}>← Volver a la guía</a></p>
   </>
 )}
 </article>
@@ -116,8 +98,8 @@ const UPDATED = en ? '21 October 2026' : '21 de octubre de 2026';
 <style>
 .legal{max-width:760px;padding-top:72px;padding-bottom:96px}
 .legal .eyebrow{margin:0 0 20px}
-.legal .note{margin:24px 0 8px;padding:16px 20px;border-left:4px solid var(--accent);background:var(--paper-2);font-size:16px;line-height:1.5}
-.legal h2{margin:48px 0 12px;font-family:var(--display);font-weight:750;font-size:26px;letter-spacing:-.015em}
+.legal .note{margin:24px 0 8px;padding:16px 20px;border-left:6px solid var(--accent);background:var(--paper-2);font-size:16px;line-height:1.5}
+.legal h2{margin:48px 0 12px;font-family:var(--display);font-weight:800;font-size:26px;letter-spacing:-.015em}
 .legal p,.legal li{font-size:17px;line-height:1.6;color:var(--ink-2)}
 .legal p{margin:0 0 14px}
 .legal ul{margin:0 0 14px;padding-left:20px;display:flex;flex-direction:column;gap:8px}

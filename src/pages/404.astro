@@ -1,12 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import { copy } from '../i18n';
-const c = copy.en.notFound;
+const c = copy.es.notFound;
 ---
-<Layout lang="en" page="" title={c.title} description={c.h1} noindex>
+<Layout lang="es" page="" title={c.title} description={c.h1} noindex>
 <section class="wrap" style="padding-top:96px;padding-bottom:120px;display:flex;flex-direction:column;gap:28px;align-items:flex-start">
-  <p class="eyebrow" style="margin:0">Error 404</p>
+  <p class="eyebrow">Error 404</p>
   <h1 class="h1">{c.h1}</h1>
-  <div class="row"><a href="/" class="btn btn-accent">{c.back}</a><a href="/es/" class="btn btn-ghost" lang="es">{copy.es.notFound.back}</a></div>
+  <p lang="en" style="margin:0;font-size:20px">{copy.en.notFound.h1}</p>
+  <div class="row"><a href="/" class="btn btn-ink">{c.back}</a><a href="/en/" class="btn btn-ghost" lang="en">{copy.en.notFound.back}</a></div>
 </section>
 </Layout>

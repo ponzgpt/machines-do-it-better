@@ -1,0 +1,8 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Home from '../../components/Home.astro';
+import { copy } from '../../i18n';
+import { guides, fill } from '../../guide/render.mjs';
+const c = copy.en;
+---
+<Layout lang="en" page="" title={c.title} description={fill(c.description, guides.en)}><Home lang="en" /></Layout>

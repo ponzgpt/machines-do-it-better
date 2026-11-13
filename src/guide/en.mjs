@@ -163,7 +163,7 @@ export default {
       do:
         'Update with `hermes update`; if something is missing from the configuration afterwards, `hermes config check` and `hermes config migrate`. Your data, memory and keys live in `~/.hermes/`. The documentation consulted does not describe a backup procedure (unverified), so the prudent thing is to copy that folder, which includes your keys, to an encrypted disk. When something breaks: `hermes doctor` first; if the bot doesn’t answer, `hermes gateway status`; if answers come back empty or broken, run `hermes model` again.',
       why:
-        'An agent without upkeep stops working silently: models change, keys expire, the computer restarts.',
+        'An agent nobody looks after stops working silently: models change, keys expire, the computer restarts.',
       exercise: {
         minutes: 10,
         text:
