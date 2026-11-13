@@ -1,6 +1,7 @@
 // Turns a guide object (es.mjs / en.mjs) into what the site ships: the facts line, inline HTML for the page,
 // the Markdown "for your agent" and the HTML the PDF is printed from. Every number in the facts line is
 // computed from the content, never typed by hand.
+import { createHash } from 'node:crypto';
 import es from './es.mjs';
 import en from './en.mjs';
 
@@ -54,6 +55,9 @@ export function inline(s, g) {
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
 }
+
+/** Fingerprint of a guide's content: scripts/build-pdf.mjs stamps it, the test compares it. */
+export const guideHash = (g) => createHash('sha256').update(JSON.stringify(g)).digest('hex').slice(0, 16);
 
 export const sourceOf = (g, id) => g.sources.find((s) => s.id === id);
 

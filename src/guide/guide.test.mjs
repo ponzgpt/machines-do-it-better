@@ -2,7 +2,8 @@
 // language versions drift apart in shape.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { guides, facts, factsLine, toMarkdown, fill } from './render.mjs';
+import { readFileSync } from 'node:fs';
+import { guides, facts, factsLine, toMarkdown, fill, guideHash } from './render.mjs';
 
 for (const [lang, g] of Object.entries(guides)) {
   test(`${lang}: facts line matches the content`, () => {
@@ -33,4 +34,9 @@ for (const [lang, g] of Object.entries(guides)) {
 test('es and en have the same shape', () => {
   const shape = (g) => [g.steps.map((s) => [s.exercise.minutes, s.sources.join()]), g.tools.map((t) => t.source), g.sources.map((s) => s.id + s.url), g.numbers.length, g.outcomes.length, g.edition];
   assert.deepEqual(shape(guides.es), shape(guides.en));
+});
+
+test('the committed PDFs were printed from the current guide (run `npm run pdf` after editing it)', () => {
+  const stamp = JSON.parse(readFileSync(new URL('./pdf-stamp.json', import.meta.url), 'utf8'));
+  for (const [lang, g] of Object.entries(guides)) assert.equal(stamp[lang], guideHash(g), `${lang} PDF is stale`);
 });
