@@ -1,43 +1,30 @@
 # Machines Do It Better
 
-**MDIB** is my main project: I set up personal and business AI agents, built on open models and open agent
-harnesses such as [Hermes Agent](https://github.com/NousResearch/hermes-agent), so that the person or team using
-them owns them: their account, their data, their choice of model. Consulting plus semi-automated deployment, for
-individuals (B2C) and small businesses (B2B). Open by default: nothing is locked to us, everything can be inspected,
-moved or reshaped by whoever runs it.
+**MDIB** is my main project: a free, written guide to setting up your own AI agent, on a machine you control,
+with your account, your data and your choice of model, doing one real task for you. It is delivered three ways:
+the web page, a PDF, and a Markdown file "for your agent" that you give to ChatGPT, Claude or any assistant so it
+tutors you through it. The guide is free in exchange for interest: the only call to action is the newsletter.
 
-**Live:** https://mdib.technoir.cloud · **Status:** pre-launch. The offer (one Founder Pilot) and the site are live;
-the first pilots are friends and family, so there are no paying clients yet.
+**Live:** https://mdib.technoir.cloud · **Status:** pre-launch, no paying clients.
 
-This repository is the public site. Pilots, sales, legal and the client-facing agent distribution live in a private
-repository (`ponzgpt/mdib-ops`) because they hold people's names and use cases.
-
-Astro (static) + nginx in Docker. English at `/`, Spanish at `/es/` (toggle in the header). No analytics, no cookies, self-hosted fonts.
+Astro (static) + nginx in Docker. Spanish at `/`, English at `/en/`. No analytics, no cookies, self-hosted fonts.
 
 ```bash
 npm install
 npm run dev                       # http://localhost:4321
 npm run check && npm run build    # what CI and the deploy run
+npm run pdf                       # re-print the PDFs after editing the guide (needs Chrome locally)
 ./scripts/deploy.sh               # see DEPLOYMENT.md
 ```
 
-- `src/i18n.ts`: every visible string, in English and Spanish.
-- `src/components/Home.astro`: the landing. The hero selector (for me / for my business or team) toggles `body[data-mode]`; both variants are in the HTML. `?for=business`, `?para=empresa`, `?para=negocio` or `#empresa` open the business variant for campaign links.
-- `src/lib/currency.mjs`: pilot price range per currency and visitor detection (time zone, then browser language region, else USD). Visitors can switch currency by hand. Tested by `node --test`.
-- `src/components/Legal.astro`: provisional legal notice, pilot terms and privacy policy (UK sole trader selling to the UK, EU and US).
-- `src/site.ts`: owner, trading name, and the contact email and address (null until published).
-- `scripts/check-content.mjs`: after the build, fails on visible `[PLACEHOLDERS]`, a gmail address, or promises forbidden by the business repo.
-- `scripts/build-og.py`: link-preview cards `public/og-en.png` and `public/og-es.png`.
-- `docs/handoff/`: the original design handoff and reference files from the claude.ai design session (reference only).
-
-## Pending (Javier's call)
-
-- Contact email and geographic address: required on the site before the first sale (UK E-Commerce Regulations 2002, reg. 6). Today the contact section says bookings open soon.
-- Pilot price: today the provisional £100–250 range (≈ €120–290, $130–330, fixed rates in `src/lib/currency.mjs`).
-- Final domain (today `mdib.technoir.cloud`).
-- Legal texts: professional review before the first paid pilot; open points in `mdib-ops/legal/web-legal-review.md`.
-- Contact: a booking link (Cal.com or similar) once the email exists.
-- Whether `/empresas` should become its own page if B2B traffic comes through a separate channel.
+- `src/guide/es.mjs`, `src/guide/en.mjs`: the guide, once per language, with its sources.
+- `src/guide/render.mjs`: facts line (computed from the content), inline HTML, the Markdown "for your agent".
+- `src/pages/guia-agente-propio.md.ts`, `own-agent-guide.md.ts`: the .md downloads, generated at build time.
+- `scripts/build-pdf.mjs`: the PDFs in `public/`, printed by headless Chrome and stamped in `src/guide/pdf-stamp.json`.
+- `src/components/Home.astro`: the page. `src/scripts/`: the paper-dither hero and the illustrative session replay.
+- `src/i18n.ts`: the page chrome in both languages. `src/components/Legal.astro`: provisional legal notice and privacy.
+- `scripts/check-content.mjs`: after the build, fails on placeholders, forbidden promises, the retired offer's words and broken `mailto:`.
+- `nginx.conf`: 301s from the old `/es/` paths, HTML revalidation, `.md` served as UTF-8 text.
 
 ## How this was made
 
@@ -47,4 +34,4 @@ agent working for me.
 
 ## Licence
 
-Code: MIT, see [LICENSE](LICENSE). Copy, name and brand are not licensed for reuse.
+Code: MIT, see [LICENSE](LICENSE). The guide's text, the name and the brand are not licensed for republication.
