@@ -17,39 +17,39 @@ const m = `arr-h-${lang}`;
       </marker>
     </defs>
     <!-- Public chatbot: off the boundary, path crossed out -->
-    <path class="bp ln" pathLength="1" d="M196,84 a20,20 0 0,1 2,-38 a30,30 0 0,1 54,-14 a26,26 0 0,1 46,14 a19,19 0 0,1 0,38 Z" />
+    <path class="bp ln" d="M196,84 a20,20 0 0,1 2,-38 a30,30 0 0,1 54,-14 a26,26 0 0,1 46,14 a19,19 0 0,1 0,38 Z" />
     <text class="bp-T" x="247" y="70" text-anchor="middle" style="font-size:15px">{f.bot[0]}</text>
     {wrap(f.bot[1], 18).map((t, i) => <text class="bp-a" x="322" y={58 + i * 15}>{t}</text>)}
-    <path class="bp-dash ln d2" pathLength="1" d="M93,206 C93,150 150,112 214,90" />
-    <path class="bp-acc ln d3" pathLength="1" d="M128,130 L156,158 M156,130 L128,158" />
+    <path class="bp-dash ln d2" d="M93,206 C93,150 150,112 214,90" />
+    <path class="bp-acc ln d3" d="M128,130 L156,158 M156,130 L128,158" />
 
     <!-- Boundary under your control, with its dimension line -->
-    <path class="bp-dash ln" pathLength="1" d="M12,176 H508 V350 H12 Z" />
+    <path class="bp-dash ln" d="M12,176 H508 V350 H12 Z" />
     <path class="bp-thin" d="M12,368 V384 M508,368 V384 M12,376 H508" />
     <rect x={260 - f.fence.length * 4.2 - 10} y="368" width={f.fence.length * 8.4 + 20} height="16" fill="var(--paper)" />
     <text class="bp-t" x="260" y="380" text-anchor="middle">{f.fence}</text>
 
     <!-- A: your work -->
-    <path class="bp ln" pathLength="1" d="M28,206 H158 V316 H28 Z" />
+    <path class="bp ln" d="M28,206 H158 V316 H28 Z" />
     <text class="bp-t" x="150" y="222" text-anchor="end">A</text>
     <text class="bp-T" x="40" y="238">{f.work[0]}</text>
     {f.work[1].split(' · ').map((t, i) => <text class="bp-t" x="40" y={262 + i * 16}>{t}</text>)}
 
     <!-- B: the private agent (the accent) -->
-    <path class="bp-acc ln d2" pathLength="1" d="M192,200 H340 V322 H192 Z" />
+    <path class="bp-acc ln d2" d="M192,200 H340 V322 H192 Z" />
     <text class="bp-t" x="332" y="216" text-anchor="end">B</text>
     {wrap(f.agent[0], 10).map((t, i) => <text class="bp-T" x="204" y={242 + i * 21}>{t}</text>)}
     <text class="bp-a" x="204" y="300">{f.agent[1]}</text>
 
     <!-- C: your data, a store -->
-    <path class="bp ln d3" pathLength="1" d="M374,218 a60,10 0 0,1 120,0 V306 a60,10 0 0,1 -120,0 Z M374,218 a60,10 0 0,0 120,0" />
+    <path class="bp ln d3" d="M374,218 a60,10 0 0,1 120,0 V306 a60,10 0 0,1 -120,0 Z M374,218 a60,10 0 0,0 120,0" />
     <text class="bp-t" x="486" y="246" text-anchor="end">C</text>
     <text class="bp-T" x="386" y="262">{f.data[0]}</text>
-    {wrap(f.data[1], 14).map((t, i) => <text class="bp-t" x="386" y={282 + i * 15}>{t}</text>)}
+    {wrap(f.data[1], 11).map((t, i) => <text class="bp-t" x="386" y={282 + i * 15}>{t}</text>)}
 
     <!-- Work flows into the agent; the agent reads and writes your data -->
-    <path class="bp ln d2" pathLength="1" d="M158,261 H190" marker-end={`url(#${m})`} />
-    <path class="bp ln d3" pathLength="1" d="M342,261 H372" marker-start={`url(#${m})`} marker-end={`url(#${m})`} />
+    <path class="bp ln d2" d="M158,261 H190" marker-end={`url(#${m})`} />
+    <path class="bp ln d3" d="M342,261 H372" marker-start={`url(#${m})`} marker-end={`url(#${m})`} />
   </svg>
 </figure>
 <style>

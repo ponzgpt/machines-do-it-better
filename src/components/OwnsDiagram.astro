@@ -8,12 +8,12 @@ const boxes: [number, number][] = [[200, 24], [24, 290], [376, 290]];
 <figure class="fig owns-fig" data-draw>
   <figcaption><span>{c.fig}</span></figcaption>
   <svg viewBox="0 0 600 380" role="img" aria-label={c.aria}>
-    <path class="bp ln d2" pathLength="1" d="M300,88 V160 M252,230 L130,290 M348,230 L470,290" />
-    <path class="bp-acc ln" pathLength="1" d="M210,160 H390 V230 H210 Z" />
+    <path class="bp ln d2" d="M300,88 V160 M252,230 L130,290 M348,230 L470,290" />
+    <path class="bp-acc ln" d="M210,160 H390 V230 H210 Z" />
     <text class="bp-T" x="300" y="201" text-anchor="middle">{c.center}</text>
     {boxes.map(([x, y], i) => (
       <>
-        <path class="bp ln d3" pathLength="1" d={`M${x},${y} H${x + 200} V${y + 64} H${x} Z`} />
+        <path class="bp ln d3" d={`M${x},${y} H${x + 200} V${y + 64} H${x} Z`} />
         <text class="bp-t" x={x + 192} y={y + 16} text-anchor="end">{String.fromCharCode(65 + i)}</text>
         <text class="bp-T" x={x + 100} y={y + 40} text-anchor="middle">{c.parts[i][0]}</text>
       </>

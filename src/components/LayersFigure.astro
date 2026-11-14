@@ -10,7 +10,7 @@ const aria = copy[lang].products.figAria;
 const [plano, forja, guardia, puente] = layers.map((l) => l.name);
 const m = `arr-l-${lang}`;
 ---
-<figure class="fig layers-fig" data-draw>
+<figure class="fig layers-fig" data-draw tabindex="0">
   <figcaption><span>{f.label}</span></figcaption>
   <svg viewBox="0 0 760 360" role="img" aria-label={aria}>
     <defs>
@@ -19,46 +19,54 @@ const m = `arr-l-${lang}`;
       </marker>
     </defs>
     <!-- Your account and instance -->
-    <path class="bp-dash ln" pathLength="1" d="M150,100 H752 V340 H150 Z" />
+    <path class="bp-dash ln" d="M150,100 H752 V340 H150 Z" />
     <text class="bp-t" x="162" y="120">{f.account}</text>
 
     <!-- You, on your channel -->
-    <path class="bp ln" pathLength="1" d="M12,180 H112 V244 H12 Z" />
+    <path class="bp ln" d="M12,180 H112 V244 H12 Z" />
     <text class="bp-T" x="24" y="208">{f.you}</text>
     <text class="bp-t" x="24" y="230">{f.channel}</text>
-    <path class="bp ln" pathLength="1" d="M112,212 H168" marker-end={`url(#${m})`} />
+    <path class="bp ln" d="M112,212 H168" marker-end={`url(#${m})`} />
 
     <!-- The harness carries Forja and reads Plano -->
-    <path class="bp ln" pathLength="1" d="M170,132 H340 V318 H170 Z" />
+    <path class="bp ln" d="M170,132 H340 V318 H170 Z" />
     <text class="bp-t" x="182" y="152">{f.harness} · Hermes</text>
-    <path class="bp ln d2" pathLength="1" d="M182,166 H328 V226 H182 Z" />
+    <path class="bp ln d2" d="M182,166 H328 V226 H182 Z" />
     <text class="bp-t" x="320" y="182" text-anchor="end">01</text>
     <text class="bp-T" x="194" y="206">{plano}</text>
-    <path class="bp ln d2" pathLength="1" d="M182,244 H328 V304 H182 Z" />
+    <path class="bp ln d2" d="M182,244 H328 V304 H182 Z" />
     <text class="bp-t" x="320" y="260" text-anchor="end">02</text>
     <text class="bp-T" x="194" y="284">{forja}</text>
-    <path class="bp ln d2" pathLength="1" d="M340,224 H370" marker-end={`url(#${m})`} />
+    <path class="bp ln d2" d="M340,224 H370" marker-end={`url(#${m})`} />
 
     <!-- Guardia: the gate -->
-    <path class="bp-acc ln d2" pathLength="1" d="M372,170 H428 V278 H372 Z" />
+    <path class="bp-acc ln d2" d="M372,170 H428 V278 H372 Z" />
     <text class="bp-t" x="420" y="186" text-anchor="end">03</text>
     <text class="bp-T" x="0" y="0" transform="translate(406,262) rotate(-90)">{guardia}</text>
     <text class="bp-a" x="400" y="160" text-anchor="middle">{f.confirm}</text>
-    <path class="bp ln d3" pathLength="1" d="M428,224 H458" marker-end={`url(#${m})`} />
+    <path class="bp ln d3" d="M428,224 H458" marker-end={`url(#${m})`} />
 
     <!-- Puente: the route -->
-    <path class="bp ln d3" pathLength="1" d="M502,180 L546,224 L502,268 L458,224 Z" />
+    <path class="bp ln d3" d="M502,180 L546,224 L502,268 L458,224 Z" />
     <text class="bp-T" x="502" y="229" text-anchor="middle" style="font-size:14px">{puente}</text>
     <text class="bp-t" x="530" y="196">04</text>
     <!-- up and out of your instance: a cloud model, in your name -->
-    <path class="bp ln d3" pathLength="1" d="M502,180 V44 H578" marker-end={`url(#${m})`} />
-    <path class="bp ln d3" pathLength="1" d="M580,16 H750 V72 H580 Z" />
+    <path class="bp ln d3" d="M502,180 V44 H578" marker-end={`url(#${m})`} />
+    <path class="bp ln d3" d="M580,16 H740 V72 H580 Z" />
     <text class="bp-T" x="592" y="50" style="font-size:15px">{f.cloud}</text>
     <!-- down: a model on your own machine -->
-    <path class="bp ln d3" pathLength="1" d="M546,224 H560 V276 H578" marker-end={`url(#${m})`} />
-    <path class="bp-acc ln d3" pathLength="1" d="M580,248 H750 V304 H580 Z" />
+    <path class="bp ln d3" d="M546,224 H560 V276 H578" marker-end={`url(#${m})`} />
+    <path class="bp-acc ln d3" d="M580,248 H740 V304 H580 Z" />
     <text class="bp-T" x="592" y="282" style="font-size:15px">{f.local}</text>
     <!-- the answer goes back on the same channel -->
-    <path class="bp-thin ln d3" pathLength="1" d="M664,304 V326 H62 V246" marker-end={`url(#${m})`} />
+    <path class="bp-thin ln d3" d="M664,304 V326 H62 V246" marker-end={`url(#${m})`} />
   </svg>
 </figure>
+<style>
+/* On a phone the flow keeps a legible scale and scrolls sideways inside its own frame (the page itself never does). */
+@media (max-width:640px){
+  .layers-fig{overflow-x:auto}
+  .layers-fig svg{min-width:620px}
+  .layers-fig figcaption{position:sticky;left:0}
+}
+</style>

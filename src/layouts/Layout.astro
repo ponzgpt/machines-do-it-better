@@ -97,13 +97,31 @@ const endBlock = !noindex && page !== 'newsletter';
   </div>
 </footer>
 <script>
-  // Draw-on: diagram lines ([data-draw] .ln, each with pathLength="1") trace themselves once, when first seen.
-  // Without the html.draw-on class (JS off, reduced motion) the CSS never hides them.
+  // Draw-on: diagram lines ([data-draw] .ln) trace themselves once, when first seen. Lengths are measured here
+  // (getTotalLength) rather than with pathLength, which browsers apply to dashes inconsistently. Without the
+  // html.draw-on class (JS off, reduced motion) nothing is hidden; CSS also reveals the lines after 3 s if this
+  // script never arms them.
   if (document.documentElement.classList.contains('draw-on')) {
     const io = new IntersectionObserver((entries) => {
-      for (const e of entries) if (e.isIntersecting) { e.target.classList.add('drawn'); io.unobserve(e.target); }
-    }, { threshold: 0.25 });
-    document.querySelectorAll('[data-draw]').forEach((el) => io.observe(el));
+      for (const e of entries) {
+        if (!e.isIntersecting) continue;
+        io.unobserve(e.target);
+        e.target.querySelectorAll<SVGGeometryElement>('.ln').forEach((p, i) => {
+          p.style.transition = `stroke-dashoffset 1.2s cubic-bezier(.4,0,.2,1) ${p.classList.contains('d3') ? .7 : p.classList.contains('d2') ? .35 : 0}s`;
+          p.style.strokeDashoffset = '0';
+          p.addEventListener('transitionend', () => { p.style.strokeDasharray = ''; p.style.strokeDashoffset = ''; p.style.transition = ''; }, { once: true });
+        });
+      }
+    }, { threshold: 0.2 });
+    document.querySelectorAll<HTMLElement>('[data-draw]').forEach((fig) => {
+      fig.querySelectorAll<SVGGeometryElement>('.ln').forEach((p) => {
+        const L = Math.ceil(p.getTotalLength()) + 1;
+        p.style.strokeDasharray = `${L} ${L}`;
+        p.style.strokeDashoffset = String(L);
+      });
+      fig.classList.add('armed');
+      io.observe(fig);
+    });
   }
 </script>
 </body>
@@ -221,13 +239,11 @@ section.tint{background:var(--paper)}
 .bp-thin{fill:none;stroke:var(--ink);stroke-width:.75}
 .bp-dash{fill:none;stroke:var(--ink);stroke-width:1;stroke-dasharray:4 4}
 .bp-acc{fill:none;stroke:var(--accent);stroke-width:2}
-.bp-t{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;fill:var(--muted)}
-.bp-T{font-family:var(--display);font-weight:650;font-size:17px;fill:var(--ink)}
-.bp-a{font-family:var(--mono);font-size:11px;fill:var(--accent);letter-spacing:.06em;text-transform:uppercase}
-.draw-on [data-draw] .ln{stroke-dasharray:1 1;stroke-dashoffset:1}
-.draw-on [data-draw].drawn .ln{stroke-dashoffset:0;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1)}
-.draw-on [data-draw].drawn .ln.d2{transition-delay:.35s}
-.draw-on [data-draw].drawn .ln.d3{transition-delay:.7s}
+.bp-t{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;fill:var(--muted)}
+.bp-T{font-family:var(--display);font-weight:650;font-size:18px;fill:var(--ink)}
+.bp-a{font-family:var(--mono);font-size:12px;fill:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+.draw-on [data-draw]:not(.armed) .ln{visibility:hidden;animation:reveal 0s 3s forwards}
+@keyframes reveal{to{visibility:visible}}
 
 /* Footer: the byline lives here, and only here (plus the manifesto's closing paragraph). */
 footer{border-top:1px solid var(--hair)}

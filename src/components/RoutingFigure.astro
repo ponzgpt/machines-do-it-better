@@ -18,20 +18,20 @@ const m = `arr-r-${lang}`;
           <path d="M0,1 L9,5 L0,9" fill="none" stroke="var(--ink)" stroke-width="1.4" />
         </marker>
       </defs>
-      <path class="bp ln" pathLength="1" d="M16,110 H112 V170 H16 Z" />
+      <path class="bp ln" d="M16,110 H112 V170 H16 Z" />
       <text class="bp-T" x="28" y="146">{r.task}</text>
-      <path class="bp ln" pathLength="1" d="M112,140 H174" marker-end={`url(#${m})`} />
-      <path class="bp ln d2" pathLength="1" d="M226,88 L278,140 L226,192 L174,140 Z" />
+      <path class="bp ln" d="M112,140 H174" marker-end={`url(#${m})`} />
+      <path class="bp ln d2" d="M226,88 L278,140 L226,192 L174,140 Z" />
       <text class="bp-T" x="226" y="145" text-anchor="middle" style="font-size:15px">{r.rule}</text>
       <!-- up: cloud -->
-      <path class="bp ln d2" pathLength="1" d="M226,88 V56 H342" marker-end={`url(#${m})`} />
-      <path class="bp ln d3" pathLength="1" d="M344,26 H544 V90 H344 Z" />
+      <path class="bp ln d2" d="M226,88 V56 H342" marker-end={`url(#${m})`} />
+      <path class="bp ln d3" d="M344,26 H544 V90 H344 Z" />
       <text class="bp-T" x="358" y="52">{r.cloud[0]}</text>
       {wrap(r.cloud[1], 26).map((t, i) => <text class="bp-t" x="358" y={72 + i * 14}>{t}</text>)}
       <!-- down: local, inside your machine -->
-      <path class="bp ln d2" pathLength="1" d="M226,192 V224 H342" marker-end={`url(#${m})`} />
-      <path class="bp-dash ln d3" pathLength="1" d="M332,180 H554 V268 H332 Z" />
-      <path class="bp-acc ln d3" pathLength="1" d="M344,192 H544 V256 H344 Z" />
+      <path class="bp ln d2" d="M226,192 V224 H342" marker-end={`url(#${m})`} />
+      <path class="bp-dash ln d3" d="M332,180 H554 V268 H332 Z" />
+      <path class="bp-acc ln d3" d="M344,192 H544 V256 H344 Z" />
       <text class="bp-T" x="358" y="218">{r.local[0]}</text>
       {wrap(r.local[1], 26).map((t, i) => <text class="bp-a" x="358" y={238 + i * 14}>{t}</text>)}
     </svg>

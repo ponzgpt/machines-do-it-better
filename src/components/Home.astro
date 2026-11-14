@@ -31,7 +31,7 @@ const howId = lang === 'es' ? 'como-funciona' : 'how-it-works';
           <div><dt>{k}</dt><dd>{i === 2 ? <><Badge id="private" lang={lang} /> {v}</> : v}</dd></div>
         ))}
       </dl>
-      <div class="row">
+      <div class="row hero-cta">
         <SubscribeLink lang={lang} access />
         <a class="quiet" href={`#${howId}`}>{h.how} <span aria-hidden="true">↓</span></a>
       </div>
@@ -48,10 +48,14 @@ const howId = lang === 'es' ? 'como-funciona' : 'how-it-works';
       <ol class="get">
         {h.get.map((it, i) => (
           <li>
-            <p class="label"><span class="acc">{pad(i)}</span> · {it.k}</p>
-            <h3 class="h3">{it.statement}</h3>
-            <p>{it.body}</p>
-            <p class="example"><span class="label">{c.illustrative}</span>{it.example}</p>
+            <div class="get-head">
+              <p class="label"><span class="acc">{pad(i)}</span> · {it.k}</p>
+              <h3 class="h3">{it.statement}</h3>
+            </div>
+            <div class="get-body">
+              <p>{it.body}</p>
+              <p class="example"><span class="label">{c.illustrative}</span>{it.example}</p>
+            </div>
           </li>
         ))}
       </ol>
@@ -144,12 +148,13 @@ const howId = lang === 'es' ? 'como-funciona' : 'how-it-works';
 .spec .badge{margin-right:6px}
 
 .acc{color:var(--accent)}
-.get{list-style:none;margin:40px 0 48px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--hair)}
-.get li{padding:20px 24px 8px 0;display:flex;flex-direction:column;gap:12px}
-.get li + li{padding-left:24px;border-left:1px solid var(--line)}
-.get li > p:not(.label){margin:0;font-size:16px;line-height:1.6;color:var(--ink-2)}
-.get .example{margin-top:auto !important;padding-top:12px;border-top:1px dashed var(--line);font-size:15px !important;color:var(--ink) !important}
-.get .example .label{display:block;margin-bottom:4px}
+.get{list-style:none;margin:32px 0 40px;padding:0;border-top:1px solid var(--hair)}
+.get li{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,6fr);gap:12px 40px;padding:24px 0;border-bottom:1px solid var(--line)}
+.get-head{display:flex;flex-direction:column;gap:10px}
+.get-head .h3{font-size:clamp(21px,2vw,26px)}
+.get-body p{margin:0;font-size:16.5px;line-height:1.6;color:var(--ink-2)}
+.get-body .example{margin-top:14px;padding:10px 0 0;border-top:1px dashed var(--line);font-size:15.5px;color:var(--ink)}
+.get-body .example .label{display:block;margin-bottom:4px}
 
 .flow{list-style:none;margin:40px 0 0;padding:0;border-top:1px solid var(--hair);counter-reset:f}
 .flow li{display:grid;grid-template-columns:56px minmax(0,1fr) 200px;gap:8px 24px;padding:20px 0;border-bottom:1px solid var(--line)}
@@ -176,8 +181,7 @@ const howId = lang === 'es' ? 'como-funciona' : 'how-it-works';
 
 @media (max-width:1000px){
   .hero-grid{grid-template-columns:1fr}
-  .get{grid-template-columns:1fr}
-  .get li,.get li + li{padding:20px 0 20px;border-left:0;border-bottom:1px solid var(--line)}
+  .get li{grid-template-columns:1fr}
 }
 @media (max-width:760px){
   .flow li{grid-template-columns:40px minmax(0,1fr)}
@@ -189,6 +193,8 @@ const howId = lang === 'es' ? 'como-funciona' : 'how-it-works';
 @media (max-width:600px){
   .hero-grid{padding-top:32px;padding-bottom:40px}
   .spec div{grid-template-columns:1fr;gap:2px}
+  .hero-cta{order:1}
+  .spec{order:2}
   .home-hero .btn,.door .btn{flex:1 1 100%}
 }
 </style>
