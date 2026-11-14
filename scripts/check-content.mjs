@@ -3,6 +3,8 @@
 // retired offer (diagnosis calls, sessions, guarantees, testimonials), in either language.
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
+import { products, layers, sellingGuard } from '../src/catalog.mjs';
+import { EMAIL, ADDRESS } from '../src/site.ts';
 
 const PLACEHOLDER = /\[[A-ZÁÉÍÓÚÑ0-9][^\]\n]{0,60}\]/;
 const FORBIDDEN = [
@@ -35,6 +37,11 @@ export function problems(file) {
   return out;
 }
 
+// Every status badge in the built HTML must say what src/catalog.mjs says for its item.
+const STATUS_OF = Object.fromEntries([...layers, ...products].map((i) => [i.id, i.status]));
+export const badgeProblems = (html) => [...html.matchAll(/data-item="([^"]+)" data-status="([^"]+)"/g)]
+  .filter(([, id, st]) => STATUS_OF[id] !== st).map(([, id, st]) => `badge for ${id} says ${st}, catalog says ${STATUS_OF[id]}`);
+
 const files = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
   e.isDirectory() ? files(join(dir, e.name)) : /\.(html|md)$/.test(e.name) ? [join(dir, e.name)] : []);
 
@@ -47,8 +54,17 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   if (must.some((h) => !problems(h).length) || mustNot.some((h) => problems(h).length)) {
     console.error('check-content self-test failed'); process.exit(1);
   }
+  // Nothing may be sold while the site has no business email and postal address (decision of 2026-11-14).
+  const guard = sellingGuard(products, { email: EMAIL, address: ADDRESS });
+  if (sellingGuard([{ id: 't', status: 'available', stripeLink: 'https://buy.stripe.com/x', price: '1' }], { email: null, address: 'a' }).length === 0) {
+    console.error('check-content self-test failed (selling guard)'); process.exit(1);
+  }
+  if (guard.length) { console.error(guard.join('\n')); process.exit(1); }
   const all = files('dist');
-  const bad = all.flatMap((f) => problems(readFileSync(f, 'utf8')).map((p) => `${f}: ${p}`));
+  const bad = all.flatMap((f) => {
+    const src = readFileSync(f, 'utf8');
+    return [...problems(src), ...badgeProblems(src)].map((p) => `${f}: ${p}`);
+  });
   if (bad.length) { console.error(bad.join('\n')); process.exit(1); }
   console.log(`check-content: ${all.length} built files clean (${all.filter((f) => f.endsWith('.md')).length} .md)`);
 }
