@@ -1,18 +1,20 @@
 # Machines Do It Better
 
-**MDIB** is my main project: AI that is yours. Tools and guides so individuals and small businesses can have an AI
-agent of their own, with their account, their data and the model they choose, in the cloud when it makes sense and
-on their own hardware when they want. This repo is its public website:
+**MDIB** designs and sets up private AI agents, fitted to one professional's work, that the professional owns:
+the account, the data and the choice of model in their name, on their own machine or their own cloud. This repo is
+its public website.
 
-- **Home**: the ethos in five ideas (digital sovereignty, sovereign AI, agents that fit you, ownership, hybrid cloud + local).
-- **Manifesto** (`/manifiesto/`, `/en/manifesto/`): what I believe and what MDIB will not do.
-- **Products** (`/productos/`, `/en/products/`): four layers, each with an honest status: **Atlas** (your ontology),
-  **Forja** (the kit), **Guardia** (permissions, backups, upkeep) and **Puente** (the hybrid route). What you can take
-  away today is the free guide; nothing is on sale yet.
+- **Home**: "No puedes pegar los datos de tus clientes en ChatGPT." What you get, how a private agent goes from
+  brief to running (each step with its status and who does it, agent or person), and two ways to start: done for
+  you (the access list for a private pilot that is being prepared) or do it yourself (the free guide).
+- **Inside** (`/productos/`, `/en/products/`): the technical sheet. Four layers, **Plano**, **Forja**, **Guardia**
+  and **Puente**, each with what it is made of today, what it does not do and its status; one data-flow figure;
+  the catalogue (nothing on sale, no prices).
+- **Manifesto** (`/manifiesto/`, `/en/manifesto/`): machines first within limits, and what MDIB will not do.
 - **Free guide** (`/guia/`, `/en/guide/`): "You don't need to code", on the web, as a PDF and as Markdown "for your agent".
-- **Newsletter** (`/newsletter/`): a plain link to Beehiiv, plus a once-only pop-up for first-time visitors.
+- **Newsletter** (`/newsletter/`): also the access list; a plain link to Beehiiv. No pop-up.
 
-**Live:** https://mdib.technoir.cloud · **Status:** pre-launch, no paying clients.
+**Live:** https://mdib.technoir.cloud · **Status:** pre-launch, no paying clients, no running pilot.
 
 Astro (static) + nginx in Docker. Spanish at `/`, English at `/en/`. No analytics, no cookies, no third-party requests.
 
@@ -24,16 +26,19 @@ npm run pdf                       # re-print the PDFs after editing the guide (n
 ./scripts/deploy.sh               # see DEPLOYMENT.md
 ```
 
-- `src/catalog.mjs`: the status table (layers and products), each with its evidence, and the Stripe Payment Link
-  per product (all `null` today). The selling guard refuses a link while the site has no business email and address.
+- `src/catalog.mjs`: the status table (layers, products and the home's how-it-works steps), each with its evidence,
+  and the Stripe Payment Link per product (all `null` today). The selling guard refuses a link while the site has no business email and address.
 - `src/i18n.ts`: every word of the site in both languages. `src/routes.mjs`: the URL of each page per language.
 - `src/components/`: one component per page (`Home`, `Manifesto`, `Products`, `Guide`, `NewsletterPage`, `Legal`)
-  and the small parts (`Badge`, `BuyButton`, `SubscribeLink`, `NewsletterDialog`, `OwnsDiagram`).
-- `src/scripts/newsletter-prompt.ts`: when the pop-up opens (25 s or half a page, once, one `localStorage` key).
+  and the small parts (`Badge`, `BuyButton`, `SubscribeLink`, `NewsletterBlock`), plus the blueprint figures
+  (`HeroFigure`, `RoutingFigure`, `LayersFigure`, `OwnsDiagram`). Their lines draw on when seen (script at the end
+  of `src/layouts/Layout.astro`); nothing else moves.
+- `scripts/build-og.py`: the OG cards and `public/plate-machine.png`, the one dithered illustration.
 - `src/guide/es.mjs`, `src/guide/en.mjs`: the guide, once per language, with its sources; `render.mjs` builds the
   facts line, the inline HTML and the Markdown. `scripts/build-pdf.mjs` prints the PDFs into `public/`.
 - `scripts/check-content.mjs`: after the build, fails on placeholders, forbidden promises, the retired offer's words,
-  broken `mailto:`, a badge that disagrees with the catalog, or anything on sale without a business contact.
+  "Atlas", a newsletter cadence, a running pilot, prices outside the guide, a `<dialog>`, broken `mailto:`, a badge
+  that disagrees with the catalog, or anything on sale without a business contact.
 - `nginx.conf`: 301s from the old `/es/` paths, HTML revalidation, `.md` served as UTF-8 text.
 
 ## How this was made

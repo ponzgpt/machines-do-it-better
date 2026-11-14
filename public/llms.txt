@@ -1,14 +1,14 @@
 # Machines Do It Better (MDIB)
 
-> MDIB makes tools and guides so individuals and small businesses can have an AI agent of their own: their account, their data and the model they choose, in the cloud and on their own hardware. Run by Javier Ponz (ten years of technical support at Apple). Pre-launch: no paying clients, nothing on sale yet. Spanish at /, English at /en/.
+> MDIB designs and sets up private AI agents, fitted to one professional's work, that the professional owns: the account, the data and the choice of model are in their name, on their own machine or their own cloud. For people who handle other people's confidential information (lawyers, doctors, advisers, accountants, consultants) and for non-technical professionals who want serious help from AI. Status: private pilot in preparation, access list open (the access list is the newsletter). No paying clients, no running pilot, nothing on sale, no prices. Spanish at /, English at /en/.
 
 ## Pages
 
-- [Home](https://mdib.technoir.cloud/en/): the ethos in five ideas (digital sovereignty, sovereign AI, agents that fit you, ownership, hybrid cloud + local), the product family and where to start. Spanish: https://mdib.technoir.cloud/
-- [Manifesto](https://mdib.technoir.cloud/en/manifesto/): eleven theses in Javier's voice and what MDIB will not do. Spanish: https://mdib.technoir.cloud/manifiesto/
-- [Products](https://mdib.technoir.cloud/en/products/): four layers with an honest status each. Atlas (your ontology: the map of accounts, data, tasks and rules the agent works from): planned. Forja (the kit: flows, skills and installer): in development. Guardia (permissions, backups and upkeep): planned. Puente (hybrid route between cloud models and your own hardware): planned. Spanish: https://mdib.technoir.cloud/productos/
+- [Home](https://mdib.technoir.cloud/en/): "You can't paste your clients' data into ChatGPT." What you get (private, fitted to you, yours), how a private agent goes from brief to running with a status and an owner (agent or person) per step, the two ways to start (done for you: access list; do it yourself: the free guide). Spanish: https://mdib.technoir.cloud/
+- [Inside](https://mdib.technoir.cloud/en/products/): the technical sheet. Four layers, each with what it is, what it is made of today, what it does not do and its status. Plano (the written map of a client's work, an ontology): planned. Forja (the profile distribution for Hermes Agent: SOUL.md and four skills, v0.1.0 alpha, private): in development. Guardia (permissions, isolation, backups, upkeep; today written rules only): planned. Puente (routing between a cloud model and one on your own machine; today documentation only): planned. Then the catalogue: free guide (available), skills library (in development), private agent done for you (in development: private pilot in preparation), written setup (planned). Spanish: https://mdib.technoir.cloud/productos/
+- [Manifesto](https://mdib.technoir.cloud/en/manifesto/): machines first, within limits (true today: this site is built by AI agents to a specification and tests written by a person; first-line support is handled by an agent), your data where you decide, no lock-in, hybrid cloud and local, and what MDIB will not do. Spanish: https://mdib.technoir.cloud/manifiesto/
 - [Free guide](https://mdib.technoir.cloud/en/guide/): "You don't need to code", the steps to your own AI agent on a machine you control, connected to Telegram and doing one real task. Available. Spanish: https://mdib.technoir.cloud/guia/
-- [Newsletter](https://mdib.technoir.cloud/en/newsletter/): Monday to Friday, in Spanish, on open source, local models and open agents; being relaunched. Hosted on Beehiiv. Spanish: https://mdib.technoir.cloud/newsletter/
+- [Newsletter and access list](https://mdib.technoir.cloud/en/newsletter/): written in Spanish, hosted on Beehiiv, being relaunched; no sending rhythm is promised. Spanish: https://mdib.technoir.cloud/newsletter/
 - [Legal notice and privacy](https://mdib.technoir.cloud/en/legal/)
 
 ## The guide as Markdown (for your assistant)
@@ -17,8 +17,7 @@
 - [Guide in English (.md)](https://mdib.technoir.cloud/own-agent-guide.md)
 - PDFs: https://mdib.technoir.cloud/guia-agente-propio.pdf and https://mdib.technoir.cloud/own-agent-guide.pdf
 
-## What is not available
+## Not offered
 
-- Skills library: in development, not purchasable.
-- Written, fixed-scope setup: planned, not purchasable.
-- MDIB offers no calls or meetings, and is not affiliated with Nous Research or any tool the guide names.
+- No calls or meetings: intake, proposal and support are designed to run in writing, led by agents.
+- MDIB is a project by Javier Ponz (https://javierponz.technoir.cloud). It is not affiliated with Nous Research or any tool the guide names.

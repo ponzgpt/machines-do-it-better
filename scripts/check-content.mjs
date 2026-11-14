@@ -52,7 +52,7 @@ export const badgeProblems = (html) => [...html.matchAll(/data-item="([^"]+)" da
   .filter(([, id, st]) => STATUS_OF[id] !== st).map(([, id, st]) => `badge for ${id} says ${st}, catalog says ${STATUS_OF[id]}`);
 
 const files = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
-  e.isDirectory() ? files(join(dir, e.name)) : /\.(html|md)$/.test(e.name) ? [join(dir, e.name)] : []);
+  e.isDirectory() ? files(join(dir, e.name)) : /\.(html|md|txt)$/.test(e.name) ? [join(dir, e.name)] : []);
 
 if (import.meta.url === `file://${process.argv[1]}`) {
   // Self-test: the check must catch what it exists to catch, and nothing it shouldn't.
