@@ -1,16 +1,23 @@
 // The status table is the single source for badges, and nothing is sold without a business email and address.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { STATUSES, layers, products, sellingGuard } from './catalog.mjs';
+import { STATUSES, layers, products, steps, sellingGuard } from './catalog.mjs';
 import { EMAIL, ADDRESS } from './site.ts';
 import { badgeProblems } from '../scripts/check-content.mjs';
 
 test('every layer and product has a known status and a cited evidence path', () => {
-  for (const i of [...layers, ...products]) {
+  for (const i of [...layers, ...products, ...steps]) {
     assert.ok(STATUSES.includes(i.status), `${i.id}: ${i.status}`);
     assert.ok(i.evidence.length > 10, `${i.id} has no evidence`);
   }
-  assert.deepEqual(layers.map((l) => l.name), ['Atlas', 'Forja', 'Guardia', 'Puente']);
+  assert.deepEqual(layers.map((l) => l.name), ['Plano', 'Forja', 'Guardia', 'Puente']);
+  const ids = [...layers, ...products, ...steps].map((i) => i.id);
+  assert.equal(new Set(ids).size, ids.length, 'ids are unique across the catalog');
+});
+
+test('the bespoke pilot is never shown as available, and no intake agent is claimed (2026-11-14)', () => {
+  assert.notEqual(products.find((p) => p.id === 'private').status, 'available');
+  assert.equal(steps.find((s) => s.id === 'step-intake').status, 'planned');
 });
 
 test('a badge that disagrees with the catalog fails the content check', () => {

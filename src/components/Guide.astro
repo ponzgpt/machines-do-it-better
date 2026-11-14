@@ -1,9 +1,12 @@
 ---
 // The guide page (/guia/, /en/guide/). Everything the reader reads comes from src/guide/<lang>.mjs through render.mjs; only the
 // surrounding chrome (downloads, newsletter, illustrative session, diagram) comes from src/i18n.ts.
+// Nothing here moves: the illustrative session is printed whole (the typed replay was removed on 2026-11-14,
+// when the site became a static dossier), and the page closes with the layout's subscribe block.
 import { copy, type Lang } from '../i18n';
-import { NEWSLETTER } from '../site';
+import { NEWSLETTER_SUBSCRIBE } from '../site';
 import OwnsDiagram from './OwnsDiagram.astro';
+import NewsletterBlock from './NewsletterBlock.astro';
 import { guides, facts, factsLine, inline, fill, sourceOf } from '../guide/render.mjs';
 
 interface Props { lang: Lang }
@@ -25,11 +28,9 @@ const pad = (i: number) => String(i + 1).padStart(2, '0');
 
 <!-- HERO -->
 <section id="top" class="hero">
-  <div class="hero-tex" data-shader aria-hidden="true"></div>
   <div class="wrap hero-in">
     <p class="eyebrow">{c.guide.eyebrow}</p>
     <h1 class="h1">{g.title}</h1>
-    <div class="rule" aria-hidden="true"></div>
     <p class="sub">{t(g.subtitle)}</p>
     <ul class="facts" aria-label={c.numbersTitle}>{factsLine(g).map((x) => <li>{x}</li>)}</ul>
     <div class="row actions">
@@ -37,7 +38,6 @@ const pad = (i: number) => String(i + 1).padStart(2, '0');
       <a class="btn btn-ghost" href={g.files.md} download>{c.download.md} <span aria-hidden="true">↓</span></a>
     </div>
     <p class="hint">{c.download.mdHint}</p>
-    <a class="quiet" href={NEWSLETTER} target="_blank" rel="noopener">{c.newsletter.link} <span aria-hidden="true">↗</span><span class="sr-only"> {c.newTab}</span></a>
   </div>
 </section>
 
@@ -54,6 +54,7 @@ const pad = (i: number) => String(i + 1).padStart(2, '0');
         <div><dt>{t(n.value)}</dt><dd>{t(n.label)}{n.note && <small set:html={html(n.note)} />}</dd></div>
       ))}
     </dl>
+    <NewsletterBlock lang={lang} inline={c.letter.inlineGuide} />
   </div>
 </section>
 
@@ -66,21 +67,20 @@ const pad = (i: number) => String(i + 1).padStart(2, '0');
 </section>
 
 <!-- SESION ILUSTRATIVA -->
-<section class="night" aria-labelledby="session-h">
+<section class="band night" aria-labelledby="session-h">
   <div class="wrap two">
     <div class="night-copy">
       <p class="eyebrow">{c.session.eyebrow}</p>
       <h2 class="h2" id="session-h">{c.session.h2}</h2>
       <p>{c.session.note}</p>
     </div>
-    <figure class="chat" data-replay aria-label={c.session.aria}>
+    <figure class="chat" aria-label={c.session.aria}>
       <figcaption><span>{c.session.head}</span><span class="tag">{c.session.label}</span></figcaption>
       <ol>
         {c.session.lines.map(([who, text]) => (
           <li class={who}>{who !== 'meta' && <b>{who === 'you' ? c.session.you : c.session.agent}</b>}<span data-text>{text}</span></li>
         ))}
       </ol>
-      <button type="button" class="replay" hidden>{c.session.replay}</button>
     </figure>
   </div>
 </section>
@@ -166,23 +166,9 @@ const pad = (i: number) => String(i + 1).padStart(2, '0');
           <span class="mono-line">{String.fromCharCode(97 + i)})</span>
           <h3>{it.title}</h3>
           <p>{it.text}</p>
-          <a href={NEWSLETTER} target="_blank" rel="noopener">{g.next.cta} <span aria-hidden="true">↗</span><span class="sr-only"> {c.newTab}</span></a>
+          <a href={NEWSLETTER_SUBSCRIBE} target="_blank" rel="noopener">{g.next.cta} <span aria-hidden="true">↗</span><span class="sr-only"> {c.newTab}</span></a>
         </article>
       ))}
-    </div>
-  </div>
-</section>
-
-<!-- NEWSLETTER -->
-<section class="band ask">
-  <div class="wrap">
-    <div class="rule" aria-hidden="true"></div>
-    <h2 class="h2">{c.newsletter.bandTitle}</h2>
-    <p class="lede">{c.newsletter.bandText}</p>
-    <div class="row">
-      <a class="btn btn-ink" href={NEWSLETTER} target="_blank" rel="noopener">{c.newsletter.bandCta} <span aria-hidden="true">↗</span><span class="sr-only"> {c.newTab}</span></a>
-      <a class="btn btn-ghost" href={g.files.pdf} download>{c.download.pdf}</a>
-      <a class="btn btn-ghost" href={g.files.md} download>{c.download.md}</a>
     </div>
   </div>
 </section>
@@ -208,66 +194,52 @@ const pad = (i: number) => String(i + 1).padStart(2, '0');
   </div>
 </section>
 
-<script>
-  import { mountHeroShader } from '../scripts/hero-shader';
-  import { mountReplay } from '../scripts/replay';
-  mountHeroShader(document.querySelector<HTMLElement>('[data-shader]'));
-  mountReplay(document.querySelector<HTMLElement>('[data-replay]'));
-</script>
 
 <style is:global>
 .guide-tabs{border-bottom:1px solid var(--line);background:var(--paper)}
 /* Outcomes + numbers */
-.outcomes,.use{margin:0;padding:0;list-style:none;counter-reset:o;display:flex;flex-direction:column;gap:0;border-top:2px solid var(--ink)}
-.outcomes li,.use li{counter-increment:o;display:grid;grid-template-columns:48px 1fr;gap:12px;padding:18px 0;border-bottom:1px solid var(--line);font-size:19px;line-height:1.45}
+.outcomes,.use{margin:0;padding:0;list-style:none;counter-reset:o;display:flex;flex-direction:column;gap:0;border-top:1px solid var(--hair)}
+.outcomes li,.use li{counter-increment:o;display:grid;grid-template-columns:48px 1fr;gap:12px;padding:18px 0;border-bottom:1px solid var(--line);font-size:18px;line-height:1.5}
 .outcomes li::before,.use li::before{content:counter(o,decimal-leading-zero);font-family:var(--mono);font-size:14px;color:var(--accent);padding-top:5px}
-.numbers{margin:72px 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--ink)}
+.numbers{margin:64px 0 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--hair)}
 .numbers div{padding:28px 24px 8px 0;border-right:1px solid var(--line)}
 .numbers div + div{padding-left:24px}
 .numbers div:last-child{border-right:0}
-.numbers dt{white-space:nowrap;font-family:var(--display);font-weight:900;font-stretch:110%;font-size:clamp(48px,4.8vw,76px);line-height:1;letter-spacing:-.04em}
+.numbers dt{white-space:nowrap;font-family:var(--display);font-weight:700;font-size:clamp(36px,3.6vw,52px);line-height:1;letter-spacing:-.03em}
 .numbers div:first-child dt{color:var(--accent)}
 .numbers dd{margin:12px 0 0;font-size:16px;line-height:1.45}
 .numbers small{display:block;margin-top:10px;font-size:13.5px;line-height:1.5;color:var(--muted)}
 
-/* Illustrative session: the only dark block */
-.night{background:var(--night);color:var(--night-text);padding-top:96px;padding-bottom:96px}
-.night .eyebrow{color:var(--night-muted)}
-.night-copy{display:flex;flex-direction:column;gap:20px}
-.night-copy p:last-child{margin:0;color:var(--night-muted);font-size:16px;max-width:420px}
-.chat{margin:0;border:1px solid var(--night-line);font-family:var(--mono);font-size:14.5px;line-height:1.55;position:relative}
-.chat figcaption{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--night-line);font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--night-muted)}
-.chat .tag{color:var(--night-text);border:1px solid var(--night-text);padding:1px 6px}
-.chat ol{list-style:none;margin:0;padding:10px 18px 18px}
-.chat li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;padding:8px 0}
-.chat li b{font-weight:500;color:var(--night-muted)}
-.chat li.you span{color:#fff}
-.chat li.agent b{color:#fff}
-.chat li.meta{grid-template-columns:1fr;text-align:center;color:var(--night-muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase;padding:14px 0 4px;border-top:1px dashed var(--night-line);margin-top:6px}
-.chat li.pending{visibility:hidden}
-.chat .rest{visibility:hidden}
-.chat .caret{display:inline-block;width:.6em;height:1.1em;vertical-align:text-bottom;background:var(--night-text);margin-left:1px}
-.replay{position:absolute;right:12px;bottom:12px;font:inherit;font-size:12px;text-transform:uppercase;letter-spacing:.08em;background:transparent;color:var(--night-text);border:1px solid var(--night-text);padding:6px 10px;min-height:36px;cursor:pointer}
-.replay:hover{background:var(--night-text);color:var(--night)}
+/* Illustrative session: a printed transcript, labelled as illustrative */
+.night-copy{display:flex;flex-direction:column;gap:16px}
+.night-copy p:last-child{margin:0;color:var(--muted);font-size:16px;max-width:420px}
+.chat{margin:0;border:1px solid var(--hair);font-family:var(--mono);font-size:14px;line-height:1.55}
+.chat figcaption{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 14px;border-bottom:1px solid var(--hair);font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.chat .tag{color:var(--accent);border:1px solid var(--accent);padding:0 6px}
+.chat ol{list-style:none;margin:0;padding:8px 14px 14px}
+.chat li{display:grid;grid-template-columns:64px minmax(0,1fr);gap:12px;padding:7px 0}
+.chat li b{font-weight:500;color:var(--muted)}
+.chat li.agent b{color:var(--accent)}
+.chat li.meta{grid-template-columns:1fr;text-align:center;color:var(--muted);font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;padding:12px 0 4px;border-top:1px dashed var(--line);margin-top:6px}
 
 /* What is yours */
-.owns{margin:32px 0 0;border-top:2px solid var(--ink)}
+.owns{margin:32px 0 0;border-top:1px solid var(--hair)}
 .owns div{display:grid;grid-template-columns:140px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
 .owns dt{font-weight:600}
 .owns dd{margin:0;color:var(--ink-2)}
 
 /* Method */
 .progress{list-style:none;margin:0 0 56px;padding:0;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;font-size:13px;line-height:1.3}
-.progress li{border-top:6px solid var(--ink);padding-top:10px;color:var(--ink-2)}
+.progress li{border-top:2px solid var(--ink);padding-top:10px;color:var(--ink-2)}
 .progress span{display:block;font-family:var(--mono);color:var(--muted);margin-bottom:2px}
 .steps{display:flex;flex-direction:column}
-.step{display:grid;grid-template-columns:180px minmax(0,1fr);gap:24px 40px;padding:48px 0;border-top:2px solid var(--ink)}
-.step-n{font-family:var(--display);font-weight:900;font-stretch:110%;font-size:clamp(72px,9vw,128px);line-height:.85;letter-spacing:-.05em}
-.step h3{margin:0 0 20px;font-family:var(--display);font-weight:850;font-stretch:105%;font-size:clamp(28px,3vw,40px);line-height:1.05;letter-spacing:-.02em}
+.step{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px 40px;padding:40px 0;border-top:1px solid var(--hair)}
+.step-n{font-family:var(--mono);font-size:14px;color:var(--accent);padding-top:8px}
+.step h3{margin:0 0 18px;font-family:var(--display);font-weight:700;font-size:clamp(24px,2.6vw,32px);line-height:1.1;letter-spacing:-.02em}
 .step dl{margin:0;display:grid;grid-template-columns:120px minmax(0,1fr);gap:12px 20px}
 .step dt{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding-top:4px}
 .step dd{margin:0;font-size:17px;line-height:1.6;max-width:720px}
-.exercise{margin:28px 0 0;padding:20px 24px;background:var(--paper);border:2px solid var(--ink);border-left:10px solid var(--accent);max-width:840px}
+.exercise{margin:24px 0 0;padding:16px 20px;background:var(--paper);border:1px solid var(--hair);border-left:3px solid var(--accent);max-width:840px}
 .exercise .k{margin:0 0 6px;font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--accent);font-weight:500}
 .exercise p:last-child{margin:0;font-size:17px}
 .trap{margin:20px 0 0;max-width:840px;font-size:16px;color:var(--ink-2)}
@@ -275,9 +247,9 @@ const pad = (i: number) => String(i + 1).padStart(2, '0');
 .srcs a{color:var(--muted)}
 
 /* Tools */
-.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));border-top:2px solid var(--ink);border-left:1px solid var(--line)}
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(340px,100%),1fr));border-top:1px solid var(--hair);border-left:1px solid var(--line)}
 .tools article{padding:28px 24px 32px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-.tools h3{margin:0 0 16px;font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:-.01em}
+.tools h3{margin:0 0 16px;font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:-.01em}
 .tools h3 a{text-decoration:none}
 .tools dl{margin:0}
 .tools dt{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:12px}
@@ -286,14 +258,10 @@ const pad = (i: number) => String(i + 1).padStart(2, '0');
 
 /* Ladder */
 .ladder{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
-.ladder article{background:var(--paper);border:2px solid var(--ink);padding:32px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
-.ladder h3{margin:0;font-family:var(--display);font-weight:850;font-size:30px;letter-spacing:-.02em;line-height:1.05}
+.ladder article{background:var(--paper);border:1px solid var(--hair);padding:24px;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.ladder h3{margin:0;font-family:var(--display);font-weight:700;font-size:24px;letter-spacing:-.02em;line-height:1.1}
 .ladder p{margin:0;font-size:17px;color:var(--ink-2)}
 .ladder a{margin-top:auto;padding-top:8px;font-weight:600}
-
-.ask .wrap{display:flex;flex-direction:column;gap:24px;align-items:flex-start}
-.ask .h2{max-width:900px}
-.ask .lede{margin:0}
 
 .sources{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:8px;font-size:16px}
 .sources .url{display:block;font-family:var(--mono);font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
@@ -306,7 +274,6 @@ const pad = (i: number) => String(i + 1).padStart(2, '0');
   .step{grid-template-columns:1fr}
 }
 @media (max-width:600px){
-  .night{padding-top:64px;padding-bottom:64px}
   .numbers{grid-template-columns:1fr}
   .numbers div,.numbers div + div{padding:24px 0 16px;border-right:0;border-bottom:1px solid var(--line)}
   .progress{display:none}
@@ -316,19 +283,15 @@ const pad = (i: number) => String(i + 1).padStart(2, '0');
   .exercise{padding:16px 18px}
   .ladder{grid-template-columns:1fr}
   .ladder article{padding:24px}
-  .actions .btn,.ask .btn{flex:1 1 100%}
+  .actions .btn{flex:1 1 100%}
   .chat{font-size:13.5px}
   .chat li{grid-template-columns:52px minmax(0,1fr);gap:8px}
   .owns div{grid-template-columns:1fr;gap:2px}
   .outcomes li,.use li{font-size:17px;grid-template-columns:36px 1fr}
 }
 @media print{
-  .hero-tex,.actions,.hint,.quiet,.replay,.ask,.ladder a{display:none !important}
-  .night{background:#fff;color:#000}
-  .chat,.chat figcaption{border-color:#000;color:#000}
-  .chat li span,.chat li b{color:#000 !important}
-  .chat li.pending,.chat .rest{visibility:visible}
-  section.band,.night{padding-top:24px;padding-bottom:24px}
+  .actions,.hint,.quiet,.nl-inline,.ladder a{display:none !important}
+  section.band{padding-top:24px;padding-bottom:24px}
   .step{break-inside:avoid}
   .tools article{break-inside:avoid}
 }

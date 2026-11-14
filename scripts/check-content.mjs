@@ -3,7 +3,7 @@
 // retired offer (diagnosis calls, sessions, guarantees, testimonials), in either language.
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { products, layers, sellingGuard } from '../src/catalog.mjs';
+import { products, layers, steps, sellingGuard } from '../src/catalog.mjs';
 import { EMAIL, ADDRESS } from '../src/site.ts';
 
 const PLACEHOLDER = /\[[A-ZÁÉÍÓÚÑ0-9][^\]\n]{0,60}\]/;
@@ -11,7 +11,11 @@ const FORBIDDEN = [
   // support-boundaries.md
   /soporte para siempre/i, /sin mantenimiento/i, /100\s*%\s*aut[oó]nomo/i, /nunca falla/i, /sustituye por completo/i,
   /support forever/i, /maintenance[- ]free/i, /100\s*%\s*autonomous/i, /never fails/i, /fully replaces/i,
-  /\bSLA\b/, /soporte prioritario/i, /priority support/i, /\/\s*(mes|month)\b/i, /\bERP\b/, /a medida/i, /bespoke/i,
+  /\bSLA\b/, /soporte prioritario/i, /priority support/i, /\/\s*(mes|month)\b/i, /\bERP\b/,
+  // ("a medida" / "bespoke" were banned with the retired offer; since 2026-11-14 the bespoke private agent IS the offer.)
+  // Positioning grill, 2026-11-14: layer one is Plano, not Atlas; no newsletter cadence is promised; no pilot is running.
+  /\batlas\b/i, /lunes a viernes/i, /monday to friday/i, /piloto(s)?( privado(s)?)? en curso/i,
+  /pilots? (is |are )?(in progress|under ?way)/i,
   // the retired Founder Pilot: no calls, sessions, guarantees or testimonials (decision of 2026-11-13)
   /diagn[oó]s/i, /llamada/i, /videollamada/i, /\bsesi[oó]n/i, /\bsesiones\b/i, /garantiz/i, /garant[ií]a/i,
   /\bdiagnos/i, /\bsessions?\b/i, /\bguarantee/i, /\b(book|discovery|video) a? ?call/i, /piloto fundador/i, /founder pilot/i,
@@ -19,14 +23,18 @@ const FORBIDDEN = [
   /@gmail\.com/i,
 ];
 // Checked against the raw file, not just the visible text.
-const RAW = [/mailto:(null|undefined)\b/i, /mailto:["'?]/i, /@gmail\.com/i];
+// No pop-up (removed 2026-11-14): no <dialog> in any page.
+const RAW = [/mailto:(null|undefined)\b/i, /mailto:["'?]/i, /@gmail\.com/i, /<dialog\b/i];
+// No prices anywhere, except the third-party prices the guide cites with a source (its page and .md).
+const PRICE = /\d[\d.,]*\s?(€|EUR\b|USD\b|GBP\b|£)|(€|£|US\$|\$)\s?\d/;
+const GUIDE_PAGES = /(^|\/)(guia|en\/guide)\/index\.html$/;
 
 /** Visible text of an HTML page: no scripts, styles or tags. */
 export const visibleText = (html) => html
   .replace(/<script[\s\S]*?<\/script>/g, ' ').replace(/<style[\s\S]*?<\/style>/g, ' ')
   .replace(/<[^>]+>/g, ' ').replace(/&[a-z#0-9]+;/gi, ' ');
 
-export function problems(file) {
+export function problems(file, path = '') {
   // In Markdown, a link's [text](url) is not a placeholder: keep only the text.
   const text = /<html/i.test(file) ? visibleText(file) : file.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1');
   const out = [];
@@ -34,11 +42,12 @@ export function problems(file) {
   if (ph) out.push(`placeholder ${ph[0]}`);
   for (const re of FORBIDDEN) if (re.test(text)) out.push(`forbidden ${re}`);
   for (const re of RAW) if (re.test(file)) out.push(`forbidden in source ${re}`);
+  if (/<html/i.test(file) && !GUIDE_PAGES.test(path) && PRICE.test(text)) out.push(`price ${text.match(PRICE)[0]}`);
   return out;
 }
 
 // Every status badge in the built HTML must say what src/catalog.mjs says for its item.
-const STATUS_OF = Object.fromEntries([...layers, ...products].map((i) => [i.id, i.status]));
+const STATUS_OF = Object.fromEntries([...layers, ...products, ...steps].map((i) => [i.id, i.status]));
 export const badgeProblems = (html) => [...html.matchAll(/data-item="([^"]+)" data-status="([^"]+)"/g)]
   .filter(([, id, st]) => STATUS_OF[id] !== st).map(([, id, st]) => `badge for ${id} says ${st}, catalog says ${STATUS_OF[id]}`);
 
@@ -49,9 +58,12 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   // Self-test: the check must catch what it exists to catch, and nothing it shouldn't.
   const must = ['<html><p>[EMAIL]</p></html>', '<html><p>Never fails</p></html>', '<html><a href="mailto:x@gmail.com">x</a></html>',
     '<html><a href="mailto:null?subject=x">Book</a></html>', '<html><p>Reserva tu diagnóstico</p></html>', '<html><p>una llamada</p></html>',
-    '<html><p>Sesión de entrega</p></html>', '<html><p>Te lo garantizo</p></html>', '<html><p>Testimonios</p></html>'];
-  const mustNot = ['<html><p>ok</p><script>a[0]</script></html>', '# Guía\n\n- [Fuente](https://example.com)\n'];
-  if (must.some((h) => !problems(h).length) || mustNot.some((h) => problems(h).length)) {
+    '<html><p>Sesión de entrega</p></html>', '<html><p>Te lo garantizo</p></html>', '<html><p>Testimonios</p></html>',
+    '<html><p>Capa Atlas</p></html>', '<html><p>De lunes a viernes</p></html>', '<html><p>Piloto privado en curso</p></html>',
+    '<html><p>Desde 99 €</p></html>', '<html><dialog open>x</dialog></html>'];
+  const mustNot = ['<html><p>ok</p><script>a[0]</script></html>', '# Guía\n\n- [Fuente](https://example.com)\n', '# Guía\n\n5,99 € al mes sin IVA\n'];
+  if (must.some((h) => !problems(h).length) || mustNot.some((h) => problems(h).length)
+    || problems('<html><p>5,99 €</p></html>', 'dist/guia/index.html').length) {
     console.error('check-content self-test failed'); process.exit(1);
   }
   // Nothing may be sold while the site has no business email and postal address (decision of 2026-11-14).
@@ -63,7 +75,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const all = files('dist');
   const bad = all.flatMap((f) => {
     const src = readFileSync(f, 'utf8');
-    return [...problems(src), ...badgeProblems(src)].map((p) => `${f}: ${p}`);
+    return [...problems(src, f), ...badgeProblems(src)].map((p) => `${f}: ${p}`);
   });
   if (bad.length) { console.error(bad.join('\n')); process.exit(1); }
   console.log(`check-content: ${all.length} built files clean (${all.filter((f) => f.endsWith('.md')).length} .md)`);

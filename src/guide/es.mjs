@@ -246,8 +246,8 @@ export default {
   },
   hood: [
     'Machines Do It Better (MDIB) enseña a montar agentes de IA que son de quien los usa: su cuenta, sus datos, su modelo. Esta web es estática, sin analítica ni cookies, y su código y el texto de esta guía están en un [repositorio público](https://github.com/ponzgpt/machines-do-it-better).',
-    'Detrás está Javier Ponz: diez años de soporte técnico en Apple. Más sobre él en [javierponz.technoir.cloud](https://javierponz.technoir.cloud).',
-    'MDIB está en fase previa al lanzamiento y todavía no tiene clientes de pago. Ni MDIB ni Javier están afiliados a Nous Research ni a ninguna de las herramientas citadas, y no hay enlaces de afiliado.',
+    'MDIB es un proyecto de Javier Ponz ([javierponz.technoir.cloud](https://javierponz.technoir.cloud)).',
+    'MDIB está en fase previa al lanzamiento y todavía no tiene clientes de pago. No está afiliado a Nous Research ni a ninguna de las herramientas citadas, y no hay enlaces de afiliado.',
   ],
   notice: [
     'Esto es material formativo, no asesoramiento profesional, técnico ni legal. Lo que haces en tu máquina y con tus cuentas es responsabilidad tuya.',

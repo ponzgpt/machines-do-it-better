@@ -1,25 +1,37 @@
 ---
-// The newsletter block pushed on the home page.
+// The subscribe block that closes every page (rendered by the layout), and its short inline variant placed
+// after the first screen that explains the value. One primary action, one quiet link.
 import { copy, pathFor, type Lang } from '../i18n';
 import SubscribeLink from './SubscribeLink.astro';
-interface Props { lang: Lang }
-const { lang } = Astro.props;
+interface Props { lang: Lang; access?: boolean; inline?: string }
+const { lang, access = false, inline } = Astro.props;
 const c = copy[lang].letter;
 ---
-<section class="band nl-block" aria-labelledby="nl-block-h">
-  <div class="wrap">
-    <div class="rule" aria-hidden="true"></div>
-    <p class="eyebrow">{c.blockEyebrow}</p>
-    <h2 class="h2" id="nl-block-h">{c.blockH2}</h2>
-    <p class="lede">{c.blockText}</p>
-    <div class="row">
-      <SubscribeLink lang={lang} />
-      <a class="btn btn-ghost" href={pathFor(lang, 'newsletter')}>{c.more}</a>
+{inline ? (
+  <aside class="nl-inline" aria-label={c.blockLabel}>
+    <p>{inline}</p>
+    <SubscribeLink lang={lang} access={access} />
+  </aside>
+) : (
+  <section class="nl-end" aria-labelledby="nl-end-h">
+    <div class="wrap sec-grid">
+      <p class="sec-mark"><span class="no">§</span><span>{c.blockLabel}</span></p>
+      <div class="nl-body">
+        <h2 class="h2" id="nl-end-h">{c.blockH2}</h2>
+        <p class="lede">{c.blockText}</p>
+        <div class="row">
+          <SubscribeLink lang={lang} access={access} />
+          <a class="quiet" href={pathFor(lang, 'newsletter')}>{c.more} <span aria-hidden="true">→</span></a>
+        </div>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
+)}
 <style>
-.nl-block .wrap{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
-.nl-block .lede{margin:0}
-@media (max-width:600px){.nl-block .btn{flex:1 1 100%}}
+.nl-end{border-top:1px solid var(--hair);padding:72px 0 88px;background:var(--paper-2)}
+.nl-body{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
+.nl-body .lede{margin:0}
+.nl-inline{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 32px;margin-top:48px;padding:20px 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.nl-inline p{margin:0;max-width:640px;font-size:17px}
+@media (max-width:600px){.nl-end{padding:48px 0 56px}.nl-end .btn,.nl-inline .btn{flex:1 1 100%}}
 </style>

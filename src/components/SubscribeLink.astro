@@ -1,10 +1,11 @@
 ---
-// The subscribe action: a plain link to Beehiiv's own page in a new tab. No form, embed or script, so the
-// site never sees an email address and a visit makes no third-party request.
+// The one primary action: a plain link to Beehiiv's subscribe page in a new tab. No form, embed or script, so the
+// site never sees an email address and a visit makes no third-party request. "Entrar en la lista de acceso" (home,
+// bespoke path) and "Suscribirme" (elsewhere) go to the same URL: the access list is the newsletter.
 import { NEWSLETTER_SUBSCRIBE } from '../site';
 import { copy, type Lang } from '../i18n';
-interface Props { lang: Lang; label?: string; ghost?: boolean }
-const { lang, label, ghost = false } = Astro.props;
+interface Props { lang: Lang; access?: boolean; ghost?: boolean }
+const { lang, access = false, ghost = false } = Astro.props;
 const c = copy[lang];
 ---
-<a class:list={['btn', ghost ? 'btn-ghost' : 'btn-ink']} href={NEWSLETTER_SUBSCRIBE} target="_blank" rel="noopener" data-subscribe>{label ?? c.letter.subscribe} <span aria-hidden="true">↗</span><span class="sr-only"> {c.newTab}</span></a>
+<a class:list={['btn', ghost ? 'btn-ghost' : 'btn-ink']} href={NEWSLETTER_SUBSCRIBE} target="_blank" rel="noopener" data-subscribe>{access ? c.letter.access : c.letter.subscribe} <span aria-hidden="true">↗</span><span class="sr-only"> {c.newTab}</span></a>

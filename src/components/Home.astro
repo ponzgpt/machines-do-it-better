@@ -1,12 +1,16 @@
 ---
-// The home page: the ethos, one idea per screen. Copy in src/i18n.ts, statuses in src/catalog.mjs.
-import { copy, pathFor, type Lang } from '../i18n';
-import { layers } from '../catalog.mjs';
-import { OWNER_SITE } from '../site';
+// The home page, in the order decided on 2026-11-14: hero (problem first), what you get, how it works, the two
+// doors, the layers for whoever wants to look, then the subscribe block (rendered by the layout).
+// Copy in src/i18n.ts, statuses in src/catalog.mjs.
+import { copy, pathFor, type Lang, type Who } from '../i18n';
+import { layers, steps } from '../catalog.mjs';
 import { guides, fill } from '../guide/render.mjs';
 import Badge from './Badge.astro';
-import OwnsDiagram from './OwnsDiagram.astro';
+import SubscribeLink from './SubscribeLink.astro';
 import NewsletterBlock from './NewsletterBlock.astro';
+import HeroFigure from './HeroFigure.astro';
+import RoutingFigure from './RoutingFigure.astro';
+import LayersFigure from './LayersFigure.astro';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -14,160 +18,177 @@ const c = copy[lang];
 const h = c.home;
 const g = guides[lang];
 const pad = (i: number) => String(i + 1).padStart(2, '0');
+const howId = lang === 'es' ? 'como-funciona' : 'how-it-works';
 ---
-<section class="hero home-hero">
-  <div class="hero-tex" data-shader aria-hidden="true"></div>
-  <div class="wrap hero-in">
-    <p class="eyebrow">{h.eyebrow}</p>
-    <h1 class="h1 mega">{h.h1.split(/(?<=\.)\s+/).map((x) => <span>{x} </span>)}</h1>
-    <div class="rule" aria-hidden="true"></div>
-    <p class="sub">{h.sub}</p>
-    <div class="row actions">
-      <a class="btn btn-ink" href={pathFor(lang, 'products')}>{h.ctaProducts} <span aria-hidden="true">→</span></a>
-      <a class="btn btn-ghost" href={pathFor(lang, 'manifesto')}>{h.ctaManifesto}</a>
-    </div>
-    <a class="quiet" href={pathFor(lang, 'newsletter')}>{h.ctaNewsletter} <span aria-hidden="true">→</span></a>
-  </div>
-</section>
-
-<h2 class="sr-only">{h.pillarsLabel}</h2>
-{h.pillars.map((p, i) => (
-  <section class:list={['pillar', i % 2 === 1 && 'tint']} aria-labelledby={`pillar-${i + 1}`}>
-    <div class:list={['wrap', i >= 3 ? 'two pillar-two' : 'pillar-one']}>
-      <div>
-        <p class="pillar-k"><span class="pillar-n" aria-hidden="true">{pad(i)}</span>{p.kicker}</p>
-        <h3 class="h2 pillar-h" id={`pillar-${i + 1}`}>{p.statement}</h3>
-        <p class="lede">{p.body}</p>
-        {i === 3 && <dl class="owns">{c.owns.parts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}</dl>}
-      </div>
-      {i === 3 && <OwnsDiagram lang={lang} />}
-      {i === 4 && (
-        <figure class="hybrid" aria-label={h.hybrid.aria}>
-          <div class="hy-col">
-            <p class="hy-h">{h.hybrid.cloud[0]}</p>
-            <ul>{h.hybrid.cloud[1].map((x) => <li>{x}</li>)}</ul>
-          </div>
-          <div class="hy-you">
-            <p class="hy-h">{h.hybrid.you[0]}</p>
-            <p>{h.hybrid.you[1]}</p>
-          </div>
-          <div class="hy-col">
-            <p class="hy-h">{h.hybrid.local[0]}</p>
-            <ul>{h.hybrid.local[1].map((x) => <li>{x}</li>)}</ul>
-          </div>
-        </figure>
-      )}
-    </div>
-  </section>
-))}
-
-<section class="band family" aria-labelledby="family-h">
-  <div class="wrap">
-    <div class="sec-head">
-      <div><p class="eyebrow">{h.familyEyebrow}</p><h2 class="h2" id="family-h">{h.familyH2}</h2></div>
-      <a href={pathFor(lang, 'products')}>{h.familyMore} <span aria-hidden="true">→</span></a>
-    </div>
-    <ul class="grid4">
-      {layers.map((l) => (
-        <li>
-          <a href={`${pathFor(lang, 'products')}#${l.id}`}>
-            <span class="layer-name">{l.name}</span>
-            <span class="layer-d">{c.products.layers[l.id].descriptor}</span>
-          </a>
-          <Badge id={l.id} lang={lang} />
-        </li>
-      ))}
-    </ul>
-  </div>
-</section>
-
-<section class="band tint" aria-labelledby="start-h">
-  <div class="wrap two">
-    <div>
-      <p class="eyebrow">{h.startEyebrow}</p>
-      <h2 class="h2" id="start-h">{h.startH2}</h2>
-    </div>
-    <div class="start">
-      <p class="start-title">{g.title} <Badge id="guide" lang={lang} /></p>
-      <p class="lede">{fill(h.startText, g)}</p>
+<section class="home-hero">
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+      <p class="label">{h.kicker}</p>
+      <h1 class="h1">{h.h1}</h1>
+      <p class="sub">{h.sub}</p>
+      <dl class="spec">
+        {h.spec.map(([k, v], i) => (
+          <div><dt>{k}</dt><dd>{i === 2 ? <><Badge id="private" lang={lang} /> {v}</> : v}</dd></div>
+        ))}
+      </dl>
       <div class="row">
-        <a class="btn btn-ink" href={pathFor(lang, 'guide')}>{h.startRead} <span aria-hidden="true">→</span></a>
-        <a class="btn btn-ghost" href={g.files.pdf} download>{c.download.pdf} <span aria-hidden="true">↓</span></a>
+        <SubscribeLink lang={lang} access />
+        <a class="quiet" href={`#${howId}`}>{h.how} <span aria-hidden="true">↓</span></a>
+      </div>
+    </div>
+    <HeroFigure lang={lang} />
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="get-h">
+  <div class="wrap sec-grid">
+    <p class="sec-mark"><span class="no">01</span><span>{h.getLabel}</span></p>
+    <div class="sec-body">
+      <h2 class="h2" id="get-h">{h.getH2}</h2>
+      <ol class="get">
+        {h.get.map((it, i) => (
+          <li>
+            <p class="label"><span class="acc">{pad(i)}</span> · {it.k}</p>
+            <h3 class="h3">{it.statement}</h3>
+            <p>{it.body}</p>
+            <p class="example"><span class="label">{c.illustrative}</span>{it.example}</p>
+          </li>
+        ))}
+      </ol>
+      <RoutingFigure lang={lang} />
+      <NewsletterBlock lang={lang} access inline={h.inline} />
+    </div>
+  </div>
+</section>
+
+<section class="sec" id={howId} aria-labelledby="how-h">
+  <div class="wrap sec-grid">
+    <p class="sec-mark"><span class="no">02</span><span>{h.howLabel}</span></p>
+    <div class="sec-body">
+      <h2 class="h2" id="how-h">{h.howH2}</h2>
+      <p class="lede">{h.howIntro}</p>
+      <ol class="flow">
+        {steps.map((s, i) => (
+          <li>
+            <span class="flow-n" aria-hidden="true">{pad(i)}</span>
+            <div><h3 class="h3">{h.steps[s.id].title}</h3><p>{h.steps[s.id].text}</p></div>
+            <dl class="flow-meta">
+              <div><dt>{c.whoLabel}</dt><dd>{c.who[s.who as Who]}</dd></div>
+              <div><dt class="sr-only">{h.spec[2][0]}</dt><dd><Badge id={s.id} lang={lang} /></dd></div>
+            </dl>
+          </li>
+        ))}
+      </ol>
+      <p class="today">{h.today}</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="doors-h">
+  <div class="wrap sec-grid">
+    <p class="sec-mark"><span class="no">03</span><span>{h.doorsLabel}</span></p>
+    <div class="sec-body">
+      <h2 class="h2" id="doors-h">{h.doorsH2}</h2>
+      <div class="doors">
+        <article class="door door-made">
+          <p class="label">A · {h.made.k}</p>
+          <h3 class="h3">{h.made.title}</h3>
+          <p class="door-status"><Badge id="private" lang={lang} /> {h.made.status}</p>
+          <p>{h.made.text}</p>
+          <SubscribeLink lang={lang} access />
+        </article>
+        <article class="door">
+          <p class="label">B · {h.diy.k}</p>
+          <h3 class="h3">{h.diy.title}</h3>
+          <p class="door-status"><Badge id="guide" lang={lang} /> {g.title}</p>
+          <p>{fill(h.diy.text, g)}</p>
+          <a class="quiet" href={pathFor(lang, 'guide')}>{h.diy.cta} <span aria-hidden="true">→</span></a>
+        </article>
       </div>
     </div>
   </div>
 </section>
 
-<NewsletterBlock lang={lang} />
-
-<section class="band tint" aria-labelledby="who-h">
-  <div class="wrap two">
-    <div><p class="eyebrow">{h.whoEyebrow}</p><h2 class="h2" id="who-h">{h.whoH2}</h2></div>
-    <div class="prose">
-      {h.whoText.map((p) => <p>{p}</p>)}
-      <p><a href={OWNER_SITE} target="_blank" rel="noopener">{h.whoLink} <span aria-hidden="true">↗</span><span class="sr-only"> {c.newTab}</span></a></p>
+<section class="sec" aria-labelledby="inside-h">
+  <div class="wrap sec-grid">
+    <p class="sec-mark"><span class="no">04</span><span>{h.insideLabel}</span></p>
+    <div class="sec-body">
+      <h2 class="h2" id="inside-h">{h.insideH2}</h2>
+      <p class="lede">{h.insideText}</p>
+      <div class="inside-fig"><LayersFigure lang={lang} /></div>
+      <ul class="layers">
+        {layers.map((l, i) => (
+          <li>
+            <span class="mono-line">{pad(i)}</span>
+            <a href={`${pathFor(lang, 'products')}#${l.id}`} class="layer-name">{l.name}</a>
+            <span class="layer-d">{c.products.layers[l.id].descriptor}</span>
+            <Badge id={l.id} lang={lang} />
+          </li>
+        ))}
+      </ul>
+      <p><a class="quiet" href={pathFor(lang, 'products')}>{h.insideMore} <span aria-hidden="true">→</span></a></p>
     </div>
   </div>
 </section>
-
-<script>
-  import { mountHeroShader } from '../scripts/hero-shader';
-  mountHeroShader(document.querySelector<HTMLElement>('[data-shader]'));
-</script>
 
 <style>
-.home-hero .hero-in{padding-top:96px;padding-bottom:112px}
-.mega{font-size:clamp(52px,10vw,148px);max-width:12ch}
-.home-hero .h1{max-width:none}
-.mega span{display:block}
+.home-hero{border-bottom:1px solid var(--hair)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px 56px;align-items:center;padding-top:48px;padding-bottom:56px}
+.hero-text{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.home-hero .h1{font-size:clamp(36px,4.3vw,58px);max-width:18ch}
+.home-hero .sub{margin:0;font-size:clamp(18px,1.6vw,20px);line-height:1.5;max-width:600px;color:var(--ink-2)}
+.spec{margin:4px 0 6px;width:100%;max-width:620px;border-top:1px solid var(--hair)}
+.spec div{display:grid;grid-template-columns:112px minmax(0,1fr);gap:12px;padding:9px 0;border-bottom:1px solid var(--line)}
+.spec dt{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);padding-top:3px}
+.spec dd{margin:0;font-size:15.5px;line-height:1.5}
+.spec .badge{margin-right:6px}
 
-/* One idea per screen */
-.pillar{min-height:82vh;display:flex;align-items:center;padding:96px 0;border-bottom:2px solid var(--ink)}
-.pillar.tint{background:var(--paper-2)}
-.pillar > .wrap{width:100%}
-.pillar-two{align-items:center}
-.pillar-k{margin:0 0 24px;display:flex;align-items:baseline;gap:16px;font-family:var(--mono);font-size:14px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
-.pillar-n{font-family:var(--display);font-weight:900;font-size:22px;letter-spacing:0;color:var(--accent)}
-.pillar-h{font-size:clamp(40px,7vw,96px);line-height:.95;letter-spacing:-.04em;max-width:14ch}
-.pillar-one .lede{font-size:clamp(19px,1.8vw,23px);max-width:680px;margin-top:32px}
-.pillar-two .pillar-h{font-size:clamp(40px,5.4vw,76px)}
-.owns{margin:32px 0 0;border-top:2px solid var(--ink)}
-.owns div{display:grid;grid-template-columns:140px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
-.owns dt{font-weight:600}
-.owns dd{margin:0;color:var(--ink-2)}
+.acc{color:var(--accent)}
+.get{list-style:none;margin:40px 0 48px;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--hair)}
+.get li{padding:20px 24px 8px 0;display:flex;flex-direction:column;gap:12px}
+.get li + li{padding-left:24px;border-left:1px solid var(--line)}
+.get li > p:not(.label){margin:0;font-size:16px;line-height:1.6;color:var(--ink-2)}
+.get .example{margin-top:auto !important;padding-top:12px;border-top:1px dashed var(--line);font-size:15px !important;color:var(--ink) !important}
+.get .example .label{display:block;margin-bottom:4px}
 
-/* Hybrid diagram: plain HTML so it reads, translates and reflows */
-.hybrid{margin:0;display:grid;grid-template-columns:1fr;gap:0;border:2px solid var(--ink);background:var(--paper)}
-.hy-col,.hy-you{padding:20px 24px}
-.hy-col + .hy-you,.hy-you + .hy-col{border-top:2px solid var(--ink)}
-.hy-h{margin:0 0 8px;font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-.hy-col ul{margin:0;padding:0 0 0 18px;font-size:17px;line-height:1.5}
-.hy-col li + li{margin-top:4px}
-.hy-you{background:var(--ink);color:var(--paper)}
-.hy-you .hy-h{color:#c9c9c2}
-.hy-you p:last-child{margin:0;font-family:var(--display);font-weight:800;font-size:24px;line-height:1.15}
+.flow{list-style:none;margin:40px 0 0;padding:0;border-top:1px solid var(--hair);counter-reset:f}
+.flow li{display:grid;grid-template-columns:56px minmax(0,1fr) 200px;gap:8px 24px;padding:20px 0;border-bottom:1px solid var(--line)}
+.flow-n{font-family:var(--mono);font-size:13px;color:var(--accent);padding-top:3px}
+.flow p{margin:6px 0 0;font-size:16px;color:var(--ink-2);max-width:620px}
+.flow-meta{margin:0;display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.flow-meta div{display:flex;gap:8px;align-items:baseline}
+.flow-meta dt{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:var(--muted)}
+.flow-meta dd{margin:0;font-family:var(--mono);font-size:13px}
+.today{margin:28px 0 0;padding:4px 0 4px 18px;border-left:3px solid var(--accent);font-size:16px;max-width:720px}
 
-/* Product family */
-.family .sec-head a{font-weight:600}
-.grid4{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:2px solid var(--ink);border-left:1px solid var(--line)}
-.grid4 li{display:flex;flex-direction:column;align-items:flex-start;gap:20px;padding:28px 24px 32px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-.grid4 a{display:flex;flex-direction:column;gap:12px;text-decoration:none}
-.layer-name{font-family:var(--display);font-weight:900;font-stretch:110%;font-size:clamp(36px,3.6vw,52px);line-height:1;letter-spacing:-.03em}
-.grid4 a:hover .layer-name{color:var(--accent)}
-.layer-d{font-size:16px;line-height:1.5;color:var(--ink-2)}
+.doors{margin-top:36px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.door{border:1px solid var(--hair);padding:24px 24px 28px;display:flex;flex-direction:column;align-items:flex-start;gap:12px}
+.door-made{border-top:3px solid var(--accent)}
+.door p:not(.label){margin:0;font-size:16px;color:var(--ink-2)}
+.door p.door-status{font-family:var(--mono);font-size:12.5px;color:var(--ink);display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.door .btn,.door .quiet{margin-top:auto}
 
-.start-title{margin:0;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px;font-family:var(--display);font-weight:850;font-size:clamp(26px,3vw,36px);line-height:1.05;letter-spacing:-.02em}
-.start .lede{margin:16px 0 24px}
+.inside-fig{margin:32px 0 8px}
+.layers{list-style:none;margin:24px 0 20px;padding:0;border-top:1px solid var(--hair)}
+.layers li{display:grid;grid-template-columns:40px 130px minmax(0,1fr) auto;gap:8px 20px;align-items:baseline;padding:14px 0;border-bottom:1px solid var(--line)}
+.layer-name{font-family:var(--display);font-weight:700;font-size:22px;text-decoration:none}
+.layer-d{font-size:15.5px;color:var(--ink-2)}
 
 @media (max-width:1000px){
-  .grid4{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .pillar{min-height:0}
+  .hero-grid{grid-template-columns:1fr}
+  .get{grid-template-columns:1fr}
+  .get li,.get li + li{padding:20px 0 20px;border-left:0;border-bottom:1px solid var(--line)}
+}
+@media (max-width:760px){
+  .flow li{grid-template-columns:40px minmax(0,1fr)}
+  .flow-meta{grid-column:2;flex-direction:row;flex-wrap:wrap;gap:8px 16px;align-items:center}
+  .doors{grid-template-columns:1fr}
+  .layers li{grid-template-columns:32px minmax(0,1fr) auto}
+  .layer-d{grid-column:2 / -1}
 }
 @media (max-width:600px){
-  .home-hero .hero-in{padding-top:56px;padding-bottom:64px}
-  .pillar{padding:72px 0}
-  .grid4{grid-template-columns:1fr}
-  .owns div{grid-template-columns:1fr;gap:2px}
-  .actions .btn{flex:1 1 100%}
+  .hero-grid{padding-top:32px;padding-bottom:40px}
+  .spec div{grid-template-columns:1fr;gap:2px}
+  .home-hero .btn,.door .btn{flex:1 1 100%}
 }
 </style>

@@ -8,9 +8,9 @@
 /** @typedef {'available' | 'building' | 'planned'} Status */
 export const STATUSES = /** @type {const} */ (['available', 'building', 'planned']);
 
-/** The four layers. Names are Spanish in both languages (Javier, 2026-11-14). */
+/** The four layers. Names are Spanish in both languages (Javier, 2026-11-14; layer one renamed from Atlas to Plano the same day). */
 export const layers = [
-  { id: 'atlas', name: 'Atlas', status: /** @type {Status} */ ('planned'),
+  { id: 'plano', name: 'Plano', status: /** @type {Status} */ ('planned'),
     evidence: 'mdib-ops distribution/skills/mdib-core/SKILL.md (8-item setup list only); strategy/product-architecture.md ("esquema de configuración por cliente" is still a gate)' },
   { id: 'forja', name: 'Forja', status: /** @type {Status} */ ('building'),
     evidence: 'mdib-ops distribution/distribution.yaml (v0.1.0, maturity alpha), distribution/SOUL.md, distribution/skills/ (4 skills); STATUS.md (installed and verified on a test instance, then removed)' },
@@ -25,15 +25,40 @@ export const layers = [
  * null means not on sale, and the page shows "not available yet" and no price. Before the first non-null link,
  * EMAIL and ADDRESS in src/site.ts must be set and the legal pages reviewed for distance selling: the content
  * check (scripts/check-content.mjs) fails the build otherwise.
- * @type {{ id: 'guide' | 'skills' | 'setup', status: Status, free: boolean, stripeLink: string | null, price: string | null, evidence: string }[]}
+ * @type {{ id: 'guide' | 'skills' | 'private' | 'setup', status: Status, free: boolean, stripeLink: string | null, price: string | null, evidence: string }[]}
  */
 export const products = [
   { id: 'guide', status: 'available', free: true, stripeLink: null, price: null,
     evidence: 'this repo src/guide/{es,en}.mjs, public/*.pdf, built .md endpoints' },
   { id: 'skills', status: 'building', free: false, stripeLink: null, price: null,
     evidence: 'mdib-ops distribution/skills/ (4 skills, v0.1.0 alpha, proprietary, not packaged for sale); Javier, 2026-11-14' },
+  // The bespoke private agent: a pilot being prepared, not running (positioning grill, 2026-11-14). The pilot gate in
+  // strategy/product-architecture.md ("Puerta para empezar pilotos") is not met, so it cannot be more than "building".
+  { id: 'private', status: 'building', free: false, stripeLink: null, price: null,
+    evidence: 'Javier, positioning grill 2026-11-14 ("private pilot + access list"; pilots NOT running); mdib-ops strategy/product-architecture.md (pilot gate open), operations/customer-provisioning.md' },
   { id: 'setup', status: 'planned', free: false, stripeLink: null, price: null,
     evidence: 'mdib-ops strategy/product-architecture.md ("Provisioning objetivo"), operations/support-boundaries.md; Javier, 2026-11-14' },
+];
+
+/**
+ * How a private agent goes from brief to running (home, "Cómo funciona"), with who does each step.
+ * Only two things are true today (Javier, 2026-11-14): the access list exists, and MDIB's first-line support is
+ * handled by an agent. No intake agent exists yet. who: 'you' | 'agent' | 'agent+person'.
+ * @type {{ id: string, who: 'you' | 'agent' | 'agent+person', status: Status, evidence: string }[]}
+ */
+export const steps = [
+  { id: 'step-list', who: 'you', status: 'available',
+    evidence: 'src/site.ts NEWSLETTER (Beehiiv); Javier 2026-11-14: the access list is the newsletter' },
+  { id: 'step-intake', who: 'agent', status: 'planned',
+    evidence: 'Javier 2026-11-14: an intake/onboarding agent does NOT exist today' },
+  { id: 'step-proposal', who: 'agent+person', status: 'planned',
+    evidence: 'mdib-ops templates/pilot-proposal.md (a template only, no agent drafts it yet)' },
+  { id: 'step-build', who: 'agent+person', status: 'building',
+    evidence: 'mdib-ops distribution/ (v0.1.0 alpha, installed and verified on a test instance), operations/customer-provisioning.md; human keeps permission and privacy review (strategy/product-architecture.md "Mantener humano")' },
+  { id: 'step-delivery', who: 'agent', status: 'planned',
+    evidence: 'mdib-ops operations/customer-provisioning.md ("Verificación"), templates/handover-guide.md; no automated delivery tests exist' },
+  { id: 'step-support', who: 'agent', status: 'available',
+    evidence: 'Javier, positioning grill 2026-11-14: "support is handled by an agent first" selected as true today' },
 ];
 
 /** Problems that must stop the build: selling anything while the site has no business email or postal address. */
