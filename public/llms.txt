@@ -1,0 +1,24 @@
+# Machines Do It Better (MDIB)
+
+> MDIB makes tools and guides so individuals and small businesses can have an AI agent of their own: their account, their data and the model they choose, in the cloud and on their own hardware. Run by Javier Ponz (ten years of technical support at Apple). Pre-launch: no paying clients, nothing on sale yet. Spanish at /, English at /en/.
+
+## Pages
+
+- [Home](https://mdib.technoir.cloud/en/): the ethos in five ideas (digital sovereignty, sovereign AI, agents that fit you, ownership, hybrid cloud + local), the product family and where to start. Spanish: https://mdib.technoir.cloud/
+- [Manifesto](https://mdib.technoir.cloud/en/manifesto/): eleven theses in Javier's voice and what MDIB will not do. Spanish: https://mdib.technoir.cloud/manifiesto/
+- [Products](https://mdib.technoir.cloud/en/products/): four layers with an honest status each. Atlas (your ontology: the map of accounts, data, tasks and rules the agent works from): planned. Forja (the kit: flows, skills and installer): in development. Guardia (permissions, backups and upkeep): planned. Puente (hybrid route between cloud models and your own hardware): planned. Spanish: https://mdib.technoir.cloud/productos/
+- [Free guide](https://mdib.technoir.cloud/en/guide/): "You don't need to code", the steps to your own AI agent on a machine you control, connected to Telegram and doing one real task. Available. Spanish: https://mdib.technoir.cloud/guia/
+- [Newsletter](https://mdib.technoir.cloud/en/newsletter/): Monday to Friday, in Spanish, on open source, local models and open agents; being relaunched. Hosted on Beehiiv. Spanish: https://mdib.technoir.cloud/newsletter/
+- [Legal notice and privacy](https://mdib.technoir.cloud/en/legal/)
+
+## The guide as Markdown (for your assistant)
+
+- [Guía en español (.md)](https://mdib.technoir.cloud/guia-agente-propio.md)
+- [Guide in English (.md)](https://mdib.technoir.cloud/own-agent-guide.md)
+- PDFs: https://mdib.technoir.cloud/guia-agente-propio.pdf and https://mdib.technoir.cloud/own-agent-guide.pdf
+
+## What is not available
+
+- Skills library: in development, not purchasable.
+- Written, fixed-scope setup: planned, not purchasable.
+- MDIB offers no calls or meetings, and is not affiliated with Nous Research or any tool the guide names.

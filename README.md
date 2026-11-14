@@ -1,13 +1,20 @@
 # Machines Do It Better
 
-**MDIB** is my main project: a free, written guide to setting up your own AI agent, on a machine you control,
-with your account, your data and your choice of model, doing one real task for you. It is delivered three ways:
-the web page, a PDF, and a Markdown file "for your agent" that you give to ChatGPT, Claude or any assistant so it
-tutors you through it. The guide is free in exchange for interest: the only call to action is the newsletter.
+**MDIB** is my main project: AI that is yours. Tools and guides so individuals and small businesses can have an AI
+agent of their own, with their account, their data and the model they choose, in the cloud when it makes sense and
+on their own hardware when they want. This repo is its public website:
+
+- **Home**: the ethos in five ideas (digital sovereignty, sovereign AI, agents that fit you, ownership, hybrid cloud + local).
+- **Manifesto** (`/manifiesto/`, `/en/manifesto/`): what I believe and what MDIB will not do.
+- **Products** (`/productos/`, `/en/products/`): four layers, each with an honest status: **Atlas** (your ontology),
+  **Forja** (the kit), **Guardia** (permissions, backups, upkeep) and **Puente** (the hybrid route). What you can take
+  away today is the free guide; nothing is on sale yet.
+- **Free guide** (`/guia/`, `/en/guide/`): "You don't need to code", on the web, as a PDF and as Markdown "for your agent".
+- **Newsletter** (`/newsletter/`): a plain link to Beehiiv, plus a once-only pop-up for first-time visitors.
 
 **Live:** https://mdib.technoir.cloud · **Status:** pre-launch, no paying clients.
 
-Astro (static) + nginx in Docker. Spanish at `/`, English at `/en/`. No analytics, no cookies, self-hosted fonts.
+Astro (static) + nginx in Docker. Spanish at `/`, English at `/en/`. No analytics, no cookies, no third-party requests.
 
 ```bash
 npm install
@@ -17,13 +24,16 @@ npm run pdf                       # re-print the PDFs after editing the guide (n
 ./scripts/deploy.sh               # see DEPLOYMENT.md
 ```
 
-- `src/guide/es.mjs`, `src/guide/en.mjs`: the guide, once per language, with its sources.
-- `src/guide/render.mjs`: facts line (computed from the content), inline HTML, the Markdown "for your agent".
-- `src/pages/guia-agente-propio.md.ts`, `own-agent-guide.md.ts`: the .md downloads, generated at build time.
-- `scripts/build-pdf.mjs`: the PDFs in `public/`, printed by headless Chrome and stamped in `src/guide/pdf-stamp.json`.
-- `src/components/Home.astro`: the page. `src/scripts/`: the paper-dither hero and the illustrative session replay.
-- `src/i18n.ts`: the page chrome in both languages. `src/components/Legal.astro`: provisional legal notice and privacy.
-- `scripts/check-content.mjs`: after the build, fails on placeholders, forbidden promises, the retired offer's words and broken `mailto:`.
+- `src/catalog.mjs`: the status table (layers and products), each with its evidence, and the Stripe Payment Link
+  per product (all `null` today). The selling guard refuses a link while the site has no business email and address.
+- `src/i18n.ts`: every word of the site in both languages. `src/routes.mjs`: the URL of each page per language.
+- `src/components/`: one component per page (`Home`, `Manifesto`, `Products`, `Guide`, `NewsletterPage`, `Legal`)
+  and the small parts (`Badge`, `BuyButton`, `SubscribeLink`, `NewsletterDialog`, `OwnsDiagram`).
+- `src/scripts/newsletter-prompt.ts`: when the pop-up opens (25 s or half a page, once, one `localStorage` key).
+- `src/guide/es.mjs`, `src/guide/en.mjs`: the guide, once per language, with its sources; `render.mjs` builds the
+  facts line, the inline HTML and the Markdown. `scripts/build-pdf.mjs` prints the PDFs into `public/`.
+- `scripts/check-content.mjs`: after the build, fails on placeholders, forbidden promises, the retired offer's words,
+  broken `mailto:`, a badge that disagrees with the catalog, or anything on sale without a business contact.
 - `nginx.conf`: 301s from the old `/es/` paths, HTML revalidation, `.md` served as UTF-8 text.
 
 ## How this was made

@@ -2,8 +2,8 @@
 //   absent        → first page view: we store "pending:<time of first view>"
 //   pending:<ms>  → opens 25 s after the first view or at 50 % scroll of a page, whichever comes first
 //   done          → shown, dismissed, or not wanted (arrived from the newsletter, or not a first visit): never again
-// The layout leaves the dialog out of the legal pages, the newsletter page and the 404, so this never runs there,
-// but a visit to those pages still starts (and counts towards) the 25 s.
+// The layout leaves the dialog out of the legal pages, the newsletter page and the 404, so this never runs there:
+// the 25 s start on the first page that has the dialog.
 export const KEY = 'mdib-newsletter-prompt';
 const DELAY_MS = 25_000;
 const FIRST_VISIT_MS = 30 * 60_000; // ponytail: a "pending" older than 30 min means a returning visitor; no session tracking.

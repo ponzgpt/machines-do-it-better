@@ -2,7 +2,7 @@
 """Generates public/og-en.png and public/og-es.png, the link-preview cards, with the site's own fonts and tokens.
 
 Needs Pillow and node_modules; deliberately outside the npm build because the card only
-changes when the headline, the palette or the step count does (the 8 is typed here: keep it in step with src/guide).
+changes when the home headline (src/i18n.ts, home.h1) or the palette does.
 
     python3 scripts/build-og.py
 """
@@ -23,8 +23,8 @@ def archivo(size, weight, width):
 
 mono = ImageFont.truetype(str(FS / '@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-500-normal.woff2'), 24)
 CARDS = {
-    'en': (('You don’t need', 'to code.'), 'Free guide · your own AI agent in 8 steps'),
-    'es': (('No necesitas', 'saber programar.'), 'Guía gratuita · tu propio agente de IA en 8 pasos'),
+    'en': (('Your AI. Your rules.', 'Your machine.'), 'AI for individuals and small businesses'),
+    'es': (('Tu IA. Tus reglas.', 'Tu máquina.'), 'IA para personas y pequeños negocios'),
 }
 for lang, (lines, foot) in CARDS.items():
     img = Image.new('RGB', (W, H), PAPER)
