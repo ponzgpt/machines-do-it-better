@@ -1,0 +1,11 @@
+---
+// A status badge. The status comes only from src/catalog.mjs; the content check compares every built badge with it.
+import { layers, products } from '../catalog.mjs';
+import { copy, type Lang, type Status } from '../i18n';
+interface Props { id: string; lang: Lang }
+const { id, lang } = Astro.props;
+const item = [...layers, ...products].find((i) => i.id === id);
+if (!item) throw new Error(`No catalog entry for ${id}`);
+const status = item.status as Status;
+---
+<span class="badge" data-item={id} data-status={status}>{copy[lang].status[status]}</span>

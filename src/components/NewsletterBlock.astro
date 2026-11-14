@@ -1,0 +1,25 @@
+---
+// The newsletter block pushed on the home page.
+import { copy, pathFor, type Lang } from '../i18n';
+import SubscribeLink from './SubscribeLink.astro';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = copy[lang].letter;
+---
+<section class="band nl-block" aria-labelledby="nl-block-h">
+  <div class="wrap">
+    <div class="rule" aria-hidden="true"></div>
+    <p class="eyebrow">{c.blockEyebrow}</p>
+    <h2 class="h2" id="nl-block-h">{c.blockH2}</h2>
+    <p class="lede">{c.blockText}</p>
+    <div class="row">
+      <SubscribeLink lang={lang} />
+      <a class="btn btn-ghost" href={pathFor(lang, 'newsletter')}>{c.more}</a>
+    </div>
+  </div>
+</section>
+<style>
+.nl-block .wrap{display:flex;flex-direction:column;gap:20px;align-items:flex-start}
+.nl-block .lede{margin:0}
+@media (max-width:600px){.nl-block .btn{flex:1 1 100%}}
+</style>

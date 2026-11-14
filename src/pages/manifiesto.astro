@@ -1,0 +1,7 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Manifesto from '../components/Manifesto.astro';
+import { copy } from '../i18n';
+const c = copy.es;
+---
+<Layout lang="es" page="manifesto" title={c.manifesto.title} description={c.manifesto.description}><Manifesto lang="es" /></Layout>

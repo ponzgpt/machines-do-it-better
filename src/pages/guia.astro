@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Guide from '../components/Guide.astro';
+import { copy } from '../i18n';
+import { guides, fill } from '../guide/render.mjs';
+const c = copy.es;
+---
+<Layout lang="es" page="guide" title={c.guide.title} description={fill(c.guide.description, guides.es)}><Guide lang="es" /></Layout>

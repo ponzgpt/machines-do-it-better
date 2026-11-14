@@ -1,5 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Legal from '../components/Legal.astro';
+import { copy } from '../i18n';
+const c = copy.es;
 ---
-<Layout lang="es" page="legal/" title="Aviso legal y privacidad · MDIB" description="Quién está detrás de Machines Do It Better, en qué condiciones se ofrece la guía gratuita y qué datos se tratan."><Legal lang="es" /></Layout>
+<Layout lang="es" page="legal" title={c.legalTitle} description={c.legalDescription}><Legal lang="es" /></Layout>

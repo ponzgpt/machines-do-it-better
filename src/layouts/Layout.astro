@@ -6,8 +6,9 @@ import '@fontsource/ibm-plex-sans/500.css';
 import '@fontsource/ibm-plex-sans/600.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/500.css';
-import { BRAND, NEWSLETTER, OWNER } from '../site';
+import { BRAND, OWNER } from '../site';
 import { copy, LANGS, pathFor, type Lang, type Page } from '../i18n';
+import NewsletterDialog from '../components/NewsletterDialog.astro';
 
 interface Props {
   lang: Lang;
@@ -20,8 +21,8 @@ const { lang, page, title, description, noindex = false } = Astro.props;
 const c = copy[lang];
 const canonical = new URL(pathFor(lang, page), Astro.site);
 const ogImage = new URL(c.og, Astro.site);
-const home = page === '' && !noindex;
-const link = (hash: string) => (home ? hash : `${pathFor(lang, '')}${hash}`);
+// The newsletter pop-up never shows on the legal pages, on the newsletter page itself or on the 404.
+const withDialog = !noindex && page !== 'legal' && page !== 'newsletter';
 ---
 <!doctype html>
 <html lang={c.htmlLang}>
@@ -55,19 +56,19 @@ const link = (hash: string) => (home ? hash : `${pathFor(lang, '')}${hash}`);
 <meta name="twitter:image" content={ogImage}>
 </head>
 <body>
-<a class="skip" href="#main">{lang === 'es' ? 'Saltar al contenido' : 'Skip to content'}</a>
+<a class="skip" href="#main">{c.skip}</a>
 <header class="top">
   <div class="wrap bar">
-    <a href={home ? '#top' : pathFor(lang, '')} class="brand"><b>MDIB</b><span>Machines Do It Better</span></a>
+    <a href={pathFor(lang, 'home')} class="brand" aria-current={page === 'home' && !noindex ? 'page' : undefined}><b>MDIB</b><span>Machines Do It Better</span></a>
     <nav class="lang" aria-label={c.nav.lang}>
       {LANGS.map((l) => (
         <a href={pathFor(l, page)} hreflang={l} lang={l} aria-current={l === lang ? 'true' : undefined}>{l.toUpperCase()}</a>
       ))}
     </nav>
   </div>
-  <nav class="tabs" aria-label={c.nav.main}>
-    <div class="wrap"><ol>{c.nav.tabs.map(([hash, label], i) => (
-      <li><a href={link(hash)}><span class="n">{String(i + 1).padStart(2, '0')}</span>{label}</a></li>
+  <nav class="tabs" aria-label={c.nav.label}>
+    <div class="wrap"><ol>{c.nav.items.map(([key, label], i) => (
+      <li><a href={pathFor(lang, key)} aria-current={key === page ? 'page' : undefined}><span class="n">{String(i + 1).padStart(2, '0')}</span>{label}</a></li>
     ))}</ol></div>
   </nav>
 </header>
@@ -78,13 +79,14 @@ const link = (hash: string) => (home ? hash : `${pathFor(lang, '')}${hash}`);
 
 <footer>
   <div class="wrap">
-    <span>© 2026 {BRAND} · {OWNER}</span>
-    <span class="links">
-      <a href={NEWSLETTER} target="_blank" rel="noopener">{c.newsletter.link} ↗</a>
-      <a href={pathFor(lang, 'legal/')}>{c.footer.legal}</a>
-    </span>
+    <span>© 2026 {BRAND} · {OWNER} · {c.footer.tagline}</span>
+    <nav class="links" aria-label={c.footer.nav}>
+      {c.nav.items.map(([key, label]) => <a href={pathFor(lang, key)}>{label}</a>)}
+      <a href={pathFor(lang, 'legal')}>{c.footer.legal}</a>
+    </nav>
   </div>
 </footer>
+{withDialog && <NewsletterDialog lang={lang} />}
 </body>
 </html>
 
@@ -115,10 +117,17 @@ code{font-family:var(--mono);font-size:.86em;background:var(--paper-2);border:1p
 .btn-ink:hover{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn-ghost{background:var(--paper);color:var(--ink)}
 .btn-ghost:hover{color:var(--ink);background:var(--paper-2)}
+.btn[aria-disabled=true]{background:var(--paper-2);color:var(--muted);border-color:var(--line);cursor:not-allowed}
+.badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;padding:4px 9px;border:2px solid var(--ink);line-height:1.2;white-space:nowrap}
+.badge::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor}
+.badge[data-status=available]{background:var(--ink);color:var(--paper)}
+.badge[data-status=building]{color:var(--accent);border-color:var(--accent)}
+.badge[data-status=planned]{color:var(--ink);border-style:dashed}
+.badge[data-status=planned]::before{background:transparent;border:2px solid currentColor;width:6px;height:6px}
 .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-/* Header: brand + language, then the guide's section tabs (they scroll sideways on a phone, inside themselves). */
+/* Header: brand + language, then the site's sections (they scroll sideways on a phone, inside themselves). */
 header.top{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:2px solid var(--ink)}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-top:14px;padding-bottom:10px}
 .brand{display:flex;align-items:baseline;gap:12px;text-decoration:none;white-space:nowrap}
@@ -132,10 +141,46 @@ header.top{position:sticky;top:0;z-index:5;background:var(--paper);border-bottom
 .tabs ol{list-style:none;margin:0;padding:0 0 0;display:flex;gap:4px}
 .tabs a{display:inline-flex;align-items:baseline;gap:6px;padding:10px 12px 12px;min-height:44px;white-space:nowrap;text-decoration:none;font-size:15px;font-weight:500;border-bottom:3px solid transparent}
 .tabs a:hover{border-bottom-color:var(--accent);color:var(--ink)}
+.tabs a[aria-current=page]{border-bottom-color:var(--ink);font-weight:600}
 .tabs .n{font-family:var(--mono);font-size:11px;color:var(--muted)}
 .tabs li:first-child a{padding-left:0}
 @media (max-width:700px){header.top{position:static}[id]{scroll-margin-top:16px}}
 @media (max-width:480px){.brand span{display:none}}
+
+/* Sections shared by every page */
+section.band{padding-top:96px;padding-bottom:96px}
+section.tint{background:var(--paper-2);border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+section.tint + section.tint{border-top:0}
+.two{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px 64px;align-items:start}
+.two + .two{margin-top:72px}
+.lede{margin:20px 0 0;font-size:19px;line-height:1.55;color:var(--ink-2);max-width:620px}
+.mono-line{margin:0;font-family:var(--mono);font-size:14px;color:var(--muted)}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:16px 32px;flex-wrap:wrap;margin-bottom:48px}
+.sec-head .lede{margin:0}
+.rule{width:120px;height:10px;background:var(--accent)}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;border-bottom:2px solid var(--ink)}
+.hero-tex{position:absolute;inset:0;z-index:0;opacity:1;
+  background-image:radial-gradient(circle at center,#e3e3de 1.2px,transparent 1.6px);background-size:9px 9px;
+  -webkit-mask-image:linear-gradient(100deg,transparent 38%,#000 85%);mask-image:linear-gradient(100deg,transparent 38%,#000 85%)}
+.hero-tex canvas{display:block;width:100%;height:100%}
+.hero-tex.has-gl{background-image:none;opacity:.22}
+.hero-in{position:relative;z-index:1;padding-top:72px;padding-bottom:80px;display:flex;flex-direction:column;align-items:flex-start;gap:24px}
+.hero .h1{max-width:11ch}
+.hero .sub{margin:0;font-size:clamp(19px,2vw,23px);line-height:1.45;max-width:640px;color:var(--ink-2)}
+.facts{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 0;font-family:var(--mono);font-size:14px;color:var(--ink)}
+.facts li:not(:last-child)::after{content:"·";margin:0 10px;color:var(--muted)}
+.actions{margin-top:8px}
+.hint{margin:-8px 0 0;font-size:15px;color:var(--muted)}
+.quiet{font-size:16px;font-weight:500}
+
+.prose p{margin:0 0 16px;font-size:18px;line-height:1.6;max-width:680px}
+@media (max-width:1000px){.two{grid-template-columns:1fr}}
+@media (max-width:600px){
+  section.band{padding-top:64px;padding-bottom:64px}
+  .hero-in{padding-top:48px;padding-bottom:56px;gap:20px}
+}
 
 footer{border-top:2px solid var(--ink);margin-top:0}
 footer .wrap{padding-top:28px;padding-bottom:28px;display:flex;justify-content:space-between;gap:12px 24px;flex-wrap:wrap;font-family:var(--mono);font-size:13px;color:var(--muted)}
@@ -144,7 +189,7 @@ footer a{color:var(--ink)}
 
 @media print{
   header.top{position:static;border-bottom:1px solid #000}
-  .tabs,.skip,footer .links a[target]{display:none}
+  .tabs,.skip,footer .links,dialog{display:none}
   body{font-size:11pt}
 }
 </style>

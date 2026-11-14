@@ -1,0 +1,113 @@
+---
+// The products page: the four layers and what can be taken away today. Statuses come from src/catalog.mjs,
+// the buy buttons from BuyButton (Stripe Payment Links, all null today).
+import { copy, pathFor, type Lang, type Status } from '../i18n';
+import { layers, products, STATUSES } from '../catalog.mjs';
+import { guides, fill } from '../guide/render.mjs';
+import Badge from './Badge.astro';
+import BuyButton from './BuyButton.astro';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = copy[lang];
+const P = c.products;
+const g = guides[lang];
+---
+<section class="hero">
+  <div class="wrap hero-in">
+    <p class="eyebrow">{P.eyebrow}</p>
+    <h1 class="h1 prod-h1">{P.h1}</h1>
+    <div class="rule" aria-hidden="true"></div>
+    <p class="sub">{P.intro}</p>
+    <dl class="legend" aria-label={P.legend}>
+      {STATUSES.map((s) => (
+        <div><dt><span class="badge" data-status={s}>{c.status[s as Status]}</span></dt><dd>{P.legendText[s as Status]}</dd></div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+{layers.map((l, i) => {
+  const t = P.layers[l.id];
+  return (
+    <section class:list={['band', 'layer', i % 2 === 1 && 'tint']} id={l.id} aria-labelledby={`${l.id}-h`}>
+      <div class="wrap two">
+        <div>
+          <p class="layer-n" aria-hidden="true">{String(i + 1).padStart(2, '0')} / 04</p>
+          <h2 class="h2 layer-h" id={`${l.id}-h`}>{l.name}</h2>
+          <p class="layer-d">{t.descriptor}</p>
+          <Badge id={l.id} lang={lang} />
+        </div>
+        <dl class="facts-dl">
+          <div><dt>{P.whatK}</dt><dd>{t.what}</dd></div>
+          <div><dt>{P.givesK}</dt><dd>{t.gives}</dd></div>
+          <div><dt>{P.todayK}</dt><dd>{t.today}</dd></div>
+        </dl>
+      </div>
+    </section>
+  );
+})}
+
+<section class="band take" aria-labelledby="take-h">
+  <div class="wrap">
+    <h2 class="h2" id="take-h">{P.takeH2}</h2>
+    <div class="cards">
+      {products.map((p) => {
+        const it = P.items[p.id];
+        return (
+          <article id={`item-${p.id}`}>
+            <div class="card-top"><Badge id={p.id} lang={lang} />{it.layer && <span class="mono-line">{it.layer}</span>}</div>
+            <h3>{it.title}</h3>
+            <p>{fill(it.text, g)}</p>
+            {p.free ? (
+              <div class="buy">
+                <p class="price">{P.free}</p>
+                <div class="row">
+                  <a class="btn btn-ink" href={pathFor(lang, 'guide')}>{P.read} <span aria-hidden="true">→</span></a>
+                  <a class="btn btn-ghost" href={g.files.pdf} download>{P.pdf} <span aria-hidden="true">↓</span></a>
+                </div>
+              </div>
+            ) : (
+              <div class="buy"><BuyButton id={p.id} lang={lang} /></div>
+            )}
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<section class="band tint" aria-labelledby="how-h">
+  <div class="wrap two">
+    <h2 class="h2" id="how-h">{P.howH2}</h2>
+    <div class="prose">
+      <p>{P.how}</p>
+      <p><a href={pathFor(lang, 'newsletter')}>{c.home.ctaNewsletter} <span aria-hidden="true">→</span></a></p>
+    </div>
+  </div>
+</section>
+
+<style>
+.prod-h1{font-size:clamp(46px,7.4vw,104px);max-width:13ch}
+.legend{margin:8px 0 0;display:flex;flex-direction:column;gap:10px}
+.legend div{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.legend dt{min-width:150px}
+.legend dd{margin:0;font-size:16px;color:var(--ink-2)}
+.layer{scroll-margin-top:120px}
+.layer-n{margin:0 0 16px;font-family:var(--mono);font-size:14px;color:var(--accent)}
+.layer-h{font-size:clamp(56px,8vw,120px);line-height:.9;letter-spacing:-.05em}
+.layer-d{margin:20px 0 24px;font-size:20px;line-height:1.45;max-width:520px;color:var(--ink-2)}
+.facts-dl{margin:0;border-top:2px solid var(--ink)}
+.facts-dl div{padding:20px 0;border-bottom:1px solid var(--line)}
+.facts-dl dt{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
+.facts-dl dd{margin:0;font-size:18px;line-height:1.55;max-width:680px}
+.take .h2{margin-bottom:40px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}
+.cards article{border:2px solid var(--ink);padding:28px;display:flex;flex-direction:column;gap:14px;align-items:flex-start;background:var(--paper)}
+.card-top{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.cards h3{margin:0;font-family:var(--display);font-weight:850;font-size:28px;line-height:1.05;letter-spacing:-.02em}
+.cards p{margin:0;font-size:17px;color:var(--ink-2)}
+.buy{margin-top:auto;padding-top:12px;display:flex;flex-direction:column;gap:12px;width:100%}
+.price{font-family:var(--display);font-weight:900;font-size:28px;color:var(--ink) !important}
+@media (max-width:1000px){.cards{grid-template-columns:1fr}}
+@media (max-width:600px){.cards article{padding:22px}.buy .btn{flex:1 1 100%}.legend dt{min-width:0}}
+</style>

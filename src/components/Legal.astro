@@ -1,13 +1,17 @@
 ---
 import { ADDRESS, BRAND, EMAIL, NEWSLETTER, OWNER, OWNER_SITE } from '../site';
+import { KEY } from '../scripts/newsletter-prompt';
 import { pathFor, type Lang } from '../i18n';
 // ponytail: provisional text for a free information site with no sales, not reviewed by a professional.
+// BEFORE THE FIRST stripeLink IN src/catalog.mjs: set a business EMAIL and ADDRESS in src/site.ts and have these
+// pages reviewed for distance selling (terms of sale, refunds and the right of withdrawal for digital goods,
+// VAT wording, who the seller is). The build fails while anything is on sale and EMAIL or ADDRESS is null.
 // The open points for a lawyer are listed in the 2026-11-13 handoff log (contact address, rights requests,
 // newsletter controller/processor roles, reuse of the guide's text).
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const en = lang === 'en';
-const UPDATED = en ? '13 November 2026' : '13 de noviembre de 2026';
+const UPDATED = en ? '14 November 2026' : '14 de noviembre de 2026';
 const site = OWNER_SITE.replace(/^https:\/\//, '');
 const beehiivPrivacy = 'https://www.beehiiv.com/privacy';
 ---
@@ -28,17 +32,19 @@ const beehiivPrivacy = 'https://www.beehiiv.com/privacy';
   </ul>
 
   <h2>What this site is</h2>
-  <p>A free information site. It offers a guide to setting up your own AI agent, readable on the page and downloadable as PDF and Markdown. Nothing is sold here: there are no prices, payments, bookings or contracts.</p>
+  <p>An information site. It presents the MDIB project, its manifesto and its products, and offers a free guide to setting up your own AI agent, readable on the page and downloadable as PDF and Markdown. Nothing is sold here today: there are no prices, payments, bookings or contracts. Products marked “In development” or “Planned” cannot be bought.</p>
+  <p>If something is sold in the future, payment will happen on Stripe’s own checkout page, and these terms will first be extended with the terms of sale and a business contact.</p>
   <p>The guide is training material, not professional, technical or legal advice. It is provided free and as it is. What you install on your machines and do with your accounts is your decision and your responsibility. Nothing here limits any liability that cannot be limited by law.</p>
   <p>The guide names third-party tools (for example Hermes Agent, Telegram, Nous Portal, OpenRouter, the Gemini API, Ollama and Hetzner). MDIB is not affiliated with any of them and uses no affiliate links; their terms, prices and privacy policies are their own and can change.</p>
   <p>The site’s code is MIT-licensed. You may download and use the guide for your own use, including giving it to your AI assistant; the text, the name and the brand are not licensed for republication.</p>
 
   <h2>This site doesn’t track you</h2>
-  <p>No cookies, analytics, pixels or third-party services, and the fonts are served from this server, so there is no cookie banner (UK PECR and the EU ePrivacy rules only require consent for non-essential cookies).</p>
+  <p>No cookies, analytics, pixels or third-party services, nothing is loaded from other sites, and the fonts are served from this server, so there is no cookie banner (UK PECR and the EU ePrivacy rules only require consent for non-essential cookies).</p>
+  <p>One thing is stored in your browser: so that the newsletter notice appears at most once, the site keeps a single entry in your browser’s local storage (<code>localStorage</code>) named <code>{KEY}</code>, holding whether the notice is still pending, with the time of your first visit, or already done. It is not a cookie, it is never sent to this server or to anyone else, and it goes away when you clear this site’s data. With JavaScript off, nothing is stored and the notice never appears.</p>
   <p>Like any web server, ours records technical data about each request (IP address, date, page requested and browser) to run the site and keep it secure. It is not used to identify you or combined with other data, and it is deleted periodically.</p>
 
   <h2>The newsletter</h2>
-  <p>The “subscribe” links take you to <a href={NEWSLETTER} target="_blank" rel="noopener">{NEWSLETTER.replace(/^https:\/\//, '')}</a>, outside this site. The newsletter is run on Beehiiv: if you subscribe, you give your email address on Beehiiv’s site, and what happens there (including any cookies) is subject to <a href={beehiivPrivacy} target="_blank" rel="noopener">Beehiiv’s privacy policy</a>. You can unsubscribe at any time from any edition.</p>
+  <p>The newsletter is only linked, never embedded: the “subscribe” buttons and the newsletter notice open, in a new tab and only when you click, pages on <a href={NEWSLETTER} target="_blank" rel="noopener">{NEWSLETTER.replace(/^https:\/\//, '')}</a>, outside this site. The newsletter is run on Beehiiv: if you subscribe, you give your email address on Beehiiv’s site, and what happens there (including any cookies) is subject to <a href={beehiivPrivacy} target="_blank" rel="noopener">Beehiiv’s privacy policy</a>. You can unsubscribe at any time from any edition.</p>
 
   <h2>Privacy</h2>
   <ul>
@@ -50,7 +56,7 @@ const beehiivPrivacy = 'https://www.beehiiv.com/privacy';
     <li><b>Your rights:</b> access, rectification, erasure, restriction, objection and portability, through the contact above. You can complain to the ICO in the UK (ico.org.uk) or to the data protection authority of your EU country (in Spain, the AEPD, aepd.es).</li>
     <li><b>US residents:</b> we don’t sell or share personal information, and we don’t use it for targeted advertising.</li>
   </ul>
-  <p><a href={pathFor(lang, '')}>← Back to the guide</a></p>
+  <p><a href={pathFor(lang, 'home')}>← Back to the home page</a></p>
   </>
 ) : (
   <>
@@ -68,17 +74,19 @@ const beehiivPrivacy = 'https://www.beehiiv.com/privacy';
   </ul>
 
   <h2>Qué es esta web</h2>
-  <p>Una web informativa y gratuita. Ofrece una guía para montar tu propio agente de IA, que se lee en la página y se descarga en PDF y en Markdown. Aquí no se vende nada: no hay precios, pagos, reservas ni contratos.</p>
+  <p>Una web informativa. Presenta el proyecto MDIB, su manifiesto y sus productos, y ofrece una guía gratuita para montar tu propio agente de IA, que se lee en la página y se descarga en PDF y en Markdown. Hoy aquí no se vende nada: no hay precios, pagos, reservas ni contratos. Los productos marcados «En desarrollo» o «Previsto» no se pueden comprar.</p>
+  <p>Si en el futuro se vende algo, el pago se hará en la página de pago de Stripe, y antes se ampliarán estas condiciones con las condiciones de venta y un contacto del negocio.</p>
   <p>La guía es material formativo, no asesoramiento profesional, técnico ni legal. Se ofrece gratis y tal cual. Lo que instales en tus máquinas y hagas con tus cuentas es decisión y responsabilidad tuya. Nada de esto limita la responsabilidad que la ley no permite limitar.</p>
   <p>La guía cita herramientas de terceros (por ejemplo Hermes Agent, Telegram, Nous Portal, OpenRouter, la API de Gemini, Ollama y Hetzner). MDIB no está afiliado a ninguna y no usa enlaces de afiliado; sus condiciones, precios y políticas de privacidad son suyos y pueden cambiar.</p>
   <p>El código de la web tiene licencia MIT. Puedes descargar y usar la guía para tu propio uso, incluido dársela a tu asistente de IA; el texto, el nombre y la marca no tienen licencia para volver a publicarse.</p>
 
   <h2>Esta web no te rastrea</h2>
-  <p>No usamos cookies, analítica, píxeles ni servicios de terceros, y las tipografías se sirven desde este mismo servidor, así que no hay banner de cookies (la PECR británica y la normativa ePrivacy de la UE solo exigen consentimiento para cookies no esenciales).</p>
+  <p>No usamos cookies, analítica, píxeles ni servicios de terceros, no se carga nada de otras webs, y las tipografías se sirven desde este mismo servidor, así que no hay banner de cookies (la PECR británica y la normativa ePrivacy de la UE solo exigen consentimiento para cookies no esenciales).</p>
+  <p>Solo se guarda una cosa en tu navegador: para que el aviso de la newsletter aparezca como mucho una vez, la web guarda una única entrada en el almacenamiento local de tu navegador (<code>localStorage</code>) con el nombre <code>{KEY}</code>, con si el aviso está pendiente, junto con la hora de tu primera visita, o ya se ha mostrado. No es una cookie, nunca se envía a este servidor ni a nadie, y desaparece al borrar los datos de esta web. Sin JavaScript no se guarda nada y el aviso no aparece.</p>
   <p>Como cualquier servidor web, el nuestro registra datos técnicos de cada petición (dirección IP, fecha, página pedida y navegador) para su funcionamiento y seguridad. No se usan para identificarte ni se cruzan con otros datos, y se borran de forma periódica.</p>
 
   <h2>La newsletter</h2>
-  <p>Los enlaces para suscribirte llevan a <a href={NEWSLETTER} target="_blank" rel="noopener">{NEWSLETTER.replace(/^https:\/\//, '')}</a>, fuera de esta web. La newsletter funciona en Beehiiv: si te suscribes, das tu correo en la web de Beehiiv, y lo que ocurre allí (cookies incluidas) está sujeto a la <a href={beehiivPrivacy} target="_blank" rel="noopener">política de privacidad de Beehiiv</a>. Puedes darte de baja cuando quieras desde cualquier edición.</p>
+  <p>La newsletter solo se enlaza, nunca se incrusta: los botones para suscribirte y el aviso de la newsletter abren, en una pestaña nueva y solo cuando haces clic, páginas de <a href={NEWSLETTER} target="_blank" rel="noopener">{NEWSLETTER.replace(/^https:\/\//, '')}</a>, fuera de esta web. La newsletter funciona en Beehiiv: si te suscribes, das tu correo en la web de Beehiiv, y lo que ocurre allí (cookies incluidas) está sujeto a la <a href={beehiivPrivacy} target="_blank" rel="noopener">política de privacidad de Beehiiv</a>. Puedes darte de baja cuando quieras desde cualquier edición.</p>
 
   <h2>Privacidad</h2>
   <ul>
@@ -90,7 +98,7 @@ const beehiivPrivacy = 'https://www.beehiiv.com/privacy';
     <li><b>Tus derechos:</b> acceso, rectificación, supresión, limitación, oposición y portabilidad, a través del contacto indicado arriba. Puedes reclamar ante la ICO en el Reino Unido (ico.org.uk) o ante la autoridad de protección de datos de tu país de la UE (en España, la AEPD, aepd.es).</li>
     <li><b>Residentes en EE. UU.:</b> no vendemos ni compartimos datos personales ni los usamos para publicidad dirigida.</li>
   </ul>
-  <p><a href={pathFor(lang, '')}>← Volver a la guía</a></p>
+  <p><a href={pathFor(lang, 'home')}>← Volver al inicio</a></p>
   </>
 )}
 </article>

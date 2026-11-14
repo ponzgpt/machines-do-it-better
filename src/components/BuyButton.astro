@@ -1,0 +1,21 @@
+---
+// Stripe Payment Links only: a plain link to Stripe's hosted checkout, in a new tab. No Stripe script, no embed.
+// With stripeLink null (everything, today) the button is disabled and no price is shown.
+import { products } from '../catalog.mjs';
+import { copy, pathFor, type Lang } from '../i18n';
+interface Props { id: string; lang: Lang }
+const { id, lang } = Astro.props;
+const c = copy[lang];
+const p = products.find((x) => x.id === id)!;
+---
+{p.stripeLink ? (
+  <div class="row">
+    {p.price && <span class="price">{p.price}</span>}
+    <a class="btn btn-ink" href={p.stripeLink} target="_blank" rel="noopener">{c.products.buy} <span aria-hidden="true">↗</span><span class="sr-only"> {c.newTab}</span></a>
+  </div>
+) : (
+  <div class="row">
+    <span class="btn" aria-disabled="true">{c.products.notYet}</span>
+    <a href={pathFor(lang, 'newsletter')}>{c.products.notify}</a>
+  </div>
+)}

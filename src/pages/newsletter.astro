@@ -1,0 +1,7 @@
+---
+import Layout from '../layouts/Layout.astro';
+import NewsletterPage from '../components/NewsletterPage.astro';
+import { copy } from '../i18n';
+const c = copy.es;
+---
+<Layout lang="es" page="newsletter" title={c.letter.title} description={c.letter.description}><NewsletterPage lang="es" /></Layout>

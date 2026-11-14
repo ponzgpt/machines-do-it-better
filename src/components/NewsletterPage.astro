@@ -1,0 +1,40 @@
+---
+// /newsletter/: what it is, from mdib-ops strategy/newsletter-relaunch-plan.md (decided 2026-11-13: MDIB's own,
+// daily Monday to Friday, Spanish, open source / local inference / open agents, each edition links to MDIB).
+import { copy, type Lang } from '../i18n';
+import { NEWSLETTER_ARCHIVE } from '../site';
+import SubscribeLink from './SubscribeLink.astro';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const c = copy[lang];
+const n = c.letter;
+---
+<section class="hero">
+  <div class="wrap hero-in">
+    <p class="eyebrow">{n.eyebrow}</p>
+    <h1 class="h1 nl-h1">{n.h1}</h1>
+    <div class="rule" aria-hidden="true"></div>
+    <p class="sub">{n.lede}{n.langNote && <> <strong>{n.langNote}</strong></>}</p>
+    <div class="row actions"><SubscribeLink lang={lang} /></div>
+    <p class="hint">{n.how}</p>
+  </div>
+</section>
+
+<section class="band" aria-labelledby="get-h">
+  <div class="wrap two">
+    <h2 class="h2" id="get-h">{n.getH2}</h2>
+    <div>
+      <ul class="get">{n.get.map((x) => <li>{x}</li>)}</ul>
+      <p class="state">{n.state}</p>
+      <p><a href={NEWSLETTER_ARCHIVE} target="_blank" rel="noopener">{n.archive} <span aria-hidden="true">↗</span><span class="sr-only"> {c.newTab}</span></a></p>
+    </div>
+  </div>
+</section>
+
+<style>
+.nl-h1{font-size:clamp(46px,7.4vw,104px);max-width:13ch}
+.get{margin:0 0 28px;padding:0;list-style:none;border-top:2px solid var(--ink)}
+.get li{padding:16px 0;border-bottom:1px solid var(--line);font-size:19px;line-height:1.45}
+.state{margin:0 0 16px;padding:16px 20px;border-left:6px solid var(--accent);background:var(--paper-2);font-size:17px;max-width:680px}
+@media (max-width:600px){.get li{font-size:17px}.actions .btn{flex:1 1 100%}}
+</style>

@@ -1,0 +1,33 @@
+---
+// Hand-drawn diagram: your agent and the three pieces that are yours. Used on the home page and in the guide.
+import { copy, type Lang } from '../i18n';
+interface Props { lang: Lang }
+const c = copy[Astro.props.lang];
+const fid = `rough-${Astro.props.lang}`;
+---
+<svg class="diagram" viewBox="0 0 600 420" role="img" aria-label={c.owns.aria}>
+  <defs>
+    <filter id={fid} x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="7" />
+      <feDisplacementMap in="SourceGraphic" scale="4" />
+    </filter>
+  </defs>
+  <g filter={`url(#${fid})`} fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M300 152 C 300 120, 300 100, 300 92" />
+    <path d="M262 236 C 230 262, 190 288, 158 304" />
+    <path d="M338 236 C 370 262, 410 288, 442 304" />
+    <ellipse cx="300" cy="200" rx="96" ry="52" stroke="var(--accent)" stroke-width="4" />
+    <rect x="200" y="24" width="200" height="68" rx="4" />
+    <rect x="30" y="304" width="200" height="68" rx="4" />
+    <rect x="370" y="304" width="200" height="68" rx="4" />
+  </g>
+  <g font-family="var(--display)" font-weight="800" font-size="30" text-anchor="middle" fill="var(--ink)">
+    <text x="300" y="210">{c.owns.center}</text>
+    <text x="300" y="68">{c.owns.parts[0][0]}</text>
+    <text x="130" y="348">{c.owns.parts[1][0]}</text>
+    <text x="470" y="348">{c.owns.parts[2][0]}</text>
+  </g>
+</svg>
+<style>
+.diagram{width:100%;height:auto;max-width:600px;justify-self:center}
+</style>

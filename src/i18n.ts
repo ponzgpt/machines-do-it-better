@@ -1,24 +1,179 @@
-// Site chrome and page copy, per language. Spanish (Spain) is the default at /, English lives under /en/.
-// The guide itself lives in src/guide/ (es.mjs, en.mjs); this file holds only what surrounds it.
-export type Lang = 'es' | 'en';
-export const LANGS: Lang[] = ['es', 'en'];
-export type Page = '' | 'legal/';
+// All site copy, per language, in one place. Spanish (Spain) is the default at /, English lives under /en/.
+// The guide itself lives in src/guide/ (es.mjs, en.mjs); the status of each layer and product lives in
+// src/catalog.mjs. This file holds the words around them. Never add a string to one language only.
+import { LANGS as L, pathFor as p } from './routes.mjs';
 
-/** Same page in either language: '/' ↔ '/en/', '/legal/' ↔ '/en/legal/'. */
-export const pathFor = (lang: Lang, page: Page) => (lang === 'es' ? `/${page}` : `/en/${page}`);
+export type Lang = 'es' | 'en';
+export const LANGS = L as unknown as Lang[];
+export type Page = 'home' | 'manifesto' | 'products' | 'guide' | 'newsletter' | 'legal';
+export type Status = 'available' | 'building' | 'planned';
+/** Same page in either language: '/' ↔ '/en/', '/productos/' ↔ '/en/products/'. */
+export const pathFor = (lang: Lang, page: Page): string => p(lang, page);
 
 type Line = [who: 'you' | 'agent' | 'meta', text: string];
+type Layer = { descriptor: string; what: string; gives: string; today: string };
+type Product = { title: string; text: string; layer?: string };
+type Thesis = [bold: string, text: string];
+type Pillar = { kicker: string; statement: string; body: string };
 
 const es = {
   htmlLang: 'es',
   ogLocale: 'es_ES',
   og: '/og-es.png',
-  title: 'No necesitas saber programar — guía gratuita para tener tu propio agente de IA · MDIB',
-  description:
-    'Guía gratuita en {steps} pasos para montar tu propio agente de IA en una máquina que controlas, conectado a Telegram y haciendo una tarea real. En la web, en PDF y en Markdown para tu asistente.',
+  skip: 'Saltar al contenido',
+  newTab: '(se abre en una pestaña nueva)',
   nav: {
-    main: 'Secciones de la guía',
+    label: 'Principal',
     lang: 'Idioma',
+    items: [['manifesto', 'Manifiesto'], ['products', 'Productos'], ['guide', 'Guía'], ['newsletter', 'Newsletter']] as [Page, string][],
+  },
+  status: { available: 'Disponible', building: 'En desarrollo', planned: 'Previsto' } as Record<Status, string>,
+  footer: { legal: 'Aviso legal y privacidad', tagline: 'IA que es tuya.', nav: 'Pie de página' },
+  notFound: { title: 'Página no encontrada · MDIB', h1: 'Aquí no hay nada.', back: 'Volver al inicio' },
+
+  // ---------- Home ----------
+  home: {
+    title: 'Tu IA. Tus reglas. Tu máquina. · Machines Do It Better',
+    description:
+      'MDIB hace herramientas y guías para que personas y pequeños negocios tengan un agente de IA propio: con su cuenta, sus datos y el modelo que eligen, en la nube y en su propio equipo.',
+    eyebrow: 'Machines Do It Better · IA para personas y pequeños negocios',
+    h1: 'Tu IA. Tus reglas. Tu máquina.',
+    sub: 'MDIB hace herramientas y guías para que tengas un agente de IA propio: con tu cuenta, tus datos y el modelo que eliges, en la nube cuando conviene y en tu propio equipo cuando quieres.',
+    ctaProducts: 'Ver productos',
+    ctaManifesto: 'Leer el manifiesto',
+    ctaNewsletter: 'Suscribirme a la newsletter',
+    pillarsLabel: 'Cinco ideas',
+    pillars: [
+      { kicker: 'Soberanía digital', statement: 'Lo tuyo, a tu nombre.',
+        body: 'La cuenta, las claves y la suscripción de tu agente tienen que estar a tu nombre. Si pagas un modelo, se lo pagas al proveedor, no a un intermediario. Nadie se queda en medio de tus datos.' },
+      { kicker: 'IA soberana', statement: 'Eliges el modelo. Y lo cambias.',
+        body: 'Ningún modelo es para siempre: salen otros, cambian los precios y cambian las condiciones. Tu agente no debería depender de uno solo. Lo que sabe de ti vive en archivos que puedes leer y llevarte.' },
+      { kicker: 'Agentes que se amoldan a ti', statement: 'El agente se amolda a ti. No al revés.',
+        body: 'Tú defines los objetivos, los límites y la responsabilidad; el agente hace lo repetible. Habla en tu idioma y en tu tono, aprende tus preferencias y te pregunta antes de comprar, publicar o escribir a nadie en tu nombre.' },
+      { kicker: 'Propiedad', statement: 'Tu cuenta, tus datos, tu modelo.',
+        body: 'Cuando sabes dónde está cada pieza, puedes cambiarla. Si mañana cambias de modelo o de máquina, el agente sigue siendo tuyo.' },
+      { kicker: 'Híbrido: nube + local', statement: 'Nube cuando conviene. Local cuando quieres.',
+        body: 'Un modelo en la nube es potente y no pide máquina; uno local no saca tus datos de casa, pero pide hardware. No tienes que elegir para siempre: cada tarea puede ir por un lado o por otro. Lo decides tú, no el proveedor.' },
+    ] as Pillar[],
+    hybrid: {
+      aria: 'Diagrama: a la izquierda lo que va a la nube, a la derecha lo que se queda en tu hardware, y en medio quién decide: tú.',
+      cloud: ['En la nube', ['Modelos grandes de un proveedor que eliges', 'Tareas que piden más capacidad', 'Pago por uso, a tu nombre']] as [string, string[]],
+      local: ['En tu hardware', ['Un modelo local, si tu máquina puede con él', 'Archivos que no quieres que salgan', 'Tus reglas y la memoria del agente, si lo instalas en casa']] as [string, string[]],
+      you: ['Quién decide', 'Tú: qué tarea va a cada lado y qué datos salen de casa.'] as [string, string],
+    },
+    familyEyebrow: 'La familia MDIB',
+    familyH2: 'Cuatro capas. Un agente que es tuyo.',
+    familyMore: 'Qué es cada capa y qué existe hoy',
+    startEyebrow: 'Por dónde empezar',
+    startH2: 'Empieza gratis.',
+    startText: 'La guía «No necesitas saber programar» explica en {steps} pasos cómo tener tu propio agente de IA en una máquina que controlas, conectado a Telegram y haciendo una tarea real. En la web, en PDF y en Markdown para tu asistente.',
+    startRead: 'Leer la guía',
+    whoEyebrow: 'Quién está detrás',
+    whoH2: 'Javier Ponz.',
+    whoText: [
+      'Pasé diez años en soporte técnico en Apple. MDIB es mi proyecto principal: herramientas y guías para que un agente de IA trabaje para ti sin que tengas que saber programar.',
+      'Está empezando. Todavía no tiene clientes de pago, y prefiero decirlo así a que lo tengas que adivinar.',
+    ],
+    whoLink: 'Más sobre mí',
+  },
+
+  // ---------- Manifesto ----------
+  manifesto: {
+    title: 'Manifiesto · Machines Do It Better',
+    description: 'En qué cree MDIB: soberanía digital, IA soberana, agentes que se amoldan a ti, propiedad y un modelo híbrido entre la nube y tu equipo. Y lo que no hará.',
+    eyebrow: 'Manifiesto',
+    h1: 'Las máquinas lo hacen mejor. Tú decides qué.',
+    intro: 'Esto es lo que creo y lo que guía cada cosa que hago en MDIB. Lo escribo en primera persona porque, hoy, MDIB soy yo.',
+    theses: [
+      ['Tú decides; la máquina ejecuta.', 'Un humano define los objetivos, los límites y la responsabilidad. Las máquinas hacen el trabajo repetible, de forma continua. Ese reparto es el centro de todo lo demás.'],
+      ['Automatizar no quita juicio: lo concentra.', 'Cuando una máquina se encarga de lo repetido, tu atención queda libre para lo que solo tú puedes decidir. No quiero quitarte de en medio; quiero quitarte lo que sobra.'],
+      ['Lo tuyo, a tu nombre.', 'Tu cuenta, tus claves y tu suscripción tienen que estar a tu nombre. Si pagas un modelo, se lo pagas al proveedor, no a mí. No quiero revender capacidad ni quedarme en medio de tus datos.'],
+      ['Ningún modelo es para siempre.', 'Salen modelos nuevos, cambian los precios y cambian las condiciones. Un agente que solo funciona con un proveedor no es del todo tuyo. Lo que sabe de ti tiene que vivir en archivos que puedes leer y llevarte.'],
+      ['El agente se amolda a ti.', 'Tu idioma, tu tono, tu horario y tus prioridades. Si tienes que cambiar tu forma de trabajar para que la herramienta funcione, la herramienta está mal planteada.'],
+      ['Nada importante sin tu sí.', 'Un agente no compra, no publica, no escribe a terceros y no cambia tus cuentas sin que lo confirmes. Tampoco te pide contraseñas.'],
+      ['Nube y local, según la tarea.', 'La nube da potencia; tu propio hardware da privacidad. No hay que casarse con ninguno: cada tarea va por donde tenga sentido, y lo decides tú.'],
+      ['Verdad antes que complacencia.', 'Un buen agente dice cuándo no está seguro, cita de dónde saca lo que te cuenta y avisa cuando algo falla, en vez de inventarse una respuesta. Me exijo lo mismo en esta web.'],
+      ['Para quien no programa.', 'Lo que hago está pensado para profesionales y equipos pequeños que no son técnicos. Mi trabajo es traducir la tecnología, no exigirte que la aprendas.'],
+      ['Pruebas antes que promesas.', 'La familia valida que algo funciona; solo alguien de fuera que paga valida que vale lo que cuesta. Hoy MDIB no tiene clientes de pago y no voy a fingir que sí.'],
+      ['Uso lo que hago.', 'MDIB se lleva con los mismos agentes que ofrece. Lo que te enseño lo uso yo primero.'],
+    ] as Thesis[],
+    notH2: 'Lo que MDIB no hará.',
+    not: [
+      'Ser otro noticiario genérico de IA.',
+      'Vender consultoría abierta y sin límites.',
+      'Prometer automatización total, ni que un agente funcione solo y para siempre sin que nadie lo cuide.',
+      'Vender información reciclada.',
+      'Escribir en masa a gente que no ha pedido nada.',
+      'Alojar tu agente junto al de otras personas: cada agente, en su propia cuenta.',
+      'Recuperar contraseñas o cuentas, ni dar consejo médico, legal o financiero.',
+    ],
+    sign: 'Javier Ponz, Machines Do It Better',
+  },
+
+  // ---------- Products ----------
+  products: {
+    title: 'Productos · Machines Do It Better',
+    description: 'La familia MDIB en cuatro capas (Atlas, Forja, Guardia y Puente) con su estado real, y lo que puedes llevarte hoy: una guía gratuita.',
+    eyebrow: 'Productos',
+    h1: 'Cuatro capas. Un agente que es tuyo.',
+    intro: 'MDIB se organiza en cuatro capas. Cada una lleva su estado tal cual es hoy: disponible, en desarrollo o prevista. Lo previsto es una intención, no algo que ya funcione.',
+    legend: 'Estados',
+    legendText: {
+      available: 'existe y se puede usar o descargar hoy.',
+      building: 'se está construyendo; aún no se puede usar.',
+      planned: 'es un plan; todavía no existe.',
+    } as Record<Status, string>,
+    whatK: 'Qué es',
+    givesK: 'Qué te da',
+    todayK: 'De qué está hecho hoy',
+    layers: {
+      atlas: {
+        descriptor: 'Tu ontología: el mapa de tus cuentas, datos, tareas y reglas del que trabaja el agente.',
+        what: 'Servirá para que el agente sepa qué es tuyo, qué puede tocar y qué no, sin que tengas que repetírselo.',
+        gives: 'Servirá para cambiar de agente o de modelo sin perder lo que el anterior sabía de ti.',
+        today: 'Una lista de ocho cosas que el agente confirma al configurarse (tu nombre, idioma y tono, zona horaria, canal, módulos, horarios, qué puede recordar y qué te pide siempre confirmar), escrita como skill en una versión alfa privada. El mapa en sí no existe todavía.',
+      },
+      forja: {
+        descriptor: 'El kit: los flujos, las skills y el instalador que construyen el agente.',
+        what: 'El conjunto de piezas con las que se monta un agente de MDIB: su identidad y sus límites, y una skill por tarea.',
+        gives: 'Cuando esté lista, un agente que empieza con tareas ya preparadas en vez de en blanco, instalado en tu máquina y con tu cuenta.',
+        today: 'Una distribución de perfil para Hermes Agent, versión 0.1.0 alfa y privada: un archivo de identidad y límites y cuatro skills (configuración, resumen diario, hábitos generales de bienestar y seguimiento informativo de mercados). Se instaló y se comprobó en una máquina de pruebas. Aún no se puede descargar.',
+      },
+      guardia: {
+        descriptor: 'Permisos, copias de seguridad y mantenimiento: lo que lo mantiene seguro y vivo.',
+        what: 'Servirá para que el agente pida permiso donde debe, tenga copia de lo importante y se mantenga al día.',
+        gives: 'Servirá para que sepas qué puede hacer tu agente sin preguntarte y cómo recuperarlo si algo se rompe.',
+        today: 'Reglas escritas, no software: el agente pide confirmación antes de comprar, publicar, escribir a terceros o cambiar una cuenta, y no pide contraseñas. El paso 7 de la guía gratuita explica los permisos del arnés. Las copias de seguridad no están resueltas: la guía las marca como «sin verificar».',
+      },
+      puente: {
+        descriptor: 'La ruta híbrida entre los modelos en la nube y tu propio hardware.',
+        what: 'Servirá para repartir cada tarea entre un modelo en la nube y uno en tu máquina, según decidas tú.',
+        gives: 'Servirá para que tus datos más delicados no tengan que salir de casa, sin renunciar a un modelo grande cuando lo necesites.',
+        today: 'El paso 3 de la guía gratuita, que compara un modelo en la nube con uno local con Ollama. No hay software propio de MDIB para esto.',
+      },
+    } as Record<string, Layer>,
+    takeH2: 'Lo que puedes llevarte hoy.',
+    items: {
+      guide: { title: 'La guía «No necesitas saber programar»', text: '{steps} pasos para tener tu propio agente de IA en una máquina que controlas, conectado a Telegram y haciendo una tarea real. En la web, en PDF y en Markdown para tu asistente.' },
+      skills: { title: 'Biblioteca de skills', layer: 'Forja', text: 'Skills listas para instalar en tu propio agente: tareas habituales ya escritas, cada una con sus límites.' },
+      setup: { title: 'Puesta en marcha por escrito', layer: 'Forja · Guardia', text: 'Servirá para dejarte el agente montado para una tarea, con el alcance cerrado de antemano y todo entregado por escrito, de principio a fin.' },
+    } as Record<string, Product>,
+    free: 'Gratis',
+    read: 'Leer la guía',
+    pdf: 'Descargar PDF',
+    buy: 'Comprar',
+    notYet: 'Aún no disponible',
+    notify: 'Avísame cuando exista',
+    howH2: 'Cómo se compra.',
+    how: 'Hoy no hay nada a la venta. Cuando algo lo esté, el botón «Comprar» abrirá la página de pago de Stripe en una pestaña nueva: esta web no cobra ni guarda datos de pago. Antes de ese día se publicarán aquí las condiciones de venta y un contacto del negocio. Si quieres enterarte, suscríbete a la newsletter.',
+  },
+
+  // ---------- Guide page chrome ----------
+  guide: {
+    title: 'No necesitas saber programar: guía gratuita para tener tu propio agente de IA · MDIB',
+    description:
+      'Guía gratuita en {steps} pasos para montar tu propio agente de IA en una máquina que controlas, conectado a Telegram y haciendo una tarea real. En la web, en PDF y en Markdown para tu asistente.',
+    tabsLabel: 'Secciones de la guía',
     tabs: [
       ['#resultado', 'Resultado'],
       ['#uso', 'Cómo usarla'],
@@ -28,8 +183,8 @@ const es = {
       ['#capo', 'Capó'],
       ['#fuentes', 'Fuentes'],
     ] as [string, string][],
+    eyebrow: 'Guía gratuita · Machines Do It Better',
   },
-  eyebrow: 'Guía gratuita · Machines Do It Better',
   download: {
     pdf: 'Descargar PDF',
     md: 'Descargar para tu agente (.md)',
@@ -37,7 +192,6 @@ const es = {
   },
   newsletter: {
     link: 'Recibe la próxima edición y las actualizaciones',
-    newTab: '(se abre en una pestaña nueva)',
     bandTitle: 'La guía es gratis. Te pido una cosa a cambio: tu interés.',
     bandText:
       'Si te ha servido, suscríbete a la newsletter: te llega la próxima edición, las correcciones cuando cambie una herramienta y el aviso cuando exista lo que viene después. Las descargas son libres y no piden nada.',
@@ -78,20 +232,194 @@ const es = {
       ['el modelo', 'el que eliges, y lo cambias cuando quieras'],
     ] as [string, string][],
   },
-  footer: { legal: 'Aviso legal y privacidad', guide: 'La guía' },
-  notFound: { title: 'Página no encontrada · MDIB', h1: 'Aquí no hay nada.', back: 'Volver a la guía' },
+
+  // ---------- Newsletter page, block and pop-up ----------
+  letter: {
+    title: 'Newsletter · Machines Do It Better',
+    description: 'La newsletter de MDIB: de lunes a viernes, en español, sobre código abierto, modelos locales y agentes abiertos. Te suscribes en Beehiiv.',
+    eyebrow: 'Newsletter',
+    h1: 'Una edición cada día laborable.',
+    lede: 'La newsletter de MDIB sale de lunes a viernes, en español, y trata de código abierto, modelos que corren en tu propio equipo y agentes abiertos.',
+    state: 'Ahora mismo se está relanzando: el formato diario se prueba antes de abrirse a todo el mundo, así que el ritmo arrancará cuando esté listo.',
+    langNote: '',
+    getH2: 'Qué recibes.',
+    get: [
+      'Cada edición parte de una tarea real, no de un modelo o de un repositorio.',
+      'Lo nuevo de MDIB: cuándo sale un producto y cuándo cambia la guía.',
+      'Cada edición enlaza algo de MDIB. Lo digo aquí para que no te pille por sorpresa.',
+      'Te das de baja cuando quieras, desde cualquier edición.',
+    ],
+    subscribe: 'Suscribirme en Beehiiv',
+    how: 'Te suscribes en la web de Beehiiv, en una pestaña nueva. Esta web no recoge tu correo.',
+    archive: 'Ediciones anteriores, en Beehiiv',
+    blockEyebrow: 'Newsletter',
+    blockH2: 'Lo nuevo, de lunes a viernes.',
+    blockText: 'Código abierto, modelos locales y agentes abiertos, en español. Y el aviso cuando algo de MDIB esté listo.',
+    more: 'Qué es y qué recibes',
+    dialogTitle: 'Una edición al día sobre IA que es tuya.',
+    dialogText: 'La newsletter de MDIB, de lunes a viernes y en español: agentes abiertos, modelos locales y lo nuevo de MDIB. Te suscribes en Beehiiv, en una pestaña nueva.',
+    dialogYes: 'Suscribirme',
+    dialogClose: 'Cerrar',
+  },
+
+  legalTitle: 'Aviso legal y privacidad · MDIB',
+  legalDescription: 'Quién está detrás de Machines Do It Better, en qué condiciones se ofrece la web y la guía gratuita y qué datos se tratan.',
 };
 
 const en: typeof es = {
   htmlLang: 'en',
   ogLocale: 'en_GB',
   og: '/og-en.png',
-  title: 'You don’t need to code — a free guide to your own AI agent · MDIB',
-  description:
-    'A free {steps}-step guide to setting up your own AI agent on a machine you control, connected to Telegram and doing one real task. On the web, as a PDF and as Markdown for your assistant.',
+  skip: 'Skip to content',
+  newTab: '(opens in a new tab)',
   nav: {
-    main: 'Guide sections',
+    label: 'Main',
     lang: 'Language',
+    items: [['manifesto', 'Manifesto'], ['products', 'Products'], ['guide', 'Guide'], ['newsletter', 'Newsletter']],
+  },
+  status: { available: 'Available', building: 'In development', planned: 'Planned' },
+  footer: { legal: 'Legal notice and privacy', tagline: 'AI that is yours.', nav: 'Footer' },
+  notFound: { title: 'Page not found · MDIB', h1: 'Nothing here.', back: 'Back to the home page' },
+
+  home: {
+    title: 'Your AI. Your rules. Your machine. · Machines Do It Better',
+    description:
+      'MDIB makes tools and guides so individuals and small businesses can have an AI agent of their own: their account, their data and the model they choose, in the cloud and on their own hardware.',
+    eyebrow: 'Machines Do It Better · AI for individuals and small businesses',
+    h1: 'Your AI. Your rules. Your machine.',
+    sub: 'MDIB makes tools and guides so you can have an AI agent of your own: your account, your data and the model you choose, in the cloud when it makes sense and on your own hardware when you want.',
+    ctaProducts: 'See products',
+    ctaManifesto: 'Read the manifesto',
+    ctaNewsletter: 'Subscribe to the newsletter',
+    pillarsLabel: 'Five ideas',
+    pillars: [
+      { kicker: 'Digital sovereignty', statement: 'What is yours, in your name.',
+        body: 'Your agent’s account, keys and subscription should be in your name. If you pay for a model, you pay the provider, not a middleman. Nobody sits between you and your data.' },
+      { kicker: 'Sovereign AI', statement: 'You choose the model. And you change it.',
+        body: 'No model lasts for ever: new ones arrive, prices change, terms change. Your agent shouldn’t depend on just one. What it knows about you lives in files you can read and take with you.' },
+      { kicker: 'Agents that fit you', statement: 'The agent fits you. Not the other way round.',
+        body: 'You set the goals, the limits and the responsibility; the agent does the repetitive work. It speaks your language in your tone, learns your preferences and asks before it buys, publishes or writes to anyone on your behalf.' },
+      { kicker: 'Ownership', statement: 'Your account, your data, your model.',
+        body: 'When you know where every piece is, you can change it. If tomorrow you switch model or machine, the agent is still yours.' },
+      { kicker: 'Hybrid: cloud + local', statement: 'Cloud when it makes sense. Local when you want.',
+        body: 'A cloud model is powerful and needs no machine; a local one keeps your data at home but needs hardware. You don’t have to choose for ever: each task can go one way or the other. You decide, not the provider.' },
+    ],
+    hybrid: {
+      aria: 'Diagram: on the left what goes to the cloud, on the right what stays on your hardware, and in the middle who decides: you.',
+      cloud: ['In the cloud', ['Large models from a provider you choose', 'Tasks that need more capacity', 'Pay as you go, in your name']],
+      local: ['On your hardware', ['A local model, if your machine can run it', 'Files you don’t want to leave home', 'Your rules and the agent’s memory, if you install it at home']],
+      you: ['Who decides', 'You: which task goes where and what data leaves home.'],
+    },
+    familyEyebrow: 'The MDIB family',
+    familyH2: 'Four layers. One agent that is yours.',
+    familyMore: 'What each layer is and what exists today',
+    startEyebrow: 'Where to start',
+    startH2: 'Start for free.',
+    startText: 'The guide “You don’t need to code” explains in {steps} steps how to have your own AI agent on a machine you control, connected to Telegram and doing one real task. On the web, as a PDF and as Markdown for your assistant.',
+    startRead: 'Read the guide',
+    whoEyebrow: 'Who is behind it',
+    whoH2: 'Javier Ponz.',
+    whoText: [
+      'I spent ten years in technical support at Apple. MDIB is my main project: tools and guides so an AI agent can work for you without you having to code.',
+      'It is just starting. It has no paying clients yet, and I would rather say so than leave you to guess.',
+    ],
+    whoLink: 'More about me',
+  },
+
+  manifesto: {
+    title: 'Manifesto · Machines Do It Better',
+    description: 'What MDIB believes: digital sovereignty, sovereign AI, agents that fit you, ownership and a hybrid of cloud and your own hardware. And what it will not do.',
+    eyebrow: 'Manifesto',
+    h1: 'Machines do it better. You decide what.',
+    intro: 'This is what I believe and what guides everything I do at MDIB. I write it in the first person because, today, MDIB is me.',
+    theses: [
+      ['You decide; the machine does.', 'A human sets the goals, the limits and the responsibility. Machines do the repetitive work, continuously. That split is at the centre of everything else.'],
+      ['Automation doesn’t remove judgement: it concentrates it.', 'When a machine handles what repeats, your attention is free for what only you can decide. I don’t want to take you out of the loop; I want to take away what you don’t need to do.'],
+      ['What is yours, in your name.', 'Your account, your keys and your subscription should be in your name. If you pay for a model, you pay the provider, not me. I don’t want to resell capacity or sit between you and your data.'],
+      ['No model lasts for ever.', 'New models arrive, prices change, terms change. An agent that only works with one provider is not fully yours. What it knows about you should live in files you can read and take with you.'],
+      ['The agent fits you.', 'Your language, your tone, your hours and your priorities. If you have to change how you work for the tool to work, the tool is badly designed.'],
+      ['Nothing important without your yes.', 'An agent doesn’t buy, publish, write to third parties or change your accounts without your confirmation. Nor does it ask for your passwords.'],
+      ['Cloud and local, depending on the task.', 'The cloud gives power; your own hardware gives privacy. There is no need to marry either: each task goes where it makes sense, and you decide.'],
+      ['Truth before flattery.', 'A good agent says when it is unsure, cites where it got what it tells you and warns you when something fails, instead of making up an answer. I hold this site to the same rule.'],
+      ['For people who don’t code.', 'What I make is meant for professionals and small teams who are not technical. My job is to translate the technology, not to make you learn it.'],
+      ['Evidence before promises.', 'Family can confirm that something works; only someone outside who pays can confirm it is worth the price. Today MDIB has no paying clients and I won’t pretend otherwise.'],
+      ['I use what I make.', 'MDIB is run with the same agents it offers. What I teach you, I use myself first.'],
+    ],
+    notH2: 'What MDIB will not do.',
+    not: [
+      'Be yet another generic AI news digest.',
+      'Sell open-ended, unlimited consulting.',
+      'Promise total automation, or that an agent will run by itself for ever with nobody looking after it.',
+      'Sell recycled information.',
+      'Mass-message people who asked for nothing.',
+      'Host your agent alongside other people’s: each agent in its own account.',
+      'Recover passwords or accounts, or give medical, legal or financial advice.',
+    ],
+    sign: 'Javier Ponz, Machines Do It Better',
+  },
+
+  products: {
+    title: 'Products · Machines Do It Better',
+    description: 'The MDIB family in four layers (Atlas, Forja, Guardia and Puente) with their real status, and what you can take away today: a free guide.',
+    eyebrow: 'Products',
+    h1: 'Four layers. One agent that is yours.',
+    intro: 'MDIB is organised in four layers. Each shows its status as it is today: available, in development or planned. Planned means an intention, not something that already works.',
+    legend: 'Statuses',
+    legendText: {
+      available: 'exists and can be used or downloaded today.',
+      building: 'being built; not usable yet.',
+      planned: 'a plan; it does not exist yet.',
+    },
+    whatK: 'What it is',
+    givesK: 'What it gives you',
+    todayK: 'What it is made of today',
+    layers: {
+      atlas: {
+        descriptor: 'Your ontology: the map of your accounts, data, tasks and rules the agent works from.',
+        what: 'It will let the agent know what is yours, what it may touch and what it may not, without you repeating it.',
+        gives: 'It will let you change agent or model without losing what the previous one knew about you.',
+        today: 'A list of eight things the agent confirms when it is set up (your name, language and tone, time zone, channel, modules, schedules, what it may remember and what it must always confirm), written as a skill in a private alpha. The map itself does not exist yet.',
+      },
+      forja: {
+        descriptor: 'The kit: the flows, skills and installer that build the agent.',
+        what: 'The set of pieces an MDIB agent is built from: its identity and limits, and one skill per task.',
+        gives: 'When ready, an agent that starts with tasks already prepared instead of a blank page, installed on your machine and with your account.',
+        today: 'A profile distribution for Hermes Agent, version 0.1.0, alpha and private: an identity-and-limits file and four skills (setup, daily summary, general wellbeing habits and informational market watch). It was installed and checked on a test machine. It cannot be downloaded yet.',
+      },
+      guardia: {
+        descriptor: 'Permissions, backups and upkeep: what keeps it safe and alive.',
+        what: 'It will make the agent ask permission where it should, keep a copy of what matters and stay up to date.',
+        gives: 'It will tell you what your agent can do without asking you and how to get it back if something breaks.',
+        today: 'Written rules, not software: the agent asks for confirmation before buying, publishing, writing to third parties or changing an account, and never asks for passwords. Step 7 of the free guide explains the harness’s permissions. Backups are not solved: the guide marks them “unverified”.',
+      },
+      puente: {
+        descriptor: 'The hybrid route between cloud models and your own hardware.',
+        what: 'It will split each task between a cloud model and one on your machine, as you decide.',
+        gives: 'It will let your most sensitive data stay at home without giving up a large model when you need one.',
+        today: 'Step 3 of the free guide, which compares a cloud model with a local one run with Ollama. There is no MDIB software for this.',
+      },
+    },
+    takeH2: 'What you can take away today.',
+    items: {
+      guide: { title: 'The guide “You don’t need to code”', text: '{steps} steps to your own AI agent on a machine you control, connected to Telegram and doing one real task. On the web, as a PDF and as Markdown for your assistant.' },
+      skills: { title: 'Skills library', layer: 'Forja', text: 'Ready-made skills to install in your own agent: common tasks already written, each with its limits.' },
+      setup: { title: 'Written setup', layer: 'Forja · Guardia', text: 'It will leave your agent set up for one task, with the scope fixed in advance and everything delivered in writing, start to finish.' },
+    },
+    free: 'Free',
+    read: 'Read the guide',
+    pdf: 'Download PDF',
+    buy: 'Buy',
+    notYet: 'Not available yet',
+    notify: 'Tell me when it exists',
+    howH2: 'How buying works.',
+    how: 'Nothing is on sale today. When something is, the “Buy” button will open Stripe’s payment page in a new tab: this site takes no payments and stores no payment details. Before that day, the terms of sale and a business contact will be published here. If you want to know when, subscribe to the newsletter.',
+  },
+
+  guide: {
+    title: 'You don’t need to code: a free guide to your own AI agent · MDIB',
+    description:
+      'A free {steps}-step guide to setting up your own AI agent on a machine you control, connected to Telegram and doing one real task. On the web, as a PDF and as Markdown for your assistant.',
+    tabsLabel: 'Guide sections',
     tabs: [
       ['#outcome', 'Outcome'],
       ['#use', 'How to use'],
@@ -101,8 +429,8 @@ const en: typeof es = {
       ['#hood', 'Under the hood'],
       ['#sources', 'Sources'],
     ],
+    eyebrow: 'Free guide · Machines Do It Better',
   },
-  eyebrow: 'Free guide · Machines Do It Better',
   download: {
     pdf: 'Download PDF',
     md: 'Download for your agent (.md)',
@@ -110,7 +438,6 @@ const en: typeof es = {
   },
   newsletter: {
     link: 'Get the next edition and the updates',
-    newTab: '(opens in a new tab)',
     bandTitle: 'The guide is free. I ask for one thing in return: your interest.',
     bandText:
       'If it helped, subscribe to the newsletter: you get the next edition, corrections when a tool changes, and word when what comes next exists. The downloads are open and ask for nothing.',
@@ -151,8 +478,37 @@ const en: typeof es = {
       ['the model', 'the one you choose, and you change it when you like'],
     ],
   },
-  footer: { legal: 'Legal notice and privacy', guide: 'The guide' },
-  notFound: { title: 'Page not found · MDIB', h1: 'Nothing here.', back: 'Back to the guide' },
+
+  letter: {
+    title: 'Newsletter · Machines Do It Better',
+    description: 'The MDIB newsletter: Monday to Friday, in Spanish, on open source, local models and open agents. You subscribe on Beehiiv.',
+    eyebrow: 'Newsletter',
+    h1: 'One edition every weekday.',
+    lede: 'The MDIB newsletter goes out Monday to Friday and covers open source, models that run on your own hardware and open agents.',
+    state: 'It is being relaunched right now: the daily format is being tested before it opens to everyone, so the rhythm will start when it is ready.',
+    langNote: 'It is written in Spanish.',
+    getH2: 'What you get.',
+    get: [
+      'Each edition starts from a real task, not from a model or a repository.',
+      'What is new at MDIB: when a product comes out and when the guide changes.',
+      'Each edition links to something from MDIB. I say so here so it doesn’t catch you by surprise.',
+      'You can unsubscribe whenever you like, from any edition.',
+    ],
+    subscribe: 'Subscribe on Beehiiv',
+    how: 'You subscribe on Beehiiv’s site, in a new tab. This site does not collect your email.',
+    archive: 'Past editions, on Beehiiv',
+    blockEyebrow: 'Newsletter',
+    blockH2: 'What’s new, Monday to Friday.',
+    blockText: 'Open source, local models and open agents, in Spanish. And word when something from MDIB is ready.',
+    more: 'What it is and what you get',
+    dialogTitle: 'One edition a day on AI that is yours.',
+    dialogText: 'The MDIB newsletter, Monday to Friday, in Spanish: open agents, local models and what is new at MDIB. You subscribe on Beehiiv, in a new tab.',
+    dialogYes: 'Subscribe',
+    dialogClose: 'Close',
+  },
+
+  legalTitle: 'Legal notice and privacy · MDIB',
+  legalDescription: 'Who is behind Machines Do It Better, the terms of the site and the free guide, and what data is processed.',
 };
 
 export const copy = { es, en };

@@ -12,7 +12,7 @@ export const pathFor = (lang, page) => (lang === 'es' ? '/' : '/en/') + SLUGS[la
 
 /** The page and language a built path belongs to, or null. */
 export function pageOf(path) {
-  for (const lang of LANGS) for (const [page, slug] of Object.entries(SLUGS[lang]))
+  for (const lang of LANGS) for (const page of Object.keys(SLUGS[lang]))
     if (pathFor(lang, /** @type {any} */ (page)) === path) return { lang, page };
   return null;
 }
